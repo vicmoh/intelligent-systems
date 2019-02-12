@@ -4,6 +4,7 @@ import java.util.List;
 /**
  * 
  * @author Vicky Mohammad
+ * email: mohammav@uoguelph.ca
  * a public interface for generic problem
  */
 public interface GenericProblem <S, A>{

@@ -3,6 +3,7 @@
 /**
  *
  * @author Vicky Mohammad
+ * email: mohammav@uoguelph.ca
  */
 public class Node<S, A> {
 
