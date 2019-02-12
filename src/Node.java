@@ -2,7 +2,7 @@
 
 /**
  *
- * @author Le
+ * @author Vicky Mohammad
  */
 public class Node<S, A> {
 
@@ -92,8 +92,10 @@ public class Node<S, A> {
 		return parent == null;
 	}
 
-	@Override
-	public String toString() {
-		return "[parent=" + parent + ", action=" + action + ", state=" + getState() + ", pathCost=" + pathCost + "]\n";
+	@Override public String toString() {
+		return "[parent=" + parent + 
+			", action=" + action + 
+			", state=" + getState() + 
+			", pathCost=" + pathCost + "]\n";
 	}
-}
+}//end node
