@@ -17,9 +17,6 @@ public class EightPuzzleSearchAgent {
     final public int DIMENSION = 3;
     EightPuzzleProblem problem;
     private final Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier;
-    // Bottom, left, top, right
-	public int[] row = { 1, 0, -1, 0 };
-	public int[] col = { 0, -1, 0, 1 };
 
     public static void main(String[] args){
 		//You can use 2D array it's ** great ** too.
@@ -150,6 +147,26 @@ public class EightPuzzleSearchAgent {
         return (y >= 0 && y < this.DIMENSION && x >= 0 && x < this.DIMENSION );
     }//end func
 
+    public static boolean isBoardEqual(EightPuzzleBoard board1, EightPuzzleBoard board2){
+        // check if the same pointer
+        if(board1 == board2){
+            return true;
+        }//end if
+
+        // check if length is the same
+        if(board1.getBoardState().length != board2.getBoardState().length){
+            return false;
+        }//end if
+
+        // check if data is the same
+        for(int x=0; x<board1.getBoardState().length; x++){
+            if(board2.getBoardState()[x] != board2.getBoardState()[x]){
+                return false;
+            }//end if
+        }//end for
+        return true;
+    }//end func
+
     public static boolean isPuzzleSolvable(int[][] matrix){
 		int count = 0;
 		List<Integer> array = new ArrayList<Integer>();
@@ -240,12 +257,27 @@ public class EightPuzzleSearchAgent {
 class BreathFirstSearch {
     private EightPuzzleBoard initialState;
     private EightPuzzleBoard goalState;
+    private int totalCost = 0;
+    private int time = 0;
+    private Node root;
     
     BreathFirstSearch(EightPuzzleBoard initialState, EightPuzzleBoard goalState){
         this.initialState = initialState;
         this.goalState = goalState;
+        
     }//end constructor
 
+    public int getTime(){
+        return this.time;
+    }//end func
+
+    public int getTotalCost(){
+        return this.totalCost;
+    }//end func
+
+    public void solve(){
+        
+    }
     
 }//end classes
 class AStarSearch{

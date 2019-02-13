@@ -14,26 +14,46 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     private EightPuzzleAction right;
     private EightPuzzleAction up;
     private EightPuzzleAction down;
+    // custom variable
+    private int holeLocation;
 
     /***********************************************
      * constructor
      ***********************************************/
 
     public EightPuzzleBoard(){
-        boardState = new int[]{0,1,2,3,4,5,6,7,8};
+        this.boardState = new int[]{0,1,2,3,4,5,6,7,8};
         left = new EightPuzzleAction(EightPuzzleAction.actions[0]);
         right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
         up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
         down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
+        findHole();
     }//end func
     
     public EightPuzzleBoard(int[] inputState){
         if(inputState == null) System.out.println("WARNING: EightPuzzleBoard(): inputState = null");
+        left = new EightPuzzleAction(EightPuzzleAction.actions[0]);
+        right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
+        up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
+        down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
         this.boardState = inputState;
+        findHole();
     }//end func
 
     /***********************************************
-     * functions
+     * custom functions
+     ***********************************************/
+
+    private void findHole(){
+        for(int x=0; x<boardState.length; x++){
+            if(boardState[x] == 0){
+                this.holeLocation = x;
+            }//end if
+        }//end for
+    }//end func
+
+    /***********************************************
+     * pre-defined functions
      ***********************************************/
 
     public void setBoardState(int[] boardState) {
@@ -43,6 +63,29 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
 
     public void move(EightPuzzleAction a) {
         //do the move here.
+        
+        // move down
+        if(a.getAction().equals("DOWN")){
+            if(this.holeLocation <= 5){
+                this.boardState[this.holeLocation] = this.boardState[this.holeLocation+3];
+                this.boardState[this.holeLocation+3] = 0;
+            }//end if
+        }else if(a.getAction().equals("UP")){
+            if(this.holeLocation > 2){
+                this.boardState[this.holeLocation] = this.boardState[this.holeLocation-3];
+                this.boardState[this.holeLocation-3] = 0;
+            }//end if
+        }else if(a.getAction().equals("LEFT")){
+            if(this.holeLocation != 0 && this.holeLocation != 3 && this.holeLocation != 6){
+                this.boardState[this.holeLocation] = this.boardState[this.holeLocation-1];
+                this.boardState[this.holeLocation-1] = 0;
+            }//end if
+        }else if(a.getAction().equals("RIGHT")){
+            if(this.holeLocation != 2 && this.holeLocation != 5 && this.holeLocation != 8){
+                this.boardState[this.holeLocation] = this.boardState[this.holeLocation+1];
+                this.boardState[this.holeLocation+1] = 0;
+            }//end if
+        }//end for
     }//end func
 
     public EightPuzzleAction getLeft() {
