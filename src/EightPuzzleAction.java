@@ -21,7 +21,8 @@ public class EightPuzzleAction implements GenericAction {
      * functions
      ***********************************************/
 
-    public EightPuzzleAction() {}
+    public EightPuzzleAction() {
+    }//end func
 
     public EightPuzzleAction(String action) {
         this.action = action;
