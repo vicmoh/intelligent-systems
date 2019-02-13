@@ -44,7 +44,7 @@ public class EightPuzzleSearchAgent {
     }//end func
     
     public void printTree(Node node){
-
+        
     }//end func
     
     public static int[] readFile(String afile){

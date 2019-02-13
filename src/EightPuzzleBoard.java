@@ -44,11 +44,11 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     }//end func
     
     public EightPuzzleBoard(int[] inputState){
-
+        
     }//end func
 
     public void move(EightPuzzleAction a) {
-          //do the move here.
+        //do the move here.
     }//end func
 
     public int[] getBoardState() {
@@ -73,8 +73,8 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
 
     @Override public String toString() {
         return boardState[0] + " " + boardState[1] + " " + boardState[2] + "\n"
-	     + boardState[3] + " " + boardState[4] + " " + boardState[5] + "\n"
-	     + boardState[6] + " " + boardState[7] + " " + boardState[8];
+             + boardState[3] + " " + boardState[4] + " " + boardState[5] + "\n"
+             + boardState[6] + " " + boardState[7] + " " + boardState[8];
     }//end func
 
 	@Override public boolean equals(Object o) {
