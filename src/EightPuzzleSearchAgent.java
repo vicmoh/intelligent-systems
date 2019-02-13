@@ -8,18 +8,22 @@ import java.util.Optional;
 
 /**
  *
- * @author Le
+ * @author Vicky Mohammad
+ * email: mohammav@uoguelph.ca
  */
 public class EightPuzzleSearchAgent {
 
     EightPuzzleProblem problem;
     private final Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier;
 
+    /***********************************************
+     * functions
+     ***********************************************/
+
     public EightPuzzleSearchAgent(EightPuzzleProblem aProblem) {
         problem = aProblem;
         frontier = new LinkedList();
-
-    }
+    }//end func
     public static void main(String[] args){
 		//You can use 2D array it's ** great ** too.
 		//int [] c = EightPuzzleSearchAgent.readFile("StateFile");
@@ -33,26 +37,31 @@ public class EightPuzzleSearchAgent {
         EightPuzzleProblem problem = new EightPuzzleProblem(initialState,goalState);        
         EightPuzzleSearchAgent sa = new EightPuzzleSearchAgent(problem);
         sa.showSolution();
-    }
+    }//end func
 
     public void showSolution() {
         //do the search and print out     
-    }
+    }//end func
     
     public void printTree(Node node){
 
-    }
-	public static int[] readFile(String afile){
+    }//end func
+    
+    public static int[] readFile(String afile){
        return null;
-	}		
-	//other methods.
-
-}
+	}//end func
+    
+    /***********************************************
+     * other methods
+     ***********************************************/
+    
+}//end lcasses
 
 class BreathFirstSearch {
 
-}
+}//end classes
 class AStarSearch{
-}
 
-//Additional class or methods that you might need.
+}//end classes
+
+//Additional class or methods that you might need ...
