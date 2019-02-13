@@ -62,7 +62,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     }//end func
 
     public int[] getBoardState() {
-        return null;
+        return this.boardState;
     }//end func
 
     /***********************************************
