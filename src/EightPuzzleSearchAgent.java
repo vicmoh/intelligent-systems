@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Optional;
 import java.io.*; // for reading a file
+import java.util.*;
 
 /**
  *
@@ -261,6 +262,7 @@ class BreathFirstSearch {
     private int time = 0;
     private Node root;
     private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier;
+    private Set<EightPuzzleBoard> stateSet = new HashSet<EightPuzzleBoard>();
     
     BreathFirstSearch(
         EightPuzzleBoard initialState, 
@@ -280,19 +282,55 @@ class BreathFirstSearch {
         return this.totalCost;
     }//end func
 
-    public void solve(){
+    public boolean solve(){
         Node<EightPuzzleBoard, EightPuzzleAction> root = new Node<EightPuzzleBoard, EightPuzzleAction>(this.initialState);
         this.root = root;
         frontier.add(root);
         while(!frontier.isEmpty()){
-            Node<EightPuzzleBoard, EightPuzzleAction> currentNode = frontier.poll();
+            Node<EightPuzzleBoard, EightPuzzleAction> currentNode = frontier.poll();        
             EightPuzzleBoard currentState = currentNode.getState();
-            currentState.move(new EightPuzzleAction("UP"));
-            currentState.move(new EightPuzzleAction());
+            BreathFirstExplore exploreState = new BreathFirstExplore(currentState);
+
+            // check if goal state
+            if(currentState.equals(this.goalState)){
+                return true;
+            }//end if
+
+            for(int x=0; x<frontier.size(); x++){
+                
+            }//end if
         }//end while
+        return false;
     }//end func
-    
 }//end classes
+
+class BreathFirstExplore{
+    // dec all possible state
+    EightPuzzleBoard upState;
+    EightPuzzleBoard downState;
+    EightPuzzleBoard leftState;
+    EightPuzzleBoard rightState;
+    // init moves
+    EightPuzzleAction upAction = new EightPuzzleAction("UP");
+    EightPuzzleAction downAction = new EightPuzzleAction("DOWN");
+    EightPuzzleAction leftAction = new EightPuzzleAction("LEFT");
+    EightPuzzleAction rightAction = new EightPuzzleAction("RIGHT");
+    
+    // constructor
+    BreathFirstExplore(EightPuzzleBoard boardToExplore){
+        // set the different state
+        upState = new EightPuzzleBoard(boardToExplore.getBoardState());
+        downState = new EightPuzzleBoard(boardToExplore.getBoardState());
+        leftState = new EightPuzzleBoard(boardToExplore.getBoardState());
+        rightState = new EightPuzzleBoard(boardToExplore.getBoardState());
+        // set moves
+        upState.move(upAction);
+        downState.move(downAction);
+        leftState.move(leftAction);
+        rightState.move(rightAction);
+    }//end func
+}//end func
+
 class AStarSearch{
     private int[] initialState;
     private int[] goalState;

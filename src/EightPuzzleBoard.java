@@ -29,7 +29,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
         down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
         findHole();
-    }//end func
+    }//end constructor
     
     public EightPuzzleBoard(int[] inputState){
         if(inputState == null) System.out.println("WARNING: EightPuzzleBoard(): inputState = null");
@@ -39,7 +39,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
         this.boardState = inputState;
         findHole();
-    }//end func
+    }//end constructor
 
     /***********************************************
      * custom functions
@@ -110,7 +110,11 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     }//end func
 
     public int[] getBoardState() {
-        return this.boardState;
+        int[] clone = new int[9];
+        for(int x=0; x<this.boardState.length; x++){
+            clone[x] = this.boardState[x];
+        }//end for
+        return clone;
     }//end func
 
     /***********************************************
