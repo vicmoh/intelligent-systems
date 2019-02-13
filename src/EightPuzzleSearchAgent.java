@@ -255,9 +255,7 @@ class AStarSearch{
 			}//end for
 		}//end for
 		return count;
-    }//end func
-    
-    
+	}//end func
 }//end classes
 
 //Additional class or methods that you might need ...

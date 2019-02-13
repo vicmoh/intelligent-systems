@@ -84,7 +84,13 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     }//end func
 
 	@Override public boolean equals(Object o) {
-		return false;
+        EightPuzzleBoard temp = (EightPuzzleBoard) o;
+        for(int x=0; x<this.boardState.length; x++){
+            if(this.boardState[x] != temp.boardState[x]){
+                return false;
+            }//end if
+        }//end for
+        return true;
 	}//end func
 
 	@Override public int hashCode() {
