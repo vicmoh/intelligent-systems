@@ -287,6 +287,7 @@ class BreathFirstSearch {
         this.root = root;
         frontier.add(root);
         while(!frontier.isEmpty()){
+            // dec vars
             Node<EightPuzzleBoard, EightPuzzleAction> currentNode = frontier.poll();        
             EightPuzzleBoard currentState = currentNode.getState();
             BreathFirstExplore exploreState = new BreathFirstExplore(currentState);
@@ -296,8 +297,18 @@ class BreathFirstSearch {
                 return true;
             }//end if
 
-            for(int x=0; x<frontier.size(); x++){
-                
+            // add if it is not in frontier
+            if(!frontier.contains(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.upState))){
+                frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.upState));
+            }//end if
+            if(!frontier.contains(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.downState))){
+                frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.downState));
+            }//end if
+            if(!frontier.contains(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.leftState))){
+                frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.leftState));
+            }//end if
+            if(!frontier.contains(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.rightState))){
+                frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.rightState));
             }//end if
         }//end while
         return false;
