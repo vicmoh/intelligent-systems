@@ -14,6 +14,7 @@ import java.io.*; // for reading a file
  */
 public class EightPuzzleSearchAgent {
     // dec vars
+    final public int DIMENSION = 3;
     EightPuzzleProblem problem;
     private final Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier;
 
@@ -141,6 +142,36 @@ public class EightPuzzleSearchAgent {
     /***********************************************
      * other methods
      ***********************************************/
+
+    public boolean isPuzzleSafe(int x, int y){
+        return (y >= 0 && y < this.DIMENSION && x >= 0 && x < this.DIMENSION );
+    }//end func
+
+    public static boolean isPuzzleSolvable(int[][] matrix){
+		int count = 0;
+		List<Integer> array = new ArrayList<Integer>();
+        Integer[] anotherArray = new Integer[array.size()];
+		array.toArray(anotherArray);
+        
+        // add to the array for comparasion
+		for (int y = 0; y < matrix.length; y++) {
+			for (int x = 0; x < matrix.length; x++) {
+				array.add(matrix[y][x]);
+			}//end for
+		}//end for
+    
+        // check two array and compare
+		for (int y = 0; y < anotherArray.length - 1; y++) {
+			for (int x = y + 1; x < anotherArray.length; x++) {
+				if (anotherArray[y] != 0 && anotherArray[x] != 0 && anotherArray[y] > anotherArray[x]) {
+					count++;
+				}//end if
+			}//end for
+        }//end for
+        
+        // return
+		return count % 2 == 0;
+    }//end func
 
     public static void printMatrix(int[][] matrix){
         for(int y=0; y<matrix.length; y++){
