@@ -17,6 +17,9 @@ public class EightPuzzleSearchAgent {
     final public int DIMENSION = 3;
     EightPuzzleProblem problem;
     private final Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier;
+    // Bottom, left, top, right
+	public int[] row = { 1, 0, -1, 0 };
+	public int[] col = { 0, -1, 0, 1 };
 
     public static void main(String[] args){
 		//You can use 2D array it's ** great ** too.
