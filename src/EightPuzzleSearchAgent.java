@@ -238,11 +238,28 @@ public class EightPuzzleSearchAgent {
 }//end classes
 
 class BreathFirstSearch {
+    private EightPuzzleBoard initialState;
+    private EightPuzzleBoard goalState;
+    
+    BreathFirstSearch(EightPuzzleBoard initialState, EightPuzzleBoard goalState){
+        this.initialState = initialState;
+        this.goalState = goalState;
+    }//end constructor
 
+    
 }//end classes
 class AStarSearch{
-
-    AStarSearch(){}
+    private int[] initialState;
+    private int[] goalState;
+    
+    AStarSearch(int[] initialState, int[] goalState){
+        this.initialState = initialState;
+        this.goalState = goalState;
+        if(initialState.equals(goalState)){
+            System.out.println("It is already in goal state!!");
+        }//end if
+        
+    }//end constructor
 
     public int calculateCost(int[][] initial, int[][] goal) {
 		int count = 0;
