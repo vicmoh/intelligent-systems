@@ -41,7 +41,7 @@ public class EightPuzzleProblem implements GenericProblem <EightPuzzleBoard, Eig
     
     @Override
     public List<EightPuzzleAction> getActions(EightPuzzleBoard boardState) {
-        return null;
+        return boardState.listOfActions;
     }//end func
     
     @Override

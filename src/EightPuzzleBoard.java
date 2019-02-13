@@ -16,6 +16,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     private EightPuzzleAction down;
     // custom variable
     private int holeLocation;
+    public List<EightPuzzleAction> listOfActions = new ArrayList<EightPuzzleAction>();
 
     /***********************************************
      * constructor
@@ -69,21 +70,25 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
             if(this.holeLocation <= 5){
                 this.boardState[this.holeLocation] = this.boardState[this.holeLocation+3];
                 this.boardState[this.holeLocation+3] = 0;
+                this.listOfActions.add(a);
             }//end if
         }else if(a.getAction().equals("UP")){
             if(this.holeLocation > 2){
                 this.boardState[this.holeLocation] = this.boardState[this.holeLocation-3];
                 this.boardState[this.holeLocation-3] = 0;
+                this.listOfActions.add(a);
             }//end if
         }else if(a.getAction().equals("LEFT")){
             if(this.holeLocation != 0 && this.holeLocation != 3 && this.holeLocation != 6){
                 this.boardState[this.holeLocation] = this.boardState[this.holeLocation-1];
                 this.boardState[this.holeLocation-1] = 0;
+                this.listOfActions.add(a);
             }//end if
         }else if(a.getAction().equals("RIGHT")){
             if(this.holeLocation != 2 && this.holeLocation != 5 && this.holeLocation != 8){
                 this.boardState[this.holeLocation] = this.boardState[this.holeLocation+1];
                 this.boardState[this.holeLocation+1] = 0;
+                this.listOfActions.add(a);
             }//end if
         }//end for
     }//end func

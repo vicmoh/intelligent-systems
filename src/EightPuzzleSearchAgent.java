@@ -260,11 +260,16 @@ class BreathFirstSearch {
     private int totalCost = 0;
     private int time = 0;
     private Node root;
+    private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier;
     
-    BreathFirstSearch(EightPuzzleBoard initialState, EightPuzzleBoard goalState){
+    BreathFirstSearch(
+        EightPuzzleBoard initialState, 
+        EightPuzzleBoard goalState, 
+        Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier
+    ){
         this.initialState = initialState;
         this.goalState = goalState;
-        
+        this.frontier = frontier;
     }//end constructor
 
     public int getTime(){
@@ -276,8 +281,16 @@ class BreathFirstSearch {
     }//end func
 
     public void solve(){
-        
-    }
+        Node<EightPuzzleBoard, EightPuzzleAction> root = new Node<EightPuzzleBoard, EightPuzzleAction>(this.initialState);
+        this.root = root;
+        frontier.add(root);
+        while(!frontier.isEmpty()){
+            Node<EightPuzzleBoard, EightPuzzleAction> currentNode = frontier.poll();
+            EightPuzzleBoard currentState = currentNode.getState();
+            currentState.move(new EightPuzzleAction("UP"));
+            currentState.move(new EightPuzzleAction());
+        }//end while
+    }//end func
     
 }//end classes
 class AStarSearch{
