@@ -176,15 +176,6 @@ public class EightPuzzleSearchAgent {
 		return count % 2 == 0;
     }//end func
 
-    public static void printMatrix(int[][] matrix){
-        for(int y=0; y<matrix.length; y++){
-            for(int x=0; x<matrix[y].length; x++){
-                System.out.print(Integer.toString(matrix[x][y]) + " ");
-            }//end for
-            System.out.println("");
-        }//end for
-    }//end func
-
     public static int[] getGoalBoard(int[] allBoard){
         int[] boardToReturn = new int[9];
         int counter = 0;
@@ -223,6 +214,15 @@ public class EightPuzzleSearchAgent {
         return matrix;
     }//end func
 
+    public static void printMatrix(int[][] matrix){
+        for(int y=0; y<matrix.length; y++){
+            for(int x=0; x<matrix[y].length; x++){
+                System.out.print(Integer.toString(matrix[x][y]) + " ");
+            }//end for
+            System.out.println("");
+        }//end for
+    }//end func
+
     public static void printAllBoard(int[] allBoard){
         boolean flag = false;
         // print whats on the board
@@ -242,6 +242,22 @@ class BreathFirstSearch {
 }//end classes
 class AStarSearch{
 
+    AStarSearch(){}
+
+    public int calculateCost(int[][] initial, int[][] goal) {
+		int count = 0;
+		int n = initial.length;
+		for (int y = 0; y < n; y++) {
+			for (int x = 0; x < n; x++) {
+				if (initial[y][x] != 0 && initial[y][x] != goal[y][x]) {
+					count++;
+				}//end if
+			}//end for
+		}//end for
+		return count;
+    }//end func
+    
+    
 }//end classes
 
 //Additional class or methods that you might need ...
