@@ -1,4 +1,4 @@
-program: clean compile run
+program: compile run
 
 compile:
 	javac -Xlint:unchecked ./src/*.java -d ./bin/
