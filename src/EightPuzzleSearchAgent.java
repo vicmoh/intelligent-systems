@@ -31,8 +31,17 @@ public class EightPuzzleSearchAgent {
         EightPuzzleSearchAgent sa = new EightPuzzleSearchAgent(problem);
         sa.showSolution();
 
+        // testing
         System.out.println("Testing...");
-        readFile("./assets/StateFile.txt");
+        int[] allBoard = readFile("./assets/StateFile.txt");
+        int[] initBoard = getInitialBoard(allBoard);
+        int[] goalBoard = getGoalBoard(allBoard);
+
+        /// print
+        System.out.println("\nInitial Board: ");
+        printMatrix(getMatrix(initBoard));
+        System.out.println("Goal Board: ");
+        printMatrix(getMatrix(goalBoard));
     }//end func
 
     public EightPuzzleSearchAgent(EightPuzzleProblem aProblem) {
@@ -114,34 +123,71 @@ public class EightPuzzleSearchAgent {
         }//end try
 
         //print board
-        printBoard(allBoard);
+        printAllBoard(allBoard);
 
         // return
         return allBoard;
-    }//end func
-    
-    public static int[][] getMatrix(int[] board){
-        int[][] matrix = new int[3][3];
-        for(int x=0; x<board.length; x++){
-            if(x % 3 == 0){
-                System.out.println("");
-            }//end if
-            System.out.print(Integer.toString(board[x]) + " ");
-        }//end for
-        System.out.println("\n");
-        return matrix;
     }//end func
     
     /***********************************************
      * other methods
      ***********************************************/
 
-    public static void printBoard(int[] allBoard){
+    public static void printMatrix(int[][] matrix){
+        for(int y=0; y<matrix.length; y++){
+            for(int x=0; x<matrix[y].length; x++){
+                System.out.print(Integer.toString(matrix[x][y]) + " ");
+            }//end for
+            System.out.println("");
+        }//end for
+    }//end func
+
+    public static int[] getGoalBoard(int[] allBoard){
+        int[] boardToReturn = new int[9];
+        int counter = 0;
+        for(int x=10-1; x<allBoard.length;x++){
+            boardToReturn[counter] = allBoard[x];
+            counter++;
+        }//end for
+        return boardToReturn;
+    }//end func
+
+    public static int[] getInitialBoard(int[] allBoard){
+        int[] boardToReturn = new int[9];
+        for(int x=0; x<allBoard.length-9;x++){
+            boardToReturn[x] = allBoard[x];    
+        }//end for
+        return boardToReturn;
+    }//end func
+    
+    public static int[][] getMatrix(int[] board){
+        // dec vars
+        int[][] matrix = new int[3][3];
+        int y = 0;
+        int x = 0;
+        boolean flag = false;
+
+        // assign to the board
+        for(int a=0; a<board.length; a++){
+            if(a % 3 == 0 && flag == true){
+                y++;
+                x = 0;
+            }//end if
+            flag = true;
+            matrix[x][y] = board[a];
+            x++;
+        }//end for
+        return matrix;
+    }//end func
+
+    public static void printAllBoard(int[] allBoard){
+        boolean flag = false;
         // print whats on the board
         for(int x=0; x<allBoard.length; x++){
-            if(x % 3 == 0){
+            if(x % 3 == 0 && flag == true){
                 System.out.println("");
             }//end if
+            flag = true;
             System.out.print(Integer.toString(allBoard[x]) + " ");
         }//end for
         System.out.println("\n");
