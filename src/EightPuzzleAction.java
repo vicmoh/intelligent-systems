@@ -22,7 +22,7 @@ public class EightPuzzleAction implements GenericAction {
      ***********************************************/
 
     public EightPuzzleAction() {
-        
+        // init puzzle action
     }//end func
 
     public EightPuzzleAction(String action) {

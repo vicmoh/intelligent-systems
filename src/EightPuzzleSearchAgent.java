@@ -22,14 +22,14 @@ public class EightPuzzleSearchAgent {
 		//int [] c = EightPuzzleSearchAgent.readFile("StateFile");
 		//if you use 1D, you need to know x,y coordinate.
 		
-        // int [] a = new int[]{0,1,2,3,4,5,6,7,8};
-        // int [] b = new int[]{1,2,0,3,4,5,6,7,8};
-        // EightPuzzleBoard initialState = new EightPuzzleBoard(a);
-        // EightPuzzleBoard goalState = new EightPuzzleBoard(b);
+        int [] a = new int[]{0,1,2,3,4,5,6,7,8};
+        int [] b = new int[]{1,2,0,3,4,5,6,7,8};
+        EightPuzzleBoard initialState = new EightPuzzleBoard(a);
+        EightPuzzleBoard goalState = new EightPuzzleBoard(b);
         
-        // EightPuzzleProblem problem = new EightPuzzleProblem(initialState,goalState);        
-        // EightPuzzleSearchAgent sa = new EightPuzzleSearchAgent(problem);
-        // sa.showSolution();
+        EightPuzzleProblem problem = new EightPuzzleProblem(initialState,goalState);        
+        EightPuzzleSearchAgent sa = new EightPuzzleSearchAgent(problem);
+        sa.showSolution();
 
         System.out.println("Testing...");
         readFile("./assets/StateFile.txt");
@@ -45,7 +45,7 @@ public class EightPuzzleSearchAgent {
      ***********************************************/
 
     public void showSolution() {
-        //do the search and print out     
+        //do the search and print out    
     }//end func
     
     public void printTree(Node node){
@@ -118,7 +118,19 @@ public class EightPuzzleSearchAgent {
 
         // return
         return allBoard;
-	}//end func
+    }//end func
+    
+    public static int[][] getMatrix(int[] board){
+        int[][] matrix = new int[3][3];
+        for(int x=0; x<board.length; x++){
+            if(x % 3 == 0){
+                System.out.println("");
+            }//end if
+            System.out.print(Integer.toString(board[x]) + " ");
+        }//end for
+        System.out.println("\n");
+        return matrix;
+    }//end func
     
     /***********************************************
      * other methods
