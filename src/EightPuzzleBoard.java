@@ -16,8 +16,34 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     private EightPuzzleAction down;
 
     /***********************************************
+     * constructor
+     ***********************************************/
+
+    public EightPuzzleBoard(){
+        boardState = new int[]{0,1,2,3,4,5,6,7,8};
+        left = new EightPuzzleAction(EightPuzzleAction.actions[0]);
+        right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
+        up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
+        down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
+    }//end func
+    
+    public EightPuzzleBoard(int[] inputState){
+        if(inputState == null) System.out.println("WARNING: EightPuzzleBoard(): inputState = null");
+        this.boardState = inputState;
+    }//end func
+
+    /***********************************************
      * functions
      ***********************************************/
+
+    public void setBoardState(int[] boardState) {
+        if(boardState == null) System.out.println("WARNING: EightPuzzleBoard(): boardState = null");
+        this.boardState = boardState;
+    }//end func
+
+    public void move(EightPuzzleAction a) {
+        //do the move here.
+    }//end func
 
     public EightPuzzleAction getLeft() {
         return left;
@@ -34,29 +60,9 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     public EightPuzzleAction getDown() {
         return down;
     }//end func
-    
-    public EightPuzzleBoard(){
-        boardState = new int[]{0,1,2,3,4,5,6,7,8};
-        left = new EightPuzzleAction(EightPuzzleAction.actions[0]);
-        right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
-        up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
-        down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
-    }//end func
-    
-    public EightPuzzleBoard(int[] inputState){
-        
-    }//end func
-
-    public void move(EightPuzzleAction a) {
-        //do the move here.
-    }//end func
 
     public int[] getBoardState() {
         return null;
-    }//end func
-
-    public void setBoardState(int[] boardState) {
-
     }//end func
 
     /***********************************************
