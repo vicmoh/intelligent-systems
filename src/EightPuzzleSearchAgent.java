@@ -20,28 +20,37 @@ public class EightPuzzleSearchAgent {
     public static void main(String[] args){
 		//You can use 2D array it's ** great ** too.
 		//int [] c = EightPuzzleSearchAgent.readFile("StateFile");
-		//if you use 1D, you need to know x,y coordinate.
-		
+        //if you use 1D, you need to know x,y coordinate.
+		System.out.println("Testing...");
         int [] a = new int[]{0,1,2,3,4,5,6,7,8};
         int [] b = new int[]{1,2,0,3,4,5,6,7,8};
         EightPuzzleBoard initialState = new EightPuzzleBoard(a);
         EightPuzzleBoard goalState = new EightPuzzleBoard(b);
-        
-        EightPuzzleProblem problem = new EightPuzzleProblem(initialState,goalState);        
-        EightPuzzleSearchAgent sa = new EightPuzzleSearchAgent(problem);
+        // solve the test problem
+        EightPuzzleProblem problemTest = new EightPuzzleProblem(initialState,goalState);        
+        EightPuzzleSearchAgent sa = new EightPuzzleSearchAgent(problemTest);
         sa.showSolution();
 
-        // testing
-        System.out.println("Testing...");
+        // from file
+        System.out.println("From file...");
         int[] allBoard = readFile("./assets/StateFile.txt");
         int[] initBoard = getInitialBoard(allBoard);
         int[] goalBoard = getGoalBoard(allBoard);
-
+        // create the board
+        EightPuzzleBoard initBoardFromFile = new EightPuzzleBoard(initBoard);
+        EightPuzzleBoard goalBoardFromFile = new EightPuzzleBoard(goalBoard);
         /// print
         System.out.println("\nInitial Board: ");
         printMatrix(getMatrix(initBoard));
         System.out.println("Goal Board: ");
         printMatrix(getMatrix(goalBoard));
+        // solve the board
+        EightPuzzleProblem problemFromFile = new EightPuzzleProblem(
+            initBoardFromFile,
+            goalBoardFromFile 
+        );
+        EightPuzzleSearchAgent puzzAgentFromFile = new EightPuzzleSearchAgent(problemFromFile);
+        puzzAgentFromFile.showSolution();
     }//end func
 
     public EightPuzzleSearchAgent(EightPuzzleProblem aProblem) {
