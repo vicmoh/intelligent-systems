@@ -351,10 +351,10 @@ class Explore{
     // constructor
     Explore(EightPuzzleBoard boardToExplore){
         // set the different state
-        upState = new EightPuzzleBoard(boardToExplore.getBoardState());
-        downState = new EightPuzzleBoard(boardToExplore.getBoardState());
-        leftState = new EightPuzzleBoard(boardToExplore.getBoardState());
-        rightState = new EightPuzzleBoard(boardToExplore.getBoardState());
+        upState = new EightPuzzleBoard(boardToExplore);
+        downState = new EightPuzzleBoard(boardToExplore);
+        leftState = new EightPuzzleBoard(boardToExplore);
+        rightState = new EightPuzzleBoard(boardToExplore);
         // set moves
         upState.move(upAction);
         downState.move(downAction);

@@ -47,7 +47,8 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
         up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
         down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
-        this.listOfActions = parent.listOfActions;
+        this.listOfActions = new ArrayList<>(parent.listOfActions);
+        this.boardState = parent.getBoardState();
         findHole();
     }//end constructor
 
@@ -58,7 +59,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     public String toStringActions(){
         String toReturn = "";
         for(int x=0; x<this.listOfActions.size(); x++){
-            toReturn+= this.listOfActions.get(x);
+            toReturn+= this.listOfActions.get(x).getAction();
             if(x != this.listOfActions.size()-1){
                 toReturn+= ", ";
             }//end if
