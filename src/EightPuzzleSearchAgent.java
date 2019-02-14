@@ -259,7 +259,7 @@ class BreathFirstSearch {
     private int time = 0;
     private Node<EightPuzzleBoard, EightPuzzleAction> root;
     private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new LinkedList<>();
-    private Map<String, Boolean> boardMap = new HashMap<>();
+    private Map<String, Boolean> exploredMap = new HashMap<>();
     
     BreathFirstSearch(EightPuzzleProblem problem){
         this.initialState = problem.getInitialState();
@@ -277,9 +277,9 @@ class BreathFirstSearch {
     }//end func
 
     public void exploreNeighbour(EightPuzzleBoard neighbour){
-        if(!this.boardMap.containsKey(neighbour.toString())){
+        if(!this.exploredMap.containsKey(neighbour.toString())){
             this.frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(neighbour));
-            this.boardMap.put(neighbour.toString(), true);
+            this.exploredMap.put(neighbour.toString(), true);
         }//end if
     }//end func
 
