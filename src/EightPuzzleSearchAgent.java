@@ -290,10 +290,12 @@ class BreathFirstSearch {
             // dec vars
             Node<EightPuzzleBoard, EightPuzzleAction> currentNode = frontier.poll();        
             EightPuzzleBoard currentState = currentNode.getState();
-            BreathFirstExplore exploreState = new BreathFirstExplore(currentState);
+            Explore exploreState = new Explore(currentState);
 
             // check if goal state
             if(currentState.equals(this.goalState)){
+                System.out.println("Found Goal State!");
+                System.out.println(currentState.toString());
                 return true;
             }//end if
 
@@ -314,33 +316,6 @@ class BreathFirstSearch {
         return false;
     }//end func
 }//end classes
-
-class BreathFirstExplore{
-    // dec all possible state
-    EightPuzzleBoard upState;
-    EightPuzzleBoard downState;
-    EightPuzzleBoard leftState;
-    EightPuzzleBoard rightState;
-    // init moves
-    EightPuzzleAction upAction = new EightPuzzleAction("UP");
-    EightPuzzleAction downAction = new EightPuzzleAction("DOWN");
-    EightPuzzleAction leftAction = new EightPuzzleAction("LEFT");
-    EightPuzzleAction rightAction = new EightPuzzleAction("RIGHT");
-    
-    // constructor
-    BreathFirstExplore(EightPuzzleBoard boardToExplore){
-        // set the different state
-        upState = new EightPuzzleBoard(boardToExplore.getBoardState());
-        downState = new EightPuzzleBoard(boardToExplore.getBoardState());
-        leftState = new EightPuzzleBoard(boardToExplore.getBoardState());
-        rightState = new EightPuzzleBoard(boardToExplore.getBoardState());
-        // set moves
-        upState.move(upAction);
-        downState.move(downAction);
-        leftState.move(leftAction);
-        rightState.move(rightAction);
-    }//end func
-}//end func
 
 class AStarSearch{
     private int[] initialState;
@@ -370,3 +345,30 @@ class AStarSearch{
 }//end classes
 
 //Additional class or methods that you might need ...
+
+class Explore{
+    // dec all possible state
+    EightPuzzleBoard upState;
+    EightPuzzleBoard downState;
+    EightPuzzleBoard leftState;
+    EightPuzzleBoard rightState;
+    // init moves
+    EightPuzzleAction upAction = new EightPuzzleAction("UP");
+    EightPuzzleAction downAction = new EightPuzzleAction("DOWN");
+    EightPuzzleAction leftAction = new EightPuzzleAction("LEFT");
+    EightPuzzleAction rightAction = new EightPuzzleAction("RIGHT");
+    
+    // constructor
+    Explore(EightPuzzleBoard boardToExplore){
+        // set the different state
+        upState = new EightPuzzleBoard(boardToExplore.getBoardState());
+        downState = new EightPuzzleBoard(boardToExplore.getBoardState());
+        leftState = new EightPuzzleBoard(boardToExplore.getBoardState());
+        rightState = new EightPuzzleBoard(boardToExplore.getBoardState());
+        // set moves
+        upState.move(upAction);
+        downState.move(downAction);
+        leftState.move(leftAction);
+        rightState.move(rightAction);
+    }//end func
+}//end func
