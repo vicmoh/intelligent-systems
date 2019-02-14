@@ -288,7 +288,8 @@ class BreathFirstSearch {
             // dec vars
             Node<EightPuzzleBoard, EightPuzzleAction> currentNode = frontier.poll();        
             EightPuzzleBoard currentState = currentNode.getState();
-            Explore exploreState = new Explore(currentState);
+            EightPuzzleAction currentAction = currentNode.getAction();
+            Explore exploreState = new Explore(currentState, currentAction);
 
             // check if goal state
             if(currentState.equals(this.goalState)){
@@ -354,12 +355,12 @@ class Explore{
     EightPuzzleAction rightAction = new EightPuzzleAction("RIGHT");
     
     // constructor
-    Explore(EightPuzzleBoard boardToExplore){
+    Explore(EightPuzzleBoard boardToExplore, EightPuzzleAction actionTaken){
         // set the different state
-        upState = new EightPuzzleBoard(boardToExplore);
-        downState = new EightPuzzleBoard(boardToExplore);
-        leftState = new EightPuzzleBoard(boardToExplore);
-        rightState = new EightPuzzleBoard(boardToExplore);
+        upState = new EightPuzzleBoard(boardToExplore, actionTaken);
+        downState = new EightPuzzleBoard(boardToExplore, actionTaken);
+        leftState = new EightPuzzleBoard(boardToExplore, actionTaken);
+        rightState = new EightPuzzleBoard(boardToExplore, actionTaken);
         // set moves
         upState.move(upAction);
         downState.move(downAction);

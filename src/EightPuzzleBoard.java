@@ -16,6 +16,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     private EightPuzzleAction down;
     // custom variable
     private int holeLocation;
+    public EightPuzzleAction actionTaken = null;
     public List<EightPuzzleBoard> listOfState = new ArrayList<EightPuzzleBoard>();
     public List<EightPuzzleAction> listOfActions = new ArrayList<EightPuzzleAction>();
 
@@ -36,10 +37,11 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         findHole();
     }//end constructor
 
-    public EightPuzzleBoard(EightPuzzleBoard parent){
+    public EightPuzzleBoard(EightPuzzleBoard parent, EightPuzzleAction actionTaken){
         if(parent == null) System.out.println("WARNING: EightPuzzleBoard(): parent = null");
         this.listOfActions = new ArrayList<>(parent.listOfActions);
         this.boardState = parent.getBoardState();
+        this.actionTaken = actionTaken;
         initAction();
         findHole();
     }//end constructor
