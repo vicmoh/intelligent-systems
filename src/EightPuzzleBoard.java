@@ -38,10 +38,10 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
 
     public EightPuzzleBoard(EightPuzzleBoard parent){
         if(parent == null) System.out.println("WARNING: EightPuzzleBoard(): parent = null");
-        initAction();
-        findHole();
         this.listOfActions = new ArrayList<>(parent.listOfActions);
         this.boardState = parent.getBoardState();
+        initAction();
+        findHole();
     }//end constructor
 
     private void initAction(){
@@ -49,7 +49,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         this.right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
         this.up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
         this.down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
-    }
+    }//end func
 
     /***********************************************
      * custom functions
