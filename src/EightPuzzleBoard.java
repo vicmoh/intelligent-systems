@@ -16,6 +16,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     private EightPuzzleAction down;
     // custom variable
     private int holeLocation;
+    public List<EightPuzzleBoard> listOfState = new ArrayList<EightPuzzleBoard>();
     public List<EightPuzzleAction> listOfActions = new ArrayList<EightPuzzleAction>();
 
     /***********************************************
@@ -24,33 +25,31 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
 
     public EightPuzzleBoard(){
         this.boardState = new int[]{0,1,2,3,4,5,6,7,8};
-        left = new EightPuzzleAction(EightPuzzleAction.actions[0]);
-        right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
-        up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
-        down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
+        initAction();
         findHole();
     }//end constructor
     
     public EightPuzzleBoard(int[] inputState){
         if(inputState == null) System.out.println("WARNING: EightPuzzleBoard(): inputState = null");
-        left = new EightPuzzleAction(EightPuzzleAction.actions[0]);
-        right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
-        up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
-        down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
         this.boardState = inputState;
+        initAction();
         findHole();
     }//end constructor
 
     public EightPuzzleBoard(EightPuzzleBoard parent){
         if(parent == null) System.out.println("WARNING: EightPuzzleBoard(): parent = null");
-        left = new EightPuzzleAction(EightPuzzleAction.actions[0]);
-        right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
-        up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
-        down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
+        initAction();
+        findHole();
         this.listOfActions = new ArrayList<>(parent.listOfActions);
         this.boardState = parent.getBoardState();
-        findHole();
     }//end constructor
+
+    private void initAction(){
+        this.left = new EightPuzzleAction(EightPuzzleAction.actions[0]);
+        this.right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
+        this.up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
+        this.down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
+    }
 
     /***********************************************
      * custom functions
