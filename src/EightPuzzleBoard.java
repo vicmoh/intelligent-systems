@@ -39,6 +39,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
 
     public EightPuzzleBoard(EightPuzzleBoard parent, EightPuzzleAction actionTaken){
         if(parent == null) System.out.println("WARNING: EightPuzzleBoard(): parent = null");
+        this.listOfState = new ArrayList<>(parent.listOfState);
         this.listOfActions = new ArrayList<>(parent.listOfActions);
         this.boardState = parent.getBoardState();
         this.actionTaken = actionTaken;

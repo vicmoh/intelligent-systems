@@ -62,7 +62,8 @@ public class EightPuzzleSearchAgent {
     public void showSolution() {
         //do the search and print out
         BreathFirstSearch bfs = new BreathFirstSearch(this.problem);
-        bfs.solve();
+        EightPuzzleBoard bfsBoard = bfs.solve();
+        System.out.println(bfsBoard.toStringBoardActions());
     }//end func
     
     public void printTree(Node<EightPuzzleBoard, EightPuzzleAction> node){
