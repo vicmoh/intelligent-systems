@@ -41,6 +41,16 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         findHole();
     }//end constructor
 
+    public EightPuzzleBoard(EightPuzzleBoard parent){
+        if(parent == null) System.out.println("WARNING: EightPuzzleBoard(): parent = null");
+        left = new EightPuzzleAction(EightPuzzleAction.actions[0]);
+        right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
+        up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
+        down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
+        this.listOfActions = parent.listOfActions;
+        findHole();
+    }//end constructor
+
     /***********************************************
      * custom functions
      ***********************************************/
@@ -75,8 +85,6 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
 
     public void move(EightPuzzleAction a) {
         //do the move here.
-        
-        // move down
         if(a.getAction().equals("DOWN")){
             if(this.holeLocation <= 5){
                 this.boardState[this.holeLocation] = this.boardState[this.holeLocation+3];

@@ -26,7 +26,7 @@ public class EightPuzzleSearchAgent {
 
         // from file
         System.out.println("\nReading from a file...");
-        int[] allBoard = readFile("./assets/StateFile.txt");
+        int[] allBoard = readFile("./assets/problem.txt");
         int[] initBoard = getInitialBoard(allBoard);
         int[] goalBoard = getGoalBoard(allBoard);
         // create the board
