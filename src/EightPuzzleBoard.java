@@ -57,6 +57,18 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
      * custom functions
      ***********************************************/
 
+    public String toStringBoardActions(){
+        String toBeReturn = "";
+        for(int x=0; x<this.listOfState.size(); x++){
+            EightPuzzleBoard curBoard = this.listOfState.get(x);
+            EightPuzzleAction curAction = this.listOfActions.get(x);
+            toBeReturn+= Print.CYAN + "Action: " + Print.RESET;
+            toBeReturn+= Print.RED + curAction.getAction() + "\n" + Print.RESET;            
+            toBeReturn+= Print.GREEN + curBoard.toString() + "\n" + Print.RESET; 
+        }//end for
+        return toBeReturn;
+    }//end func
+
     public String toStringActions(){
         String toReturn = "";
         for(int x=0; x<this.listOfActions.size(); x++){
@@ -92,24 +104,28 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
                 this.boardState[this.holeLocation] = this.boardState[this.holeLocation+3];
                 this.boardState[this.holeLocation+3] = 0;
                 this.listOfActions.add(a);
+                this.listOfState.add(new EightPuzzleBoard(this, a));
             }//end if
         }else if(a.getAction().equals("UP")){
             if(this.holeLocation > 2){
                 this.boardState[this.holeLocation] = this.boardState[this.holeLocation-3];
                 this.boardState[this.holeLocation-3] = 0;
                 this.listOfActions.add(a);
+                this.listOfState.add(new EightPuzzleBoard(this, a));
             }//end if
         }else if(a.getAction().equals("LEFT")){
             if(this.holeLocation != 0 && this.holeLocation != 3 && this.holeLocation != 6){
                 this.boardState[this.holeLocation] = this.boardState[this.holeLocation-1];
                 this.boardState[this.holeLocation-1] = 0;
                 this.listOfActions.add(a);
+                this.listOfState.add(new EightPuzzleBoard(this, a));
             }//end if
         }else if(a.getAction().equals("RIGHT")){
             if(this.holeLocation != 2 && this.holeLocation != 5 && this.holeLocation != 8){
                 this.boardState[this.holeLocation] = this.boardState[this.holeLocation+1];
                 this.boardState[this.holeLocation+1] = 0;
                 this.listOfActions.add(a);
+                this.listOfState.add(new EightPuzzleBoard(this, a));
             }//end if
         }//end for
     }//end func
