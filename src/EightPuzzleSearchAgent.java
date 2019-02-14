@@ -27,7 +27,7 @@ public class EightPuzzleSearchAgent {
         //if you use 1D, you need to know x,y coordinate.
 
         // from file
-        System.out.println(Colors.YELLOW + "\nReading from a file...");
+        Print.yellow("\nReading from a file...\n");
         int[] allBoard = readFile("./assets/dog.txt");
         int[] initBoard = getInitialBoard(allBoard);
         int[] goalBoard = getGoalBoard(allBoard);
@@ -35,10 +35,10 @@ public class EightPuzzleSearchAgent {
         EightPuzzleBoard initBoardFromFile = new EightPuzzleBoard(initBoard);
         EightPuzzleBoard goalBoardFromFile = new EightPuzzleBoard(goalBoard);
         // print the init and goal board
-        System.out.println(Colors.CYAN + "Initial Goal: ");
-        System.out.println(Colors.GREEN + initBoardFromFile.toString());
-        System.out.println(Colors.CYAN + "Goal State: ");
-        System.out.println(Colors.GREEN + goalBoardFromFile.toString());
+        Print.cyan("Initial Goal: \n");
+        Print.green(initBoardFromFile.toString());
+        Print.cyan("Goal State: \n");
+        Print.green(goalBoardFromFile.toString());
         /// solve the problem
         EightPuzzleProblem problemFromFile = new EightPuzzleProblem(
             initBoardFromFile,
@@ -46,9 +46,8 @@ public class EightPuzzleSearchAgent {
         );
         // show the solution for the problem from the file
         EightPuzzleSearchAgent puzzAgentFromFile = new EightPuzzleSearchAgent(problemFromFile);
-        System.out.println(Colors.YELLOW + "\nSolving..." + Colors.RESET);
+        Print.yellow("\nSolving...");
         puzzAgentFromFile.showSolution();
-        System.out.println(Colors.RESET);
     }//end func
 
     public EightPuzzleSearchAgent(EightPuzzleProblem aProblem) {
@@ -293,13 +292,10 @@ class BreathFirstSearch {
 
             // check if goal state
             if(currentState.equals(this.goalState)){
-                System.out.println(Colors.CYAN + "Found Goal State!" + Colors.RESET);
-                System.out.println(Colors.GREEN + currentState.toString() + Colors.RESET);
-                System.out.println(
-                    Colors.CYAN + "Solution: " + 
-                    Colors.RED + currentState.toStringActions() + 
-                    Colors.RESET
-                );
+                Print.cyan("Found Goal State!\n");
+                Print.green(currentState.toString() + "\n");
+                Print.cyan("Solution: ");
+                Print.red(currentState.toStringActions() + "\n");
                 return currentState;
             }//end if
 
@@ -311,11 +307,8 @@ class BreathFirstSearch {
         }//end while
 
         // could not find the goal
-        System.out.println(
-            Colors.CYAN + "Feedback: " + 
-            Colors.RED + "Could not find the goal state!" +
-            Colors.RESET
-        );
+        Print.cyan("Feedback: ");
+        Print.red("Could not find the goal state!" + "\n");
         return null;
     }//end func
 }//end classes
@@ -375,7 +368,7 @@ class Explore{
     }//end func
 }//end func
 
-class Colors{
+class Print{
     public static final String RESET = "\033[0m";  
     // background colors
     public static final String BLACK_BG = "\u001B[40m";
@@ -395,4 +388,20 @@ class Colors{
     public static final String PURPLE = "\033[0;35m";  // PURPLE
     public static final String CYAN = "\033[0;36m";    // CYAN
     public static final String WHITE = "\033[0;37m";   // WHITE
+    
+    public static void cyan(String toBePrinted){
+        System.out.print(CYAN + toBePrinted + RESET);
+    }//end func
+
+    public static void yellow(String toBePrinted){
+        System.out.println(YELLOW + toBePrinted + RESET);
+    }//end func
+    
+    public static void green(String toBePrinted){
+        System.out.println(GREEN + toBePrinted + RESET);
+    }//end func
+
+    public static void red(String toBePrinted){
+        System.out.println(RED + toBePrinted + RESET);
+    }//end func
 }//end func
