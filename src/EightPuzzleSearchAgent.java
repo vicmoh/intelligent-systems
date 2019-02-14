@@ -272,6 +272,12 @@ class BreathFirstSearch {
         return this.totalCost;
     }//end func
 
+    public void exploreNeighbour(EightPuzzleBoard neighbour){
+        if(!this.frontier.contains(new Node<EightPuzzleBoard, EightPuzzleAction>(neighbour))){
+            this.frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(neighbour));
+        }//end if
+    }//end func
+
     public boolean solve(){
         while(!frontier.isEmpty()){
             // dec vars
@@ -288,19 +294,14 @@ class BreathFirstSearch {
             }//end if
 
             // add if it is not in frontier
-            if(!frontier.contains(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.upState))){
-                frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.upState));
-            }//end if
-            if(!frontier.contains(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.downState))){
-                frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.downState));
-            }//end if
-            if(!frontier.contains(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.leftState))){
-                frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.leftState));
-            }//end if
-            if(!frontier.contains(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.rightState))){
-                frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(exploreState.rightState));
-            }//end if
+            this.exploreNeighbour(exploreState.upState);
+            this.exploreNeighbour(exploreState.downState);
+            this.exploreNeighbour(exploreState.leftState);
+            this.exploreNeighbour(exploreState.rightState);
         }//end while
+
+        // could not find the goal
+        System.out.println("Could not find the goal state!");
         return false;
     }//end func
 }//end classes
