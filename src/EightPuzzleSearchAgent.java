@@ -295,7 +295,11 @@ class BreathFirstSearch {
             if(currentState.equals(this.goalState)){
                 System.out.println(Colors.CYAN + "Found Goal State!" + Colors.RESET);
                 System.out.println(Colors.GREEN + currentState.toString() + Colors.RESET);
-                System.out.println(Colors.CYAN + "Solution: " + Colors.RED + currentState.toStringActions());
+                System.out.println(
+                    Colors.CYAN + "Solution: " + 
+                    Colors.RED + currentState.toStringActions() + 
+                    Colors.RESET
+                );
                 return currentState;
             }//end if
 
@@ -307,7 +311,11 @@ class BreathFirstSearch {
         }//end while
 
         // could not find the goal
-        System.out.println(Colors.RED + "Could not find the goal state!");
+        System.out.println(
+            Colors.CYAN + "Feedback: " + 
+            Colors.RED + "Could not find the goal state!" +
+            Colors.RESET
+        );
         return null;
     }//end func
 }//end classes
