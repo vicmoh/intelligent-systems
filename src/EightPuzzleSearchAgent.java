@@ -15,23 +15,14 @@ import java.util.*;
  */
 public class EightPuzzleSearchAgent {
     // dec vars
-    final public int DIMENSION = 3;
     EightPuzzleProblem problem;
+    // unused variable
     private final Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier;
 
     public static void main(String[] args){
 		//You can use 2D array it's ** great ** too.
 		//int [] c = EightPuzzleSearchAgent.readFile("StateFile");
         //if you use 1D, you need to know x,y coordinate.
-		System.out.println("Testing...");
-        int [] a = new int[]{0,1,2,3,4,5,6,7,8};
-        int [] b = new int[]{1,2,0,3,4,5,6,7,8};
-        EightPuzzleBoard initialState = new EightPuzzleBoard(a);
-        EightPuzzleBoard goalState = new EightPuzzleBoard(b);
-        // solve the test problem
-        EightPuzzleProblem problemTest = new EightPuzzleProblem(initialState,goalState);        
-        EightPuzzleSearchAgent sa = new EightPuzzleSearchAgent(problemTest);
-        sa.showSolution();
 
         // from file
         System.out.println("From file...");
@@ -41,20 +32,19 @@ public class EightPuzzleSearchAgent {
         // create the board
         EightPuzzleBoard initBoardFromFile = new EightPuzzleBoard(initBoard);
         EightPuzzleBoard goalBoardFromFile = new EightPuzzleBoard(goalBoard);
-        /// print
-        System.out.println("\nInitial Board: ");
-        printMatrix(getMatrix(initBoard));
-        System.out.println("Goal Board: ");
-        printMatrix(getMatrix(goalBoard));
-        // solve the board
+        // print the init and goal board
+        System.out.println("Initial Goal: ");
+        System.out.println(initBoardFromFile.toString());
+        System.out.println("Goal State: ");
+        System.out.println(goalBoardFromFile.toString());
+        /// solve the problem
         EightPuzzleProblem problemFromFile = new EightPuzzleProblem(
             initBoardFromFile,
             goalBoardFromFile 
         );
+        // show the solution for the problem from the file
         EightPuzzleSearchAgent puzzAgentFromFile = new EightPuzzleSearchAgent(problemFromFile);
         puzzAgentFromFile.showSolution();
-        BreathFirstSearch bfs = new BreathFirstSearch(initBoardFromFile, goalBoardFromFile);
-        bfs.solve();
     }//end func
 
     public EightPuzzleSearchAgent(EightPuzzleProblem aProblem) {
@@ -67,11 +57,16 @@ public class EightPuzzleSearchAgent {
      ***********************************************/
 
     public void showSolution() {
-        //do the search and print out    
+        //do the search and print out
+        BreathFirstSearch bfs = new BreathFirstSearch(this.problem);
+        bfs.solve();
     }//end func
     
-    public void printTree(Node node){
-        
+    public void printTree(Node<EightPuzzleBoard, EightPuzzleAction> node){
+        Node<EightPuzzleBoard, EightPuzzleAction> curNode = node;
+        EightPuzzleBoard currentState = curNode.getState();
+        System.out.println("State: ");
+        System.out.println(currentState.getBoardState().toString());
     }//end func
     
     public static int[] readFile(String afile){
@@ -135,9 +130,6 @@ public class EightPuzzleSearchAgent {
             System.out.println("readFile(): failed to close the file: " + err.toString());
         }//end try
 
-        //print board
-        printAllBoard(allBoard);
-
         // return
         return allBoard;
     }//end func
@@ -146,9 +138,27 @@ public class EightPuzzleSearchAgent {
      * other methods
      ***********************************************/
 
-    public boolean isPuzzleSafe(int x, int y){
-        return (y >= 0 && y < this.DIMENSION && x >= 0 && x < this.DIMENSION );
+    public static int[] getGoalBoard(int[] allBoard){
+        int[] boardToReturn = new int[9];
+        int counter = 0;
+        for(int x=10-1; x<allBoard.length;x++){
+            boardToReturn[counter] = allBoard[x];
+            counter++;
+        }//end for
+        return boardToReturn;
     }//end func
+
+    public static int[] getInitialBoard(int[] allBoard){
+        int[] boardToReturn = new int[9];
+        for(int x=0; x<allBoard.length-9;x++){
+            boardToReturn[x] = allBoard[x];    
+        }//end for
+        return boardToReturn;
+    }//end func
+
+    /***********************************************
+     * other unused functioins that may be helpful
+     ***********************************************/
 
     public static boolean isBoardEqual(EightPuzzleBoard board1, EightPuzzleBoard board2){
         // check if the same pointer
@@ -194,24 +204,6 @@ public class EightPuzzleSearchAgent {
         
         // return
 		return count % 2 == 0;
-    }//end func
-
-    public static int[] getGoalBoard(int[] allBoard){
-        int[] boardToReturn = new int[9];
-        int counter = 0;
-        for(int x=10-1; x<allBoard.length;x++){
-            boardToReturn[counter] = allBoard[x];
-            counter++;
-        }//end for
-        return boardToReturn;
-    }//end func
-
-    public static int[] getInitialBoard(int[] allBoard){
-        int[] boardToReturn = new int[9];
-        for(int x=0; x<allBoard.length-9;x++){
-            boardToReturn[x] = allBoard[x];    
-        }//end for
-        return boardToReturn;
     }//end func
     
     public static int[][] getMatrix(int[] board){
@@ -262,15 +254,14 @@ class BreathFirstSearch {
     private EightPuzzleBoard goalState;
     private int totalCost = 0;
     private int time = 0;
-    private Node root;
+    private Node<EightPuzzleBoard, EightPuzzleAction> root;
     private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new LinkedList<>();
     
-    BreathFirstSearch(
-        EightPuzzleBoard initialState, 
-        EightPuzzleBoard goalState
-    ){
-        this.initialState = initialState;
-        this.goalState = goalState;
+    BreathFirstSearch(EightPuzzleProblem problem){
+        this.initialState = problem.getInitialState();
+        this.goalState = problem.getGoalState();
+        this.root = new Node<EightPuzzleBoard, EightPuzzleAction>(this.initialState);
+        frontier.add(root);
     }//end constructor
 
     public int getTime(){
@@ -282,9 +273,6 @@ class BreathFirstSearch {
     }//end func
 
     public boolean solve(){
-        Node<EightPuzzleBoard, EightPuzzleAction> root = new Node<EightPuzzleBoard, EightPuzzleAction>(this.initialState);
-        this.root = root;
-        frontier.add(root);
         while(!frontier.isEmpty()){
             // dec vars
             Node<EightPuzzleBoard, EightPuzzleAction> currentNode = frontier.poll();        
