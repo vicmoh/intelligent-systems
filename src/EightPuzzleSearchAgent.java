@@ -284,7 +284,7 @@ class BreathFirstSearch {
         }//end if
     }//end func
 
-    public boolean solve(){
+    public EightPuzzleBoard solve(){
         while(!frontier.isEmpty()){
             // dec vars
             Node<EightPuzzleBoard, EightPuzzleAction> currentNode = frontier.poll();        
@@ -296,7 +296,7 @@ class BreathFirstSearch {
                 System.out.println("Found Goal State!");
                 System.out.println(currentState.toString());
                 System.out.println("Solution: " + currentState.toStringActions());
-                return true;
+                return currentState;
             }//end if
 
             // add if it is not in frontier
@@ -308,7 +308,7 @@ class BreathFirstSearch {
 
         // could not find the goal
         System.out.println("Could not find the goal state!");
-        return false;
+        return null;
     }//end func
 }//end classes
 
