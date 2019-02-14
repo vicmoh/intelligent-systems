@@ -25,7 +25,7 @@ public class EightPuzzleSearchAgent {
         //if you use 1D, you need to know x,y coordinate.
 
         // from file
-        System.out.println("From file...");
+        System.out.println("\nReading from a file...");
         int[] allBoard = readFile("./assets/StateFile.txt");
         int[] initBoard = getInitialBoard(allBoard);
         int[] goalBoard = getGoalBoard(allBoard);
@@ -44,7 +44,9 @@ public class EightPuzzleSearchAgent {
         );
         // show the solution for the problem from the file
         EightPuzzleSearchAgent puzzAgentFromFile = new EightPuzzleSearchAgent(problemFromFile);
+        System.out.println("\nSolving...");
         puzzAgentFromFile.showSolution();
+        System.out.println();
     }//end func
 
     public EightPuzzleSearchAgent(EightPuzzleProblem aProblem) {
