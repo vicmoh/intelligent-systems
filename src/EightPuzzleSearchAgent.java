@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Map;
+import java.util.HashMap;
 import java.io.*; // for reading a file
 // import java.util.Optional;
 // import java.util.*;
@@ -26,7 +28,7 @@ public class EightPuzzleSearchAgent {
 
         // from file
         System.out.println("\nReading from a file...");
-        int[] allBoard = readFile("./assets/problem.txt");
+        int[] allBoard = readFile("./assets/dog.txt");
         int[] initBoard = getInitialBoard(allBoard);
         int[] goalBoard = getGoalBoard(allBoard);
         // create the board
@@ -258,6 +260,7 @@ class BreathFirstSearch {
     private int time = 0;
     private Node<EightPuzzleBoard, EightPuzzleAction> root;
     private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new LinkedList<>();
+    private Map<String, Boolean> boardMap = new HashMap<>();
     
     BreathFirstSearch(EightPuzzleProblem problem){
         this.initialState = problem.getInitialState();
@@ -275,8 +278,9 @@ class BreathFirstSearch {
     }//end func
 
     public void exploreNeighbour(EightPuzzleBoard neighbour){
-        if(!this.frontier.contains(new Node<EightPuzzleBoard, EightPuzzleAction>(neighbour))){
+        if(!this.boardMap.containsKey(neighbour.toString())){
             this.frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(neighbour));
+            this.boardMap.put(neighbour.toString(), true);
         }//end if
     }//end func
 
