@@ -295,7 +295,7 @@ class BreathFirstSearch {
             if(currentState.equals(this.goalState)){
                 System.out.println(Colors.CYAN + "Found Goal State!" + Colors.RESET);
                 System.out.println(Colors.GREEN + currentState.toString() + Colors.RESET);
-                System.out.println(Colors.RED + "Solution: " + currentState.toStringActions());
+                System.out.println(Colors.CYAN + "Solution: " + Colors.RED + currentState.toStringActions());
                 return currentState;
             }//end if
 
