@@ -45,6 +45,17 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
      * custom functions
      ***********************************************/
 
+    public String toStringActions(){
+        String toReturn = "";
+        for(int x=0; x<this.listOfActions.size(); x++){
+            toReturn+= this.listOfActions.get(x);
+            if(x != this.listOfActions.size()-1){
+                toReturn+= ", ";
+            }//end if
+        }//end for
+        return toReturn;
+    }//end func
+
     private void findHole(){
         for(int x=0; x<boardState.length; x++){
             if(boardState[x] == 0){

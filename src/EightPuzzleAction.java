@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 public class EightPuzzleAction implements GenericAction {
     // dec instance vars
-    private String action ="";
+    private String action = "";
     static final String [] actions = {"LEFT","RIGHT","UP","DOWN"};
 
     /***********************************************

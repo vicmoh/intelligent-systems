@@ -53,6 +53,8 @@ public class EightPuzzleSearchAgent {
         );
         EightPuzzleSearchAgent puzzAgentFromFile = new EightPuzzleSearchAgent(problemFromFile);
         puzzAgentFromFile.showSolution();
+        BreathFirstSearch bfs = new BreathFirstSearch(initBoardFromFile, goalBoardFromFile);
+        bfs.solve();
     }//end func
 
     public EightPuzzleSearchAgent(EightPuzzleProblem aProblem) {
@@ -261,17 +263,14 @@ class BreathFirstSearch {
     private int totalCost = 0;
     private int time = 0;
     private Node root;
-    private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier;
-    private Set<EightPuzzleBoard> stateSet = new HashSet<EightPuzzleBoard>();
+    private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new LinkedList<>();
     
     BreathFirstSearch(
         EightPuzzleBoard initialState, 
-        EightPuzzleBoard goalState, 
-        Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier
+        EightPuzzleBoard goalState
     ){
         this.initialState = initialState;
         this.goalState = goalState;
-        this.frontier = frontier;
     }//end constructor
 
     public int getTime(){
@@ -296,6 +295,7 @@ class BreathFirstSearch {
             if(currentState.equals(this.goalState)){
                 System.out.println("Found Goal State!");
                 System.out.println(currentState.toString());
+                System.out.println("Actions: " + currentState.toStringActions());
                 return true;
             }//end if
 
