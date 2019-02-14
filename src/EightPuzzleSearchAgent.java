@@ -17,7 +17,7 @@ public class EightPuzzleSearchAgent {
     // dec vars
     EightPuzzleProblem problem;
     // unused variable
-    private final Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier;
+    //private final Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier;
 
     public static void main(String[] args){
 		//You can use 2D array it's ** great ** too.
@@ -49,7 +49,7 @@ public class EightPuzzleSearchAgent {
 
     public EightPuzzleSearchAgent(EightPuzzleProblem aProblem) {
         problem = aProblem;
-        frontier = new LinkedList<>();
+        // frontier = new LinkedList<>();
     }//end func
 
     /***********************************************
@@ -316,7 +316,6 @@ class AStarSearch{
         if(initialState.equals(goalState)){
             System.out.println("It is already in goal state!!");
         }//end if
-        
     }//end constructor
 
     public int calculateCost(int[][] initial, int[][] goal) {
