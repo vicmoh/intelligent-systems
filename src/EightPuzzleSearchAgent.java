@@ -27,18 +27,18 @@ public class EightPuzzleSearchAgent {
         //if you use 1D, you need to know x,y coordinate.
 
         // from file
-        Print.yellow("\nReading from a file...");
-        int[] allBoard = readFile("./assets/long.txt");
+        Color.yellow("\nReading from a file...");
+        int[] allBoard = readFile("./assets/dog.txt");
         int[] initBoard = getInitialBoard(allBoard);
         int[] goalBoard = getGoalBoard(allBoard);
         // create the board
         EightPuzzleBoard initBoardFromFile = new EightPuzzleBoard(initBoard);
         EightPuzzleBoard goalBoardFromFile = new EightPuzzleBoard(goalBoard);
         // print the init and goal board
-        Print.cyan("Initial Goal: \n");
-        Print.green(initBoardFromFile.toString());
-        Print.cyan("Goal State: \n");
-        Print.green(goalBoardFromFile.toString());
+        Color.cyan("Initial Goal: \n");
+        Color.green(initBoardFromFile.toString());
+        Color.cyan("Goal State: \n");
+        Color.green(goalBoardFromFile.toString());
         /// solve the problem
         EightPuzzleProblem problemFromFile = new EightPuzzleProblem(
             initBoardFromFile,
@@ -46,7 +46,7 @@ public class EightPuzzleSearchAgent {
         );
         // show the solution for the problem from the file
         EightPuzzleSearchAgent puzzAgentFromFile = new EightPuzzleSearchAgent(problemFromFile);
-        Print.yellow("\nSolving...");
+        Color.yellow("\nSolving...");
         puzzAgentFromFile.showSolution();
     }//end func
 
@@ -62,8 +62,7 @@ public class EightPuzzleSearchAgent {
     public void showSolution() {
         //do the search and print out
         BreathFirstSearch bfs = new BreathFirstSearch(this.problem);
-        EightPuzzleBoard bfsBoard = bfs.solve();
-        System.out.println(bfsBoard.toStringBoardActions());
+        System.out.println(bfs.toStringSolution());
     }//end func
     
     public void printTree(Node<EightPuzzleBoard, EightPuzzleAction> node){
@@ -256,8 +255,11 @@ public class EightPuzzleSearchAgent {
 class BreathFirstSearch {
     private EightPuzzleBoard initialState;
     private EightPuzzleBoard goalState;
+    private EightPuzzleBoard solutionState;
     private int totalCost = 0;
     private int time = 0;
+    private String solutionActions;
+    private String solutionStates;
     private Node<EightPuzzleBoard, EightPuzzleAction> root;
     private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new LinkedList<>();
     private Map<String, Boolean> exploredMap = new HashMap<>();
@@ -267,6 +269,7 @@ class BreathFirstSearch {
         this.goalState = problem.getGoalState();
         this.root = new Node<EightPuzzleBoard, EightPuzzleAction>(this.initialState);
         frontier.add(root);
+        this.solve();
     }//end constructor
 
     public int getTime(){
@@ -284,7 +287,24 @@ class BreathFirstSearch {
         }//end if
     }//end func
 
-    public EightPuzzleBoard solve(){
+    public String toStringInitAndGoalState(){
+        String toBeReturn = "";
+        toBeReturn+= Color.cyan("Initial State: ") + "\n";
+        toBeReturn+= Color.green(this.initialState.toString()) + "\n";
+        toBeReturn+= Color.cyan("Goal State: ") + "\n";
+        toBeReturn+= Color.green(this.goalState.toString()) + "\n";
+        return toBeReturn;
+    }//end func
+
+    public String toStringSolution(){
+        String toBeReturn = "";
+        toBeReturn+= Color.yellow("----------<<<( Solution )>>>----------") + "\n";
+        toBeReturn+= this.toStringInitAndGoalState();
+        toBeReturn+= Color.cyan("Solution: ") + Color.red(this.solutionState.toStringActions()) + "\n";
+        return toBeReturn;
+    }//end func
+
+    public boolean solve(){
         while(!frontier.isEmpty()){
             // dec vars
             Node<EightPuzzleBoard, EightPuzzleAction> currentNode = frontier.poll();        
@@ -293,12 +313,9 @@ class BreathFirstSearch {
             Explore exploreState = new Explore(currentState, currentAction);
 
             // check if goal state
-            if(currentState.equals(this.goalState)){
-                Print.cyan("Found Goal State!\n");
-                Print.green(currentState.toString() + "\n");
-                Print.cyan("Solution: ");
-                Print.red(currentState.toStringActions() + "\n");
-                return currentState;
+            if(currentState.equals(this.goalState)){    
+                this.solutionState = currentState;         
+                return true;
             }//end if
 
             // add if it is not in frontier
@@ -309,9 +326,9 @@ class BreathFirstSearch {
         }//end while
 
         // could not find the goal
-        Print.cyan("Feedback: ");
-        Print.red("Could not find the goal state!" + "\n");
-        return null;
+        Color.cyan("Feedback: ");
+        Color.red("Could not find the goal state!" + "\n");
+        return false;
     }//end func
 }//end classes
 
@@ -370,7 +387,7 @@ class Explore{
     }//end func
 }//end func
 
-class Print{
+class Color{
     public static final String RESET = "\033[0m";  
     // background colors
     public static final String BLACK_BG = "\u001B[40m";
@@ -391,19 +408,19 @@ class Print{
     public static final String CYAN = "\033[0;36m";    // CYAN
     public static final String WHITE = "\033[0;37m";   // WHITE
     
-    public static void cyan(String toBePrinted){
-        System.out.print(CYAN + toBePrinted + RESET);
+    public static String cyan(String toBePrinted){
+        return CYAN + toBePrinted + RESET;
     }//end func
 
-    public static void yellow(String toBePrinted){
-        System.out.println(YELLOW + toBePrinted + RESET);
+    public static String yellow(String toBePrinted){
+        return YELLOW + toBePrinted + RESET;
     }//end func
     
-    public static void green(String toBePrinted){
-        System.out.println(GREEN + toBePrinted + RESET);
+    public static String green(String toBePrinted){
+        return GREEN + toBePrinted + RESET;
     }//end func
 
-    public static void red(String toBePrinted){
-        System.out.println(RED + toBePrinted + RESET);
+    public static String red(String toBePrinted){
+        return RED + toBePrinted + RESET;
     }//end func
 }//end func
