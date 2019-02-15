@@ -258,8 +258,6 @@ class BreathFirstSearch {
     private EightPuzzleBoard solutionState;
     private int totalCost = 0;
     private int time = 0;
-    private String solutionActions;
-    private String solutionStates;
     private Node<EightPuzzleBoard, EightPuzzleAction> root;
     private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new LinkedList<>();
     private Map<String, Boolean> exploredMap = new HashMap<>();
