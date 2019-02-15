@@ -62,6 +62,7 @@ public class EightPuzzleSearchAgent {
     public void showSolution() {
         //do the search and print out
         BreathFirstSearch bfs = new BreathFirstSearch(this.problem);
+        System.out.println(bfs.toStringBoardStep());
         System.out.println(bfs.toStringSolution());
     }//end func
     
@@ -285,6 +286,13 @@ class BreathFirstSearch {
         }//end if
     }//end func
 
+    public String toStringBoardStep(){
+        String toBeReturn = "";
+        toBeReturn+= Color.header("Steps for solution") + "\n";
+        toBeReturn+= this.solutionState.toStringBoardActions();
+        return toBeReturn;
+    }//end func
+
     public String toStringInitAndGoalState(){
         String toBeReturn = "";
         toBeReturn+= Color.cyan("Initial State: ") + "\n";
@@ -296,7 +304,7 @@ class BreathFirstSearch {
 
     public String toStringSolution(){
         String toBeReturn = "";
-        toBeReturn+= Color.yellow("----------<<<( Solution )>>>----------") + "\n";
+        toBeReturn+= Color.header("Feedback") + "\n";
         toBeReturn+= this.toStringInitAndGoalState();
         toBeReturn+= Color.cyan("Solution: ") + Color.red(this.solutionState.toStringActions()) + "\n";
         return toBeReturn;
@@ -420,5 +428,9 @@ class Color{
 
     public static String red(String toBePrinted){
         return RED + toBePrinted + RESET;
+    }//end func
+
+    public static String header(String toBePrinted){
+        return Color.yellow("----------<<<( " + toBePrinted + " )>>>----------");
     }//end func
 }//end func
