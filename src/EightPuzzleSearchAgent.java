@@ -270,6 +270,10 @@ class BreathFirstSearch {
         this.solve();
     }//end constructor
 
+    public int getNumberOfNode(){
+        return this.frontier.size();
+    }//end func
+
     public int getTime(){
         return this.time;
     }//end func
@@ -283,6 +287,10 @@ class BreathFirstSearch {
             this.frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(neighbour));
             this.exploredMap.put(neighbour.toString(), true);
         }//end if
+    }//end func
+
+    public String toStringNumberOfNodes(){
+        return Color.cyan("Number or nodes: ") + Color.green(Integer.toString(this.frontier.size()));
     }//end func
 
     public String toStringBoardStep(){
@@ -305,6 +313,7 @@ class BreathFirstSearch {
         String toBeReturn = "";
         toBeReturn+= Color.header("Feedback") + "\n";
         toBeReturn+= this.toStringInitAndGoalState();
+        toBeReturn+= this.toStringNumberOfNodes() + "\n";
         toBeReturn+= Color.cyan("Solution: ") + Color.red(this.solutionState.toStringActions()) + "\n";
         return toBeReturn;
     }//end func
