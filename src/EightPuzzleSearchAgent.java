@@ -257,7 +257,7 @@ class BreathFirstSearch {
     private EightPuzzleBoard goalState;
     private EightPuzzleBoard solutionState;
     private int totalCost = 0;
-    private int time = 0;
+    private double time = 0;
     private Node<EightPuzzleBoard, EightPuzzleAction> root;
     private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new LinkedList<>();
     private Map<String, Boolean> exploredMap = new HashMap<>();
@@ -274,7 +274,7 @@ class BreathFirstSearch {
         return this.frontier.size();
     }//end func
 
-    public int getTime(){
+    public double getTimeInMilliseconds(){
         return this.time;
     }//end func
 
@@ -289,14 +289,41 @@ class BreathFirstSearch {
         }//end if
     }//end func
 
-    public String toStringNumberOfMovesForSolution(){
-        return Color.cyan("Number of moves for solution: ") 
-            + Color.green(Integer.toString(this.solutionState.listOfActions.size()));
+    public boolean solve(){
+        double startTime = System.nanoTime();
+        while(!frontier.isEmpty()){
+            // dec vars
+            Node<EightPuzzleBoard, EightPuzzleAction> currentNode = frontier.poll();        
+            EightPuzzleBoard currentState = currentNode.getState();
+            EightPuzzleAction currentAction = currentNode.getAction();
+            Explore exploreState = new Explore(currentState, currentAction);
+
+            // check if goal state
+            if(currentState.equals(this.goalState)){
+                double endTime = System.nanoTime();
+                this.solutionState = currentState;    
+                this.time = (endTime - startTime)/1000000000; 
+                return true;
+            }//end if
+
+            // add if it is not in frontier
+            this.exploreNeighbour(exploreState.leftState);
+            this.exploreNeighbour(exploreState.rightState);
+            this.exploreNeighbour(exploreState.upState);
+            this.exploreNeighbour(exploreState.downState);
+        }//end while
+
+        // could not find the goal
+        Color.cyan("Feedback: ");
+        Color.red("Could not find the goal state!" + "\n");
+        double endTime = System.nanoTime();
+        this.time = (endTime - startTime)/1000000000; 
+        return false;
     }//end func
 
-    public String toStringNumberOfNodes(){
-        return Color.cyan("Number or nodes: ") + Color.green(Integer.toString(this.frontier.size()));
-    }//end func
+    /***********************************************
+     * toString function
+     ***********************************************/
 
     public String toStringBoardStep(){
         String toBeReturn = "";
@@ -318,38 +345,14 @@ class BreathFirstSearch {
         String toBeReturn = "";
         toBeReturn+= Color.header("Feedback") + "\n";
         toBeReturn+= this.toStringInitAndGoalState();
-        toBeReturn+= this.toStringNumberOfNodes() + "\n";
-        toBeReturn+= this.toStringNumberOfMovesForSolution() + "\n";
+        toBeReturn+= Color.cyan("Number or nodes visited: ") + Color.green(Integer.toString(this.frontier.size())) + "\n";
+        toBeReturn+= Color.cyan("Number of moves for solution: ") + Color.green(Integer.toString(this.solutionState.listOfActions.size())) + "\n";
+        toBeReturn+= Color.cyan("Time in millisecond to find the goal: ") + Color.green(Double.toString(this.time)) + "\n";
         toBeReturn+= Color.cyan("Solution: ") + Color.red(this.solutionState.toStringActions()) + "\n";
         return toBeReturn;
     }//end func
 
-    public boolean solve(){
-        while(!frontier.isEmpty()){
-            // dec vars
-            Node<EightPuzzleBoard, EightPuzzleAction> currentNode = frontier.poll();        
-            EightPuzzleBoard currentState = currentNode.getState();
-            EightPuzzleAction currentAction = currentNode.getAction();
-            Explore exploreState = new Explore(currentState, currentAction);
 
-            // check if goal state
-            if(currentState.equals(this.goalState)){    
-                this.solutionState = currentState;         
-                return true;
-            }//end if
-
-            // add if it is not in frontier
-            this.exploreNeighbour(exploreState.leftState);
-            this.exploreNeighbour(exploreState.rightState);
-            this.exploreNeighbour(exploreState.upState);
-            this.exploreNeighbour(exploreState.downState);
-        }//end while
-
-        // could not find the goal
-        Color.cyan("Feedback: ");
-        Color.red("Could not find the goal state!" + "\n");
-        return false;
-    }//end func
 }//end classes
 
 class AStarSearch{
