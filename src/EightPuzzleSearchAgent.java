@@ -324,10 +324,10 @@ class BreathFirstSearch {
             }//end if
 
             // add if it is not in frontier
-            this.exploreNeighbour(exploreState.upState);
-            this.exploreNeighbour(exploreState.downState);
             this.exploreNeighbour(exploreState.leftState);
             this.exploreNeighbour(exploreState.rightState);
+            this.exploreNeighbour(exploreState.upState);
+            this.exploreNeighbour(exploreState.downState);
         }//end while
 
         // could not find the goal
