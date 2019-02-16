@@ -14,6 +14,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     private EightPuzzleAction right;
     private EightPuzzleAction up;
     private EightPuzzleAction down;
+    private double gValue = 0;
     // custom variable
     private int holeLocation;
     public EightPuzzleAction actionTaken = null;
@@ -26,6 +27,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
 
     public EightPuzzleBoard(){
         this.boardState = new int[]{0,1,2,3,4,5,6,7,8};
+        this.gValue = 0;
         initAction();
         findHole();
     }//end constructor
@@ -33,6 +35,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     public EightPuzzleBoard(int[] inputState){
         if(inputState == null) System.out.println("WARNING: EightPuzzleBoard(): inputState = null");
         this.boardState = inputState;
+        this.gValue = 0;
         initAction();
         findHole();
     }//end constructor
@@ -43,6 +46,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         this.listOfActions = new ArrayList<>(parent.listOfActions);
         this.boardState = parent.getBoardState();
         this.actionTaken = actionTaken;
+        this.gValue = 1;
         initAction();
         findHole();
     }//end constructor
@@ -62,10 +66,11 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         String toBeReturn = "";
         for(int x=0; x<this.listOfState.size(); x++){
             EightPuzzleBoard curBoard = this.listOfState.get(x);
-            EightPuzzleAction curAction = this.listOfActions.get(x);
-            toBeReturn+= Color.CYAN + "Action: " + Color.RESET;
-            toBeReturn+= Color.RED + curAction.getAction() + "\n" + Color.RESET;            
+            EightPuzzleAction curAction = this.listOfActions.get(x);          
             toBeReturn+= Color.GREEN + curBoard.toString() + "\n" + Color.RESET; 
+            toBeReturn+= Color.CYAN + "Action: " + Color.RESET;
+            toBeReturn+= Color.RED + curAction.getAction() + "\n" + Color.RESET;  
+            toBeReturn+= Color.CYAN + "g = " + Color.RED + this.gValue + Color.RESET + "\n";
         }//end for
         return toBeReturn;
     }//end func
@@ -128,7 +133,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
                 this.listOfActions.add(a);
                 this.listOfState.add(new EightPuzzleBoard(this, a));
             }//end if
-        }
+        }//end if
     }//end func
 
     public EightPuzzleAction getLeft() {
