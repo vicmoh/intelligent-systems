@@ -289,6 +289,11 @@ class BreathFirstSearch {
         }//end if
     }//end func
 
+    public String toStringNumberOfMovesForSolution(){
+        return Color.cyan("Number of moves for solution: ") 
+            + Color.green(Integer.toString(this.solutionState.listOfActions.size()));
+    }//end func
+
     public String toStringNumberOfNodes(){
         return Color.cyan("Number or nodes: ") + Color.green(Integer.toString(this.frontier.size()));
     }//end func
@@ -314,6 +319,7 @@ class BreathFirstSearch {
         toBeReturn+= Color.header("Feedback") + "\n";
         toBeReturn+= this.toStringInitAndGoalState();
         toBeReturn+= this.toStringNumberOfNodes() + "\n";
+        toBeReturn+= this.toStringNumberOfMovesForSolution() + "\n";
         toBeReturn+= Color.cyan("Solution: ") + Color.red(this.solutionState.toStringActions()) + "\n";
         return toBeReturn;
     }//end func
