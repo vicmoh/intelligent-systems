@@ -327,7 +327,7 @@ class BreathFirstSearch {
 
     public String toStringBoardStep(){
         String toBeReturn = "";
-        toBeReturn+= Color.header("Steps for solution") + "\n";
+        toBeReturn+= Color.header("BFS: Steps for solution") + "\n";
         toBeReturn+= this.solutionState.toStringBoardActions();
         return toBeReturn;
     }//end func
@@ -343,7 +343,7 @@ class BreathFirstSearch {
 
     public String toStringSolution(){
         String toBeReturn = "";
-        toBeReturn+= Color.header("Feedback") + "\n";
+        toBeReturn+= Color.header("BFS: Feedback") + "\n";
         toBeReturn+= this.toStringInitAndGoalState();
         toBeReturn+= Color.cyan("Number or nodes visited: ") + Color.green(Integer.toString(this.frontier.size())) + "\n";
         toBeReturn+= Color.cyan("Number of moves for solution: ") + Color.green(Integer.toString(this.solutionState.listOfActions.size())) + "\n";
