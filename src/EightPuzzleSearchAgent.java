@@ -20,7 +20,6 @@ public class EightPuzzleSearchAgent {
     EightPuzzleProblem problem;
     // unused variable
     private final Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier;
-
     public static void main(String[] args){
 		//You can use 2D array it's ** great ** too.
 		//int [] c = EightPuzzleSearchAgent.readFile("StateFile");
