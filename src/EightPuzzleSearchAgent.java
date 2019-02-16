@@ -347,12 +347,10 @@ class BreathFirstSearch {
         toBeReturn+= this.toStringInitAndGoalState();
         toBeReturn+= Color.cyan("Number or nodes visited: ") + Color.green(Integer.toString(this.frontier.size())) + "\n";
         toBeReturn+= Color.cyan("Number of moves for solution: ") + Color.green(Integer.toString(this.solutionState.listOfActions.size())) + "\n";
-        toBeReturn+= Color.cyan("Time in millisecond to find the goal: ") + Color.green(Double.toString(this.time)) + "\n";
+        toBeReturn+= Color.cyan("Time it took in seconds: ") + Color.green(Double.toString(this.time)) + "\n";
         toBeReturn+= Color.cyan("Solution: ") + Color.red(this.solutionState.toStringActions()) + "\n";
         return toBeReturn;
     }//end func
-
-
 }//end classes
 
 class AStarSearch{
