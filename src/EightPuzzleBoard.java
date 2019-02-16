@@ -100,21 +100,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
 
     public void move(EightPuzzleAction a) {
         //do the move here.
-        if(a.getAction().equals("DOWN")){
-            if(this.holeLocation <= 5){
-                this.boardState[this.holeLocation] = this.boardState[this.holeLocation+3];
-                this.boardState[this.holeLocation+3] = 0;
-                this.listOfActions.add(a);
-                this.listOfState.add(new EightPuzzleBoard(this, a));
-            }//end if
-        }else if(a.getAction().equals("UP")){
-            if(this.holeLocation > 2){
-                this.boardState[this.holeLocation] = this.boardState[this.holeLocation-3];
-                this.boardState[this.holeLocation-3] = 0;
-                this.listOfActions.add(a);
-                this.listOfState.add(new EightPuzzleBoard(this, a));
-            }//end if
-        }else if(a.getAction().equals("LEFT")){
+        if(a.getAction().equals("LEFT")){
             if(this.holeLocation != 0 && this.holeLocation != 3 && this.holeLocation != 6){
                 this.boardState[this.holeLocation] = this.boardState[this.holeLocation-1];
                 this.boardState[this.holeLocation-1] = 0;
@@ -128,7 +114,21 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
                 this.listOfActions.add(a);
                 this.listOfState.add(new EightPuzzleBoard(this, a));
             }//end if
-        }//end for
+        }else if(a.getAction().equals("UP")){
+            if(this.holeLocation > 2){
+                this.boardState[this.holeLocation] = this.boardState[this.holeLocation-3];
+                this.boardState[this.holeLocation-3] = 0;
+                this.listOfActions.add(a);
+                this.listOfState.add(new EightPuzzleBoard(this, a));
+            }//end if
+        }else if(a.getAction().equals("DOWN")){
+            if(this.holeLocation <= 5){
+                this.boardState[this.holeLocation] = this.boardState[this.holeLocation+3];
+                this.boardState[this.holeLocation+3] = 0;
+                this.listOfActions.add(a);
+                this.listOfState.add(new EightPuzzleBoard(this, a));
+            }//end if
+        }
     }//end func
 
     public EightPuzzleAction getLeft() {
