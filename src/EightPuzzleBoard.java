@@ -9,6 +9,8 @@ import java.util.List;
  */
 public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPuzzleAction>{
     // the instance vars
+    private int h = 0;
+    private int pathCost = 0;
     private int[] boardState;
     private EightPuzzleAction left;
     private EightPuzzleAction right;
@@ -23,12 +25,6 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     /***********************************************
      * constructor
      ***********************************************/
-
-    public EightPuzzleBoard(){
-        this.boardState = new int[]{0,1,2,3,4,5,6,7,8};
-        initAction();
-        findHole();
-    }//end constructor
     
     public EightPuzzleBoard(int[] inputState){
         if(inputState == null) System.out.println("WARNING: EightPuzzleBoard(): inputState = null");
@@ -47,11 +43,32 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         findHole();
     }//end constructor
 
+    public EightPuzzleBoard(EightPuzzleBoard parent, EightPuzzleAction actionTaken, int h){
+        if(parent == null) System.out.println("WARNING: EightPuzzleBoard(): parent = null");
+        this.listOfState = new ArrayList<>(parent.listOfState);
+        this.listOfActions = new ArrayList<>(parent.listOfActions);
+        this.boardState = parent.getBoardState();
+        this.actionTaken = actionTaken;
+        this.h = h;
+        initAction();
+        findHole();
+    }//end constructor
+
     private void initAction(){
         this.left = new EightPuzzleAction(EightPuzzleAction.actions[0]);
         this.right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
         this.up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
         this.down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
+    }//end func
+
+    public int getH(){
+        this.pathCost = this.listOfState.size() + this.h;
+        return this.h;
+    }//end func
+    
+    public int getG(){
+        this.pathCost = this.listOfState.size() + this.h;
+        return this.listOfState.size();
     }//end func
 
     /***********************************************

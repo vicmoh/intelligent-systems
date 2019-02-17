@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.*;
 import java.io.*; // for reading a file
 // import java.util.Optional;
 // import java.util.*;
@@ -355,10 +356,14 @@ class BreathFirstSearch {
 }//end classes
 
 class AStarSearch{
+    private double time = 0;
     private EightPuzzleBoard initialState;
     private EightPuzzleBoard goalState;
+    private EightPuzzleBoard solutionState;
     private Node<EightPuzzleBoard, EightPuzzleAction> root;
-    private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new LinkedList<>();
+    private PriorityQueue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new PriorityQueue<>();
+    private Map<String, Boolean> exploredMap = new HashMap<>();
+    private Map<Integer, Integer> depthMap = new HashMap<>();
     
     AStarSearch(EightPuzzleProblem problem){
         this.initialState = problem.getInitialState();
@@ -366,6 +371,13 @@ class AStarSearch{
         this.root = new Node<EightPuzzleBoard, EightPuzzleAction>(this.initialState);
         frontier.add(root);
     }//end constructor
+
+    Comparator<Node<EightPuzzleBoard, EightPuzzleAction>> priorityCompare = new Comparator<Node<EightPuzzleBoard, EightPuzzleAction>>() {
+        @Override
+        public int compare(Node<EightPuzzleBoard, EightPuzzleAction> o1, Node<EightPuzzleBoard, EightPuzzleAction> o2) {
+            return 0;
+        }//end func
+    };
 
     public int manhattan() {
         int  manhattanDistanceSum = 0;
@@ -377,18 +389,94 @@ class AStarSearch{
         return manhattanDistanceSum;
     }//end fnuc
 
-    public int calculateCost(int[][] initial, int[][] goal) {
-		int count = 0;
-		int n = initial.length;
-		for (int y = 0; y < n; y++) {
-			for (int x = 0; x < n; x++) {
-				if (initial[y][x] != 0 && initial[y][x] != goal[y][x]) {
-					count++;
-				}//end if
-			}//end for
-		}//end for
-		return count;
-	}//end func
+    public void exploreNeighbour(EightPuzzleBoard neighbour){
+        if(!this.exploredMap.containsKey(neighbour.toString())){
+            this.frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(neighbour));
+            this.exploredMap.put(neighbour.toString(), true);
+        }//end if
+    }//end func
+
+    public boolean solve(){
+        double startTime = System.nanoTime();
+        while(!frontier.isEmpty()){
+            // dec vars
+            Node<EightPuzzleBoard, EightPuzzleAction> currentNode = frontier.poll();        
+            EightPuzzleBoard currentState = currentNode.getState();
+            EightPuzzleAction currentAction = currentNode.getAction();
+            ExploreState exploreState = new ExploreState(currentState, currentAction);
+
+            // count the number of node in each depth
+            if(currentState.listOfState.size() != 0){
+                int numOfNodeInDepth = (this.depthMap.get(currentState.listOfState.size()) != null)
+                    ? this.depthMap.get(currentState.listOfState.size()) + 1 : 1;
+                this.depthMap.put(currentState.listOfState.size(), numOfNodeInDepth);
+            }//end if
+
+            // check if goal state
+            if(currentState.equals(this.goalState)){
+                double endTime = System.nanoTime();
+                this.solutionState = currentState;    
+                this.time = (endTime - startTime)/1000000000;
+                return true;
+            }//end if
+
+            // add if it is not in frontier
+            this.exploreNeighbour(exploreState.leftState);
+            this.exploreNeighbour(exploreState.rightState);
+            this.exploreNeighbour(exploreState.upState);
+            this.exploreNeighbour(exploreState.downState);
+        }//end while
+
+        // could not find the goal
+        Color.cyan("Feedback: ");
+        Color.red("Could not find the goal state!" + "\n");
+        double endTime = System.nanoTime();
+        this.time = (endTime - startTime)/1000000000; 
+        return false;
+    }//end func
+
+        /***********************************************
+     * toString function
+     ***********************************************/
+
+    public String toStringBoardSteps(){
+        String toBeReturn = "";
+        toBeReturn+= Color.header("BFS: Steps for solution") + "\n";
+        toBeReturn+= Color.green(this.initialState.toString()) + "\n";
+        toBeReturn+= this.solutionState.toStringBoardActions();
+        return toBeReturn;
+    }//end func
+
+    public String toStringInitAndGoalState(){
+        String toBeReturn = "";
+        toBeReturn+= Color.cyan("Initial State: ") + "\n";
+        toBeReturn+= Color.green(this.initialState.toString()) + "\n";
+        toBeReturn+= Color.cyan("Goal State: ") + "\n";
+        toBeReturn+= Color.green(this.goalState.toString()) + "\n";
+        return toBeReturn;
+    }//end func
+
+    public String toStringSolution(){
+        String toBeReturn = "";
+        toBeReturn+= Color.header("BFS: Feedback") + "\n";
+        toBeReturn+= this.toStringInitAndGoalState();
+        toBeReturn+= Color.cyan("Number or nodes visited: ") + Color.green(Integer.toString(this.exploredMap.size())) + "\n";
+        toBeReturn+= Color.cyan("Number of moves for solution: ") + Color.green(Integer.toString(this.solutionState.listOfActions.size())) + "\n";
+        toBeReturn+= Color.cyan("Time it took in seconds: ") + Color.green(Double.toString(this.time)) + "\n";
+        toBeReturn+= Color.cyan("Solution: ") + Color.red(this.solutionState.toStringActions()) + "\n";
+        return toBeReturn;
+    }//end func
+
+    public String toStringSummary(){
+        String toBeReturn = "";
+        toBeReturn+= "+------------+-------------+------------+------------+\n";
+        toBeReturn+= "|   Depth    | Search Cost |     Generated Nodes     |\n";
+        toBeReturn+= "|            |    A*(H1)   |    A*(H2   |     BFS    |\n";
+        toBeReturn+= "+------------+-------------+------------+------------+\n";
+        this.depthMap.forEach((k,v) -> System.out.println("Depth "+ k +": " + v + " nodes"));
+        toBeReturn+= "+------------+-------------+------------+------------+\n";
+        return toBeReturn;
+    }//end func
 }//end classes
 
 //Additional class or methods that you might need ...
@@ -405,13 +493,25 @@ class ExploreState{
     EightPuzzleAction leftAction = new EightPuzzleAction("LEFT");
     EightPuzzleAction rightAction = new EightPuzzleAction("RIGHT");
     
-    // constructor
     ExploreState(EightPuzzleBoard boardToExplore, EightPuzzleAction actionTaken){
         // set the different state
         upState = new EightPuzzleBoard(boardToExplore, actionTaken);
         downState = new EightPuzzleBoard(boardToExplore, actionTaken);
         leftState = new EightPuzzleBoard(boardToExplore, actionTaken);
         rightState = new EightPuzzleBoard(boardToExplore, actionTaken);
+        // set moves
+        upState.move(upAction);
+        downState.move(downAction);
+        leftState.move(leftAction);
+        rightState.move(rightAction);
+    }//end func
+
+    ExploreState(EightPuzzleBoard boardToExplore, EightPuzzleAction actionTaken, int h){
+        // set the different state
+        upState = new EightPuzzleBoard(boardToExplore, actionTaken, h);
+        downState = new EightPuzzleBoard(boardToExplore, actionTaken, h);
+        leftState = new EightPuzzleBoard(boardToExplore, actionTaken, h);
+        rightState = new EightPuzzleBoard(boardToExplore, actionTaken, h);
         // set moves
         upState.move(upAction);
         downState.move(downAction);
