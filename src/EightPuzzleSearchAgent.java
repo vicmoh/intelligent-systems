@@ -349,6 +349,17 @@ class BreathFirstSearch {
         toBeReturn+= Color.cyan("Solution: ") + Color.red(this.solutionState.toStringActions()) + "\n";
         return toBeReturn;
     }//end func
+
+    public String toStringSummary(){
+        String toBeReturn = "";
+        toBeReturn+= "+------------+-------------+------------+------------+\n";
+        toBeReturn+= "|   Depth    | Search Cost |     Generated Nodes     |\n";
+        toBeReturn+= "|            |    A*(H1)   |    A*(H2   |     BFS    |\n";
+        toBeReturn+= "+------------+-------------+------------+------------+\n";
+        toBeReturn+= "+------------+-------------+------------+------------+\n";
+        return toBeReturn;
+    }//end func
+
 }//end classes
 
 class AStarSearch{
