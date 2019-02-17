@@ -44,6 +44,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         if(parent == null) System.out.println("WARNING: EightPuzzleBoard(): parent = null");
         this.listOfState = new ArrayList<>(parent.listOfState);
         this.listOfActions = new ArrayList<>(parent.listOfActions);
+        if(this.listOfState.size() == 1) this.listOfState.get(0).setGValue(0);
         this.boardState = parent.getBoardState();
         this.actionTaken = actionTaken;
         this.gValue = 1;
@@ -58,19 +59,24 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         this.down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
     }//end func
 
+    public void setGValue(double pathCost){
+        this.gValue = pathCost;
+    }//end func
+
     /***********************************************
      * custom functions
      ***********************************************/
 
     public String toStringBoardActions(){
         String toBeReturn = "";
+        toBeReturn+= Color.green(this.toString() + "\n");
         for(int x=0; x<this.listOfState.size(); x++){
             EightPuzzleBoard curBoard = this.listOfState.get(x);
             EightPuzzleAction curAction = this.listOfActions.get(x);          
-            toBeReturn+= Color.GREEN + curBoard.toString() + "\n" + Color.RESET; 
             toBeReturn+= Color.CYAN + "Action: " + Color.RESET;
             toBeReturn+= Color.RED + curAction.getAction() + "\n" + Color.RESET;  
-            toBeReturn+= Color.CYAN + "g = " + Color.RED + this.gValue + Color.RESET + "\n";
+            toBeReturn+= Color.CYAN + "g = " + Color.RED + curBoard.gValue + Color.RESET + "\n";
+            toBeReturn+= Color.GREEN + curBoard.toString() + "\n" + Color.RESET; 
         }//end for
         return toBeReturn;
     }//end func

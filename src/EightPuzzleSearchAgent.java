@@ -61,7 +61,7 @@ public class EightPuzzleSearchAgent {
     public void showSolution() {
         //do the search and print out
         BreathFirstSearch bfs = new BreathFirstSearch(this.problem);
-        System.out.println(bfs.toStringBoardStep());
+        System.out.println(bfs.toStringBoardSteps());
         System.out.println(bfs.toStringSolution());
     }//end func
     
@@ -266,6 +266,7 @@ class BreathFirstSearch {
         this.initialState = problem.getInitialState();
         this.goalState = problem.getGoalState();
         this.root = new Node<EightPuzzleBoard, EightPuzzleAction>(this.initialState);
+        this.root.getState().getState().setGValue(0);
         frontier.add(root);
         this.solve();
     }//end constructor
@@ -325,7 +326,7 @@ class BreathFirstSearch {
      * toString function
      ***********************************************/
 
-    public String toStringBoardStep(){
+    public String toStringBoardSteps(){
         String toBeReturn = "";
         toBeReturn+= Color.header("BFS: Steps for solution") + "\n";
         toBeReturn+= this.solutionState.toStringBoardActions();
