@@ -61,7 +61,6 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     public String toStringBoardActions(){
         String toBeReturn = "";
         EightPuzzleBoard lastBoard = this;
-        toBeReturn+= Color.green(this.listOfState.get(0).getState().toString() + "\n");
         for(int x=0; x<this.listOfState.size(); x++){
             EightPuzzleBoard curBoard = this.listOfState.get(x);
             EightPuzzleAction curAction = this.listOfActions.get(x);          

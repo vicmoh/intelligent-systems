@@ -317,6 +317,7 @@ class BreathFirstSearch {
     public String toStringBoardSteps(){
         String toBeReturn = "";
         toBeReturn+= Color.header("BFS: Steps for solution") + "\n";
+        toBeReturn+= Color.green(this.initialState.toString()) + "\n";
         toBeReturn+= this.solutionState.toStringBoardActions();
         return toBeReturn;
     }//end func
