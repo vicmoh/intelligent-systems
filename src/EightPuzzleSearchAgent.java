@@ -262,6 +262,7 @@ class BreathFirstSearch {
     private Node<EightPuzzleBoard, EightPuzzleAction> root;
     private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new LinkedList<>();
     private Map<String, Boolean> exploredMap = new HashMap<>();
+    private Map<Integer, Integer> depthMap = new HashMap<>();
     
     BreathFirstSearch(EightPuzzleProblem problem){
         this.initialState = problem.getInitialState();
@@ -270,6 +271,7 @@ class BreathFirstSearch {
         this.root.getState().getState().setGValue(0);
         frontier.add(root);
         this.solve();
+        this.toStringSummary();
     }//end constructor
 
     public double getTimeInMilliseconds(){
@@ -283,6 +285,10 @@ class BreathFirstSearch {
     public void exploreNeighbour(EightPuzzleBoard neighbour){
         if(!this.exploredMap.containsKey(neighbour.toString())){
             this.frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(neighbour));
+            int numOfNodeInDepth = (this.depthMap.get(neighbour.listOfState.size()) != null)
+                ? this.depthMap.get(neighbour.listOfState.size()) + 1 
+                : 1;
+            this.depthMap.put(neighbour.listOfState.size(), numOfNodeInDepth);
             this.exploredMap.put(neighbour.toString(), true);
         }//end if
     }//end func
@@ -356,10 +362,10 @@ class BreathFirstSearch {
         toBeReturn+= "|   Depth    | Search Cost |     Generated Nodes     |\n";
         toBeReturn+= "|            |    A*(H1)   |    A*(H2   |     BFS    |\n";
         toBeReturn+= "+------------+-------------+------------+------------+\n";
+        this.depthMap.forEach((k,v) -> System.out.println("key: "+k+" value:"+v));
         toBeReturn+= "+------------+-------------+------------+------------+\n";
         return toBeReturn;
     }//end func
-
 }//end classes
 
 class AStarSearch{
@@ -437,6 +443,10 @@ class Color{
     public static final String PURPLE = "\033[0;35m";  // PURPLE
     public static final String CYAN = "\033[0;36m";    // CYAN
     public static final String WHITE = "\033[0;37m";   // WHITE
+
+    public static void debug(String toBePrinted){
+        System.out.println(toBePrinted);
+    }//end func
     
     public static String cyan(String toBePrinted){
         return CYAN + toBePrinted + RESET;
