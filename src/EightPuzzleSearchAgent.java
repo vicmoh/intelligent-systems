@@ -293,7 +293,7 @@ class BreathFirstSearch {
             if(currentState.equals(this.goalState)){
                 double endTime = System.nanoTime();
                 this.solutionState = currentState;    
-                this.time = (endTime - startTime)/1000000000; 
+                this.time = (endTime - startTime)/1000000000;
                 return true;
             }//end if
 
