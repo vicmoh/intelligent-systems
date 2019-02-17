@@ -26,8 +26,9 @@ public class EightPuzzleSearchAgent {
         //if you use 1D, you need to know x,y coordinate.
 
         // from file
-        Color.yellow("\nReading from a file...");
-        int[] allBoard = readFile("./assets/move6.txt");
+        String fileName = args[0];
+        Color.yellow("\nReading " + fileName + " ...");
+        int[] allBoard = readFile(fileName);
         int[] initBoard = getInitialBoard(allBoard);
         int[] goalBoard = getGoalBoard(allBoard);
         // create the board

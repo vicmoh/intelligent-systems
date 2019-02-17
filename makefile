@@ -4,7 +4,7 @@ compile:
 	javac -Xlint:unchecked ./src/*.java -d ./bin/
 
 run:
-	java -cp ./bin EightPuzzleSearchAgent
+	java -cp ./bin EightPuzzleSearchAgent $(arg)
 
 git:
 	git add -A
