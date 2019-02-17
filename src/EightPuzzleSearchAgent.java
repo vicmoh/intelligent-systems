@@ -246,11 +246,10 @@ public class EightPuzzleSearchAgent {
 }//end classes
 
 class BreathFirstSearch {
+    private double time = 0;
     private EightPuzzleBoard initialState;
     private EightPuzzleBoard goalState;
     private EightPuzzleBoard solutionState;
-    private int totalCost = 0;
-    private double time = 0;
     private Node<EightPuzzleBoard, EightPuzzleAction> root;
     private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new LinkedList<>();
     private Map<String, Boolean> exploredMap = new HashMap<>();
@@ -260,7 +259,6 @@ class BreathFirstSearch {
         this.initialState = problem.getInitialState();
         this.goalState = problem.getGoalState();
         this.root = new Node<EightPuzzleBoard, EightPuzzleAction>(this.initialState);
-        this.root.getState().getState().setGValue(0);
         frontier.add(root);
         this.solve();
         this.toStringSummary();

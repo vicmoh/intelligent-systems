@@ -14,7 +14,6 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     private EightPuzzleAction right;
     private EightPuzzleAction up;
     private EightPuzzleAction down;
-    private double gValue = 0;
     // custom variable
     private int holeLocation;
     public EightPuzzleAction actionTaken = null;
@@ -27,7 +26,6 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
 
     public EightPuzzleBoard(){
         this.boardState = new int[]{0,1,2,3,4,5,6,7,8};
-        this.gValue = 0;
         initAction();
         findHole();
     }//end constructor
@@ -35,7 +33,6 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     public EightPuzzleBoard(int[] inputState){
         if(inputState == null) System.out.println("WARNING: EightPuzzleBoard(): inputState = null");
         this.boardState = inputState;
-        this.gValue = 0;
         initAction();
         findHole();
     }//end constructor
@@ -44,10 +41,8 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         if(parent == null) System.out.println("WARNING: EightPuzzleBoard(): parent = null");
         this.listOfState = new ArrayList<>(parent.listOfState);
         this.listOfActions = new ArrayList<>(parent.listOfActions);
-        if(this.listOfState.size() == 1) this.listOfState.get(0).setGValue(0);
         this.boardState = parent.getBoardState();
         this.actionTaken = actionTaken;
-        this.gValue = 1;
         initAction();
         findHole();
     }//end constructor
@@ -57,10 +52,6 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         this.right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
         this.up = new EightPuzzleAction(EightPuzzleAction.actions[2]);
         this.down = new EightPuzzleAction(EightPuzzleAction.actions[3]);
-    }//end func
-
-    public void setGValue(double pathCost){
-        this.gValue = pathCost;
     }//end func
 
     /***********************************************
