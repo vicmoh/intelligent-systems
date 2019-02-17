@@ -272,10 +272,6 @@ class BreathFirstSearch {
         this.solve();
     }//end constructor
 
-    public int getNumberOfNode(){
-        return this.frontier.size();
-    }//end func
-
     public double getTimeInMilliseconds(){
         return this.time;
     }//end func
@@ -347,7 +343,7 @@ class BreathFirstSearch {
         String toBeReturn = "";
         toBeReturn+= Color.header("BFS: Feedback") + "\n";
         toBeReturn+= this.toStringInitAndGoalState();
-        toBeReturn+= Color.cyan("Number or nodes visited: ") + Color.green(Integer.toString(this.frontier.size())) + "\n";
+        toBeReturn+= Color.cyan("Number or nodes visited: ") + Color.green(Integer.toString(this.exploredMap.size())) + "\n";
         toBeReturn+= Color.cyan("Number of moves for solution: ") + Color.green(Integer.toString(this.solutionState.listOfActions.size())) + "\n";
         toBeReturn+= Color.cyan("Time it took in seconds: ") + Color.green(Double.toString(this.time)) + "\n";
         toBeReturn+= Color.cyan("Solution: ") + Color.red(this.solutionState.toStringActions()) + "\n";
