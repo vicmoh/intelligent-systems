@@ -31,19 +31,23 @@ public class EightPuzzleSearchAgent {
         int[] allBoard = readFile(fileName);
         int[] initBoard = getInitialBoard(allBoard);
         int[] goalBoard = getGoalBoard(allBoard);
+
         // create the board
         EightPuzzleBoard initBoardFromFile = new EightPuzzleBoard(initBoard);
         EightPuzzleBoard goalBoardFromFile = new EightPuzzleBoard(goalBoard);
+        
         // print the init and goal board
         Color.cyan("Initial Goal: \n");
         Color.green(initBoardFromFile.toString());
         Color.cyan("Goal State: \n");
         Color.green(goalBoardFromFile.toString());
+        
         /// solve the problem
         EightPuzzleProblem problemFromFile = new EightPuzzleProblem(
             initBoardFromFile,
             goalBoardFromFile 
         );
+        
         // show the solution for the problem from the file
         EightPuzzleSearchAgent puzzAgentFromFile = new EightPuzzleSearchAgent(problemFromFile);
         Color.yellow("\nSolving...");
@@ -60,7 +64,6 @@ public class EightPuzzleSearchAgent {
      ***********************************************/
 
     public void showSolution() {
-        //do the search and print out
         BreathFirstSearch bfs = new BreathFirstSearch(this.problem);
         System.out.println(bfs.toStringBoardSteps());
         System.out.println(bfs.toStringSolution());
@@ -71,6 +74,14 @@ public class EightPuzzleSearchAgent {
         EightPuzzleBoard currentState = curNode.getState();
         System.out.println("State: ");
         System.out.println(currentState.getBoardState().toString());
+    }//end func
+
+    public static void closeFile(BufferedReader br){
+        try{
+            br.close();
+        }catch(IOException brErr){
+            System.out.println("readFile(): failed to close file: " + brErr.toString());
+        }//end catch
     }//end func
     
     public static int[] readFile(String afile){
@@ -83,11 +94,7 @@ public class EightPuzzleSearchAgent {
             br = new BufferedReader(fileReader);
         }catch(Exception err){
             System.out.println("readFile(): file could not be read: " + err.toString());
-            try{
-                br.close();
-            }catch(IOException brErr){
-                System.out.println("readFile(): failed to close file: " + brErr.toString());
-            }//end catch
+            closeFile(br);
             return null;
         }//end catch
         
@@ -100,41 +107,26 @@ public class EightPuzzleSearchAgent {
                 line = br.readLine();    
             }catch(IOException err){
                 System.out.println("readFile(): error when reading file: " + err.toString());
-                try{
-                    br.close();
-                }catch(IOException brErr){
-                    System.out.println("readFile(): failed to close file: " + brErr.toString());
-                }//end catch
+                closeFile(br);
                 return null;
             }//end try
 
             // break if line is null
-            if(line == null){
-                break;
-            }//end if
+            if(line == null) break;
+            if(line.toUpperCase().contains("INITIAL")) continue;
+            if(line.toUpperCase().contains("GOAL")) continue;
+            if(!line.matches(".*\\d+.*")) continue; 
             
-            // parse the file
-            if(line.toUpperCase().contains("INITIAL")){
-                continue;
-            }else if(line.toUpperCase().contains("GOAL")){
-                continue;
-            }else{
-                String[] boardRow = line.split(" ");
-                for(int x=0; x< boardRow.length; x++){
-                    allBoard[counter] = Integer.parseInt(boardRow[x]);
-                    counter++;
-                }//end for
-            }//end if
+            // get the board row and assign it
+            String[] boardRow = line.split(" ");
+            for(int x=0; x< boardRow.length; x++){
+                allBoard[counter] = Integer.parseInt(boardRow[x]);
+                counter++;
+            }//end for
         }while(line != null);
 
-        // close file when done
-        try{
-            br.close();
-        }catch(IOException err){
-            System.out.println("readFile(): failed to close the file: " + err.toString());
-        }//end try
-
         // return
+        closeFile(br);
         return allBoard;
     }//end func
     
@@ -274,21 +266,9 @@ class BreathFirstSearch {
         this.toStringSummary();
     }//end constructor
 
-    public double getTimeInMilliseconds(){
-        return this.time;
-    }//end func
-
-    public int getTotalCost(){
-        return this.totalCost;
-    }//end func
-
     public void exploreNeighbour(EightPuzzleBoard neighbour){
         if(!this.exploredMap.containsKey(neighbour.toString())){
             this.frontier.add(new Node<EightPuzzleBoard, EightPuzzleAction>(neighbour));
-            int numOfNodeInDepth = (this.depthMap.get(neighbour.listOfState.size()) != null)
-                ? this.depthMap.get(neighbour.listOfState.size()) + 1 
-                : 1;
-            this.depthMap.put(neighbour.listOfState.size(), numOfNodeInDepth);
             this.exploredMap.put(neighbour.toString(), true);
         }//end if
     }//end func
@@ -300,7 +280,14 @@ class BreathFirstSearch {
             Node<EightPuzzleBoard, EightPuzzleAction> currentNode = frontier.poll();        
             EightPuzzleBoard currentState = currentNode.getState();
             EightPuzzleAction currentAction = currentNode.getAction();
-            Explore exploreState = new Explore(currentState, currentAction);
+            ExploreState exploreState = new ExploreState(currentState, currentAction);
+
+            // count the number of node in each depth
+            if(currentState.listOfState.size() != 0){
+                int numOfNodeInDepth = (this.depthMap.get(currentState.listOfState.size()) != null)
+                    ? this.depthMap.get(currentState.listOfState.size()) + 1 : 1;
+                this.depthMap.put(currentState.listOfState.size(), numOfNodeInDepth);
+            }//end if
 
             // check if goal state
             if(currentState.equals(this.goalState)){
@@ -362,7 +349,7 @@ class BreathFirstSearch {
         toBeReturn+= "|   Depth    | Search Cost |     Generated Nodes     |\n";
         toBeReturn+= "|            |    A*(H1)   |    A*(H2   |     BFS    |\n";
         toBeReturn+= "+------------+-------------+------------+------------+\n";
-        this.depthMap.forEach((k,v) -> System.out.println("key: "+k+" value:"+v));
+        this.depthMap.forEach((k,v) -> System.out.println("Depth "+ k +": " + v + " nodes"));
         toBeReturn+= "+------------+-------------+------------+------------+\n";
         return toBeReturn;
     }//end func
@@ -396,7 +383,7 @@ class AStarSearch{
 
 //Additional class or methods that you might need ...
 
-class Explore{
+class ExploreState{
     // dec all possible state
     EightPuzzleBoard upState;
     EightPuzzleBoard downState;
@@ -409,7 +396,7 @@ class Explore{
     EightPuzzleAction rightAction = new EightPuzzleAction("RIGHT");
     
     // constructor
-    Explore(EightPuzzleBoard boardToExplore, EightPuzzleAction actionTaken){
+    ExploreState(EightPuzzleBoard boardToExplore, EightPuzzleAction actionTaken){
         // set the different state
         upState = new EightPuzzleBoard(boardToExplore, actionTaken);
         downState = new EightPuzzleBoard(boardToExplore, actionTaken);
