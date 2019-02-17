@@ -355,16 +355,27 @@ class BreathFirstSearch {
 }//end classes
 
 class AStarSearch{
-    private int[] initialState;
-    private int[] goalState;
+    private EightPuzzleBoard initialState;
+    private EightPuzzleBoard goalState;
+    private Node<EightPuzzleBoard, EightPuzzleAction> root;
+    private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new LinkedList<>();
     
-    AStarSearch(int[] initialState, int[] goalState){
-        this.initialState = initialState;
-        this.goalState = goalState;
-        if(initialState.equals(goalState)){
-            System.out.println("It is already in goal state!!");
-        }//end if
+    AStarSearch(EightPuzzleProblem problem){
+        this.initialState = problem.getInitialState();
+        this.goalState = problem.getGoalState();
+        this.root = new Node<EightPuzzleBoard, EightPuzzleAction>(this.initialState);
+        frontier.add(root);
     }//end constructor
+
+    public int manhattan() {
+        int  manhattanDistanceSum = 0;
+        int[] goal = this.goalState.getBoardState();
+        for (int i = 0; i < goal.length; i++){
+            if(goal[i] == i ) continue;
+            manhattanDistanceSum += (Math.abs(goal[i]/ 3 - i/ 3) + Math.abs(goal[i]% 3 - i% 3));
+        }//end for
+        return manhattanDistanceSum;
+    }//end fnuc
 
     public int calculateCost(int[][] initial, int[][] goal) {
 		int count = 0;
