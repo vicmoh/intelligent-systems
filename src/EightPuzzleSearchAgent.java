@@ -79,11 +79,11 @@ public class EightPuzzleSearchAgent {
         System.out.println(assmt.toStringBoardSteps());
         System.out.println(assmt.toStringSolution());
         // print summary
-        this.toStringSummary(assmt, assmh, bfs);
+        System.out.println(this.toStringSummary(assmt, assmh, bfs));
     }//end func
 
     public String toStringSummary(AStarSearch assmt, AStarSearch assmh, BreadthFirstSearch bfs){
-        String toBeReturn = "";
+        String toBeReturn =  Color.YELLOW + "";
         List<Integer> assmtDepth = new LinkedList<>();
         List<Integer> assmhDepth = new LinkedList<>();
         List<Integer> bfsDepth = new LinkedList<>();
@@ -100,11 +100,12 @@ public class EightPuzzleSearchAgent {
         toBeReturn+= "+------------+-------------+------------+------------+\n";
         // this.depthMap.forEach((k,v) -> System.out.println("Depth "+ k +": " + v + " nodes"));
         for(int x=0;x< bfs.depthMap.size(); x++){
-            toBeReturn+= "\t"+ Integer.toString(assmtDepth.get(x)) 
-                + "\t" + Integer.toString(assmhDepth.get(x)) 
-                + "\t" + Integer.toString(bfsDepth.get(x)) + "\n";
+            toBeReturn+= String.format("|%11d ", x) 
+                + String.format("|%12d |", assmtDepth.get(x)) 
+                + String.format("%11d |", assmhDepth.get(x)) 
+                + String.format("%11d |", bfsDepth.get(x)) + "\n";
         }//end for
-        toBeReturn+= "+------------+-------------+------------+------------+\n";
+        toBeReturn+= "+------------+-------------+------------+------------+\n" + Color.RESET;
         return toBeReturn;
     }//end func
     
