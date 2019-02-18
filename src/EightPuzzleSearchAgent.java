@@ -80,15 +80,27 @@ public class EightPuzzleSearchAgent {
         System.out.println(assmt.toStringSolution());
     }//end func
 
-    public String toStringSummary(AStarSearch aasmt, AStarSearch aasmh, BreadthFirstSearch bfs){
+    public String toStringSummary(AStarSearch assmt, AStarSearch assmh, BreadthFirstSearch bfs){
         String toBeReturn = "";
+        List<Integer> assmtDepth = new LinkedList<>();
+        List<Integer> assmhDepth = new LinkedList<>();
+        List<Integer> bfsDepth = new LinkedList<>();
+        
+        ///add to list
+        assmt.depthMap.forEach((k,v) -> assmtDepth.add(v));
+        assmh.depthMap.forEach((k,v) -> assmhDepth.add(v));
+        bfs.depthMap.forEach((k,v) -> bfsDepth.add(v));
+        
+        // to be print
         toBeReturn+= "+------------+-------------+------------+------------+\n";
         toBeReturn+= "|   Depth    | Search Cost |     Generated Nodes     |\n";
         toBeReturn+= "|            |    A*(H1)   |    A*(H2   |     BFS    |\n";
         toBeReturn+= "+------------+-------------+------------+------------+\n";
         // this.depthMap.forEach((k,v) -> System.out.println("Depth "+ k +": " + v + " nodes"));
         for(int x=0;x< bfs.depthMap.size(); x++){
-            
+            toBeReturn+= "\t"+ Integer.toString(assmtDepth.get(x)) 
+                + "\t" + Integer.toString(assmhDepth.get(x)) 
+                + "\t" + Integer.toString(bfsDepth.get(x)) + "\n";
         }//end for
         toBeReturn+= "+------------+-------------+------------+------------+\n";
         return toBeReturn;
