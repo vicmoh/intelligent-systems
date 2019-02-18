@@ -20,6 +20,7 @@ import java.io.*;
 public class EightPuzzleSearchAgent {
     // dec vars
     EightPuzzleProblem problem;
+
     // unused variable
     private final Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier;
     public static void main(String[] args){
@@ -69,17 +70,30 @@ public class EightPuzzleSearchAgent {
         // for breadth first search
         BreadthFirstSearch bfs = new BreadthFirstSearch(this.problem);
         System.out.println(bfs.toStringBoardSteps());
-        System.out.println(bfs.toStringSolution());
+        
         // for manhatten a star
         AStarSearch assmh = new AStarSearch(this.problem, false);
         System.out.println(assmh.toStringBoardSteps());
-        System.out.println(assmh.toStringSolution());
         // for missing tile a star
         AStarSearch assmt = new AStarSearch(this.problem, true);
         System.out.println(assmt.toStringBoardSteps());
-        System.out.println(assmt.toStringSolution());
         // print summary
+        System.out.println(Color.header("Summary"));
+        System.out.println(this.toStringInitAndGoalState());
         System.out.println(this.toStringSummary(assmt, assmh, bfs));
+        // print steps
+        System.out.println(bfs.toStringSolution());
+        System.out.println(assmt.toStringSolution());
+        System.out.println(assmh.toStringSolution());
+    }//end func
+
+    public String toStringInitAndGoalState(){
+        String toBeReturn = "";
+        toBeReturn+= Color.cyan("Initial State: ") + "\n";
+        toBeReturn+= Color.green(this.problem.getInitialState().toString()) + "\n";
+        toBeReturn+= Color.cyan("Goal State: ") + "\n";
+        toBeReturn+= Color.green(this.problem.getGoalState().toString()) + "\n";
+        return toBeReturn;
     }//end func
 
     public String toStringSummary(AStarSearch assmt, AStarSearch assmh, BreadthFirstSearch bfs){
@@ -269,19 +283,9 @@ class BreadthFirstSearch {
         return toBeReturn;
     }//end func
 
-    public String toStringInitAndGoalState(){
-        String toBeReturn = "";
-        toBeReturn+= Color.cyan("Initial State: ") + "\n";
-        toBeReturn+= Color.green(this.initialState.toString()) + "\n";
-        toBeReturn+= Color.cyan("Goal State: ") + "\n";
-        toBeReturn+= Color.green(this.goalState.toString()) + "\n";
-        return toBeReturn;
-    }//end func
-
     public String toStringSolution(){
         String toBeReturn = "";
         toBeReturn+= Color.header("BFS: Feedback") + "\n";
-        toBeReturn+= this.toStringInitAndGoalState();
         toBeReturn+= Color.cyan("Number or nodes visited: ") + Color.green(Integer.toString(this.exploredMap.size())) + "\n";
         toBeReturn+= Color.cyan("Number of moves for solution: ") + Color.green(Integer.toString(this.solutionState.listOfActions.size())) + "\n";
         toBeReturn+= Color.cyan("Time it took in seconds: ") + Color.green(Double.toString(this.time)) + "\n";
@@ -384,20 +388,10 @@ class AStarSearch{
         return toBeReturn;
     }//end func
 
-    public String toStringInitAndGoalState(){
-        String toBeReturn = "";
-        toBeReturn+= Color.cyan("Initial State: ") + "\n";
-        toBeReturn+= Color.green(this.initialState.toString()) + "\n";
-        toBeReturn+= Color.cyan("Goal State: ") + "\n";
-        toBeReturn+= Color.green(this.goalState.toString()) + "\n";
-        return toBeReturn;
-    }//end func
-
     public String toStringSolution(){
         String toBeReturn = "";
         String type = (isMissingTile == true) ? "AStar H1" : "AStar H2";
         toBeReturn+= Color.header(type + ": Feedback") + "\n";
-        toBeReturn+= this.toStringInitAndGoalState();
         toBeReturn+= Color.cyan("Number or nodes visited: ") + Color.green(Integer.toString(this.exploredMap.size())) + "\n";
         toBeReturn+= Color.cyan("Number of moves for solution: ") + Color.green(Integer.toString(this.solutionState.listOfActions.size())) + "\n";
         toBeReturn+= Color.cyan("Time it took in seconds: ") + Color.green(Double.toString(this.time)) + "\n";
