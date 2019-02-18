@@ -66,13 +66,18 @@ public class EightPuzzleSearchAgent {
      ***********************************************/
 
     public void showSolution() {
+        // for breadth first search
         BreathFirstSearch bfs = new BreathFirstSearch(this.problem);
         System.out.println(bfs.toStringBoardSteps());
         System.out.println(bfs.toStringSolution());
-
-        AStarSearch ass = new AStarSearch(this.problem);
-        System.out.println(ass.toStringBoardSteps());
-        System.out.println(ass.toStringSolution());
+        // for manhatten a star
+        AStarSearch assmh = new AStarSearch(this.problem, false);
+        System.out.println(assmh.toStringBoardSteps());
+        System.out.println(assmh.toStringSolution());
+        // for missing tile a star
+        AStarSearch assmt = new AStarSearch(this.problem, true);
+        System.out.println(assmt.toStringBoardSteps());
+        System.out.println(assmt.toStringSolution());
     }//end func
     
     public void printTree(Node<EightPuzzleBoard, EightPuzzleAction> node){
@@ -156,98 +161,6 @@ public class EightPuzzleSearchAgent {
             boardToReturn[x] = allBoard[x];    
         }//end for
         return boardToReturn;
-    }//end func
-
-    /***********************************************
-     * other unused functioins that may be helpful
-     ***********************************************/
-
-    public static boolean isBoardEqual(EightPuzzleBoard board1, EightPuzzleBoard board2){
-        // check if the same pointer
-        if(board1 == board2){
-            return true;
-        }//end if
-
-        // check if length is the same
-        if(board1.getBoardState().length != board2.getBoardState().length){
-            return false;
-        }//end if
-
-        // check if data is the same
-        for(int x=0; x<board1.getBoardState().length; x++){
-            if(board2.getBoardState()[x] != board2.getBoardState()[x]){
-                return false;
-            }//end if
-        }//end for
-        return true;
-    }//end func
-
-    public static boolean isPuzzleSolvable(int[][] matrix){
-		int count = 0;
-		List<Integer> array = new ArrayList<Integer>();
-        Integer[] anotherArray = new Integer[array.size()];
-		array.toArray(anotherArray);
-        
-        // add to the array for comparasion
-		for (int y = 0; y < matrix.length; y++) {
-			for (int x = 0; x < matrix.length; x++) {
-				array.add(matrix[y][x]);
-			}//end for
-		}//end for
-    
-        // check two array and compare
-		for (int y = 0; y < anotherArray.length - 1; y++) {
-			for (int x = y + 1; x < anotherArray.length; x++) {
-				if (anotherArray[y] != 0 && anotherArray[x] != 0 && anotherArray[y] > anotherArray[x]) {
-					count++;
-				}//end if
-			}//end for
-        }//end for
-        
-        // return
-		return count % 2 == 0;
-    }//end func
-    
-    public static int[][] getMatrix(int[] board){
-        // dec vars
-        int[][] matrix = new int[3][3];
-        int y = 0;
-        int x = 0;
-        boolean flag = false;
-
-        // assign to the board
-        for(int a=0; a<board.length; a++){
-            if(a % 3 == 0 && flag == true){
-                y++;
-                x = 0;
-            }//end if
-            flag = true;
-            matrix[x][y] = board[a];
-            x++;
-        }//end for
-        return matrix;
-    }//end func
-
-    public static void printMatrix(int[][] matrix){
-        for(int y=0; y<matrix.length; y++){
-            for(int x=0; x<matrix[y].length; x++){
-                System.out.print(Integer.toString(matrix[x][y]) + " ");
-            }//end for
-            System.out.println("");
-        }//end for
-    }//end func
-
-    public static void printAllBoard(int[] allBoard){
-        boolean flag = false;
-        // print whats on the board
-        for(int x=0; x<allBoard.length; x++){
-            if(x % 3 == 0 && flag == true){
-                System.out.println("");
-            }//end if
-            flag = true;
-            System.out.print(Integer.toString(allBoard[x]) + " ");
-        }//end for
-        System.out.println("\n");
     }//end func
 }//end classes
 
@@ -361,6 +274,7 @@ class BreathFirstSearch {
 }//end classes
 
 class AStarSearch{
+    private boolean isMissingTile = false;
     private double time = 0;
     private EightPuzzleBoard initialState;
     private EightPuzzleBoard goalState;
@@ -370,10 +284,12 @@ class AStarSearch{
     private Map<String, Boolean> exploredMap = new HashMap<>();
     private Map<Integer, Integer> depthMap = new HashMap<>();
     
-    AStarSearch(EightPuzzleProblem problem){
+    AStarSearch(EightPuzzleProblem problem, boolean isMissingTile){
         this.initialState = problem.getInitialState();
         this.goalState = problem.getGoalState();
-        this.initialState.setH(this.goalState.getBoardState());
+        this.isMissingTile = isMissingTile;
+        if(isMissingTile == false) this.initialState.setHForManHattan(this.goalState.getBoardState());
+        if(isMissingTile == true) this.initialState.setHForMissingTile(this.goalState.getBoardState());
         this.root = new Node<EightPuzzleBoard, EightPuzzleAction>(this.initialState);
         frontier.add(root);
         this.solve();
@@ -397,10 +313,17 @@ class AStarSearch{
             ExploreState exploreState = new ExploreState(currentState, currentAction);
 
             // set the manhattan h cost
-            exploreState.leftState.setH(this.goalState.getBoardState());
-            exploreState.rightState.setH(this.goalState.getBoardState());
-            exploreState.upState.setH(this.goalState.getBoardState());
-            exploreState.downState.setH(this.goalState.getBoardState());
+            if(isMissingTile == false){
+                exploreState.leftState.setHForManHattan(this.goalState.getBoardState());
+                exploreState.rightState.setHForManHattan(this.goalState.getBoardState());
+                exploreState.upState.setHForManHattan(this.goalState.getBoardState());
+                exploreState.downState.setHForManHattan(this.goalState.getBoardState());
+            }else if(isMissingTile == true){
+                exploreState.leftState.setHForMissingTile(this.goalState.getBoardState());
+                exploreState.rightState.setHForMissingTile(this.goalState.getBoardState());
+                exploreState.upState.setHForMissingTile(this.goalState.getBoardState());
+                exploreState.downState.setHForMissingTile(this.goalState.getBoardState());
+            }//end if
 
             // count the number of node in each depth
             if(currentState.listOfState.size() != 0){
@@ -438,9 +361,10 @@ class AStarSearch{
 
     public String toStringBoardSteps(){
         String toBeReturn = "";
-        toBeReturn+= Color.header("BFS: Steps for solution") + "\n";
+        String type = (isMissingTile == true) ? "AStar H1" : "AStar H2";
+        toBeReturn+= Color.header(type + ": Steps for solution") + "\n";
         toBeReturn+= Color.green(this.initialState.toString()) + "\n";
-        toBeReturn+= this.solutionState.toStringBoardActionsForManhattan();
+        toBeReturn+= this.solutionState.toStringBoardActionsForAStar();
         return toBeReturn;
     }//end func
 
@@ -455,7 +379,8 @@ class AStarSearch{
 
     public String toStringSolution(){
         String toBeReturn = "";
-        toBeReturn+= Color.header("BFS: Feedback") + "\n";
+        String type = (isMissingTile == true) ? "AStar H1" : "AStar H2";
+        toBeReturn+= Color.header(type + ": Feedback") + "\n";
         toBeReturn+= this.toStringInitAndGoalState();
         toBeReturn+= Color.cyan("Number or nodes visited: ") + Color.green(Integer.toString(this.exploredMap.size())) + "\n";
         toBeReturn+= Color.cyan("Number of moves for solution: ") + Color.green(Integer.toString(this.solutionState.listOfActions.size())) + "\n";

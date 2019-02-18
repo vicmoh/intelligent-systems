@@ -41,7 +41,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         initAction();
         findHole();
     }//end constructor
-
+    
     private void initAction(){
         this.left = new EightPuzzleAction(EightPuzzleAction.actions[0]);
         this.right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
@@ -61,11 +61,15 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         return this.getG() + this.getH();
     }//end func
 
-    public void setH(int[] goalState){
+    public void setHForManHattan(int[] goalState){
         this.h = manhattan(goalState);
     }//end func
 
-    int manhattan(int[] goalState) {
+    public void setHForMissingTile(int[] goalState){
+        this.h = missingTile(goalState);
+    }//end func
+
+    public int manhattan(int[] goalState) {
         int tempManhattan = 0;
         for (int x=0; x < this.boardState.length; x++) {
             for(int y=0; y < goalState.length; y++){
@@ -80,22 +84,32 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         return  tempManhattan;
     }//end func
 
+    public int missingTile(int[] goalState){
+        int result = 0;
+        for(int x=0; x<goalState.length; x++){
+            if(goalState[x] != this.boardState[x] ){
+                result++;
+            }//end if
+        }//end for
+        return result;
+    }//end func
+
     /***********************************************
      * custom functions
      ***********************************************/
 
-    public String toStringBoardActionsForManhattan(){
+    public String toStringBoardActionsForAStar(){
         String toBeReturn = "";
         EightPuzzleBoard lastBoard = this;
         int f = lastBoard.listOfActions.size();
         for(int x=0; x<this.listOfState.size(); x++){
             EightPuzzleBoard curBoard = this.listOfState.get(x);
-            EightPuzzleAction curAction = this.listOfActions.get(x);          
+            EightPuzzleAction curAction = this.listOfActions.get(x);         
             toBeReturn+= Color.CYAN + "Action: " + Color.RESET;
             toBeReturn+= Color.RED + curAction.getAction() + "\n" + Color.RESET;  
             toBeReturn+= Color.CYAN + "g = " + Color.RED + Integer.toString(curBoard.getG()) + Color.RESET + ", ";
-            toBeReturn+= Color.CYAN + "h = " + Color.RED + Integer.toString(f-curBoard.getG()) + Color.RESET + ", ";
-            toBeReturn+= Color.CYAN + "f = " + Color.RED + Integer.toString(f) + Color.RESET + "\n";
+            toBeReturn+= Color.CYAN + "h = " + Color.RED + Integer.toString(curBoard.getH()) + Color.RESET + ", ";
+            toBeReturn+= Color.CYAN + "f = " + Color.RED + Integer.toString(curBoard.getF()) + Color.RESET + "\n";
             toBeReturn+= Color.GREEN + curBoard.toString() + "\n" + Color.RESET;
         }//end for
         toBeReturn+= Color.CYAN + "g = " + Color.RED + Integer.toString(lastBoard.getG()) + Color.RESET + ", ";
