@@ -78,6 +78,8 @@ public class EightPuzzleSearchAgent {
         AStarSearch assmt = new AStarSearch(this.problem, true);
         System.out.println(assmt.toStringBoardSteps());
         System.out.println(assmt.toStringSolution());
+        // print summary
+        this.toStringSummary(assmt, assmh, bfs);
     }//end func
 
     public String toStringSummary(AStarSearch assmt, AStarSearch assmh, BreadthFirstSearch bfs){
