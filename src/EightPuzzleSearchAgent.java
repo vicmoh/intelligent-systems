@@ -67,7 +67,7 @@ public class EightPuzzleSearchAgent {
 
     public void showSolution() {
         // for breadth first search
-        BreathFirstSearch bfs = new BreathFirstSearch(this.problem);
+        BreadthFirstSearch bfs = new BreadthFirstSearch(this.problem);
         System.out.println(bfs.toStringBoardSteps());
         System.out.println(bfs.toStringSolution());
         // for manhatten a star
@@ -78,6 +78,20 @@ public class EightPuzzleSearchAgent {
         AStarSearch assmt = new AStarSearch(this.problem, true);
         System.out.println(assmt.toStringBoardSteps());
         System.out.println(assmt.toStringSolution());
+    }//end func
+
+    public String toStringSummary(AStarSearch aasmt, AStarSearch aasmh, BreadthFirstSearch bfs){
+        String toBeReturn = "";
+        toBeReturn+= "+------------+-------------+------------+------------+\n";
+        toBeReturn+= "|   Depth    | Search Cost |     Generated Nodes     |\n";
+        toBeReturn+= "|            |    A*(H1)   |    A*(H2   |     BFS    |\n";
+        toBeReturn+= "+------------+-------------+------------+------------+\n";
+        // this.depthMap.forEach((k,v) -> System.out.println("Depth "+ k +": " + v + " nodes"));
+        for(int x=0;x< bfs.depthMap.size(); x++){
+            
+        }//end for
+        toBeReturn+= "+------------+-------------+------------+------------+\n";
+        return toBeReturn;
     }//end func
     
     public void printTree(Node<EightPuzzleBoard, EightPuzzleAction> node){
@@ -164,23 +178,22 @@ public class EightPuzzleSearchAgent {
     }//end func
 }//end classes
 
-class BreathFirstSearch {
+class BreadthFirstSearch {
     private double time = 0;
     private EightPuzzleBoard initialState;
     private EightPuzzleBoard goalState;
     private EightPuzzleBoard solutionState;
-    private Node<EightPuzzleBoard, EightPuzzleAction> root;
-    private Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new LinkedList<>();
-    private Map<String, Boolean> exploredMap = new HashMap<>();
-    private Map<Integer, Integer> depthMap = new HashMap<>();
+    public Node<EightPuzzleBoard, EightPuzzleAction> root;
+    public Queue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new LinkedList<>();
+    public Map<String, Boolean> exploredMap = new HashMap<>();
+    public Map<Integer, Integer> depthMap = new HashMap<>();
     
-    BreathFirstSearch(EightPuzzleProblem problem){
+    BreadthFirstSearch(EightPuzzleProblem problem){
         this.initialState = problem.getInitialState();
         this.goalState = problem.getGoalState();
         this.root = new Node<EightPuzzleBoard, EightPuzzleAction>(this.initialState);
         frontier.add(root);
         this.solve();
-        this.toStringSummary();
     }//end constructor
 
     public void exploreNeighbour(EightPuzzleBoard neighbour){
@@ -260,17 +273,6 @@ class BreathFirstSearch {
         toBeReturn+= Color.cyan("Solution: ") + Color.red(this.solutionState.toStringActions()) + "\n";
         return toBeReturn;
     }//end func
-
-    public String toStringSummary(){
-        String toBeReturn = "";
-        toBeReturn+= "+------------+-------------+------------+------------+\n";
-        toBeReturn+= "|   Depth    | Search Cost |     Generated Nodes     |\n";
-        toBeReturn+= "|            |    A*(H1)   |    A*(H2   |     BFS    |\n";
-        toBeReturn+= "+------------+-------------+------------+------------+\n";
-        this.depthMap.forEach((k,v) -> System.out.println("Depth "+ k +": " + v + " nodes"));
-        toBeReturn+= "+------------+-------------+------------+------------+\n";
-        return toBeReturn;
-    }//end func
 }//end classes
 
 class AStarSearch{
@@ -279,10 +281,10 @@ class AStarSearch{
     private EightPuzzleBoard initialState;
     private EightPuzzleBoard goalState;
     private EightPuzzleBoard solutionState;
-    private Node<EightPuzzleBoard, EightPuzzleAction> root;
-    private PriorityQueue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new PriorityQueue<>(new CompareFCost());
-    private Map<String, Boolean> exploredMap = new HashMap<>();
-    private Map<Integer, Integer> depthMap = new HashMap<>();
+    public Node<EightPuzzleBoard, EightPuzzleAction> root;
+    public PriorityQueue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new PriorityQueue<>(new CompareFCost());
+    public Map<String, Boolean> exploredMap = new HashMap<>();
+    public Map<Integer, Integer> depthMap = new HashMap<>();
     
     AStarSearch(EightPuzzleProblem problem, boolean isMissingTile){
         this.initialState = problem.getInitialState();
@@ -293,7 +295,6 @@ class AStarSearch{
         this.root = new Node<EightPuzzleBoard, EightPuzzleAction>(this.initialState);
         frontier.add(root);
         this.solve();
-        this.toStringSummary();
     }//end constructor
 
     public void exploreNeighbour(EightPuzzleBoard neighbour){
@@ -386,17 +387,6 @@ class AStarSearch{
         toBeReturn+= Color.cyan("Number of moves for solution: ") + Color.green(Integer.toString(this.solutionState.listOfActions.size())) + "\n";
         toBeReturn+= Color.cyan("Time it took in seconds: ") + Color.green(Double.toString(this.time)) + "\n";
         toBeReturn+= Color.cyan("Solution: ") + Color.red(this.solutionState.toStringActions()) + "\n";
-        return toBeReturn;
-    }//end func
-
-    public String toStringSummary(){
-        String toBeReturn = "";
-        toBeReturn+= "+------------+-------------+------------+------------+\n";
-        toBeReturn+= "|   Depth    | Search Cost |     Generated Nodes     |\n";
-        toBeReturn+= "|            |    A*(H1)   |    A*(H2   |     BFS    |\n";
-        toBeReturn+= "+------------+-------------+------------+------------+\n";
-        this.depthMap.forEach((k,v) -> System.out.println("Depth "+ k +": " + v + " nodes"));
-        toBeReturn+= "+------------+-------------+------------+------------+\n";
         return toBeReturn;
     }//end func
 }//end classes
