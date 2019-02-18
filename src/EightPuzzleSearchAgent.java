@@ -7,7 +7,8 @@ import java.util.Queue;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.*;
-import java.io.*; // for reading a file
+import java.io.*; 
+// for reading a file
 // import java.util.Optional;
 // import java.util.*;
 
@@ -68,6 +69,10 @@ public class EightPuzzleSearchAgent {
         BreathFirstSearch bfs = new BreathFirstSearch(this.problem);
         System.out.println(bfs.toStringBoardSteps());
         System.out.println(bfs.toStringSolution());
+
+        AStarSearch ass = new AStarSearch(this.problem);
+        System.out.println(ass.toStringBoardSteps());
+        System.out.println(ass.toStringSolution());
     }//end func
     
     public void printTree(Node<EightPuzzleBoard, EightPuzzleAction> node){
@@ -361,33 +366,19 @@ class AStarSearch{
     private EightPuzzleBoard goalState;
     private EightPuzzleBoard solutionState;
     private Node<EightPuzzleBoard, EightPuzzleAction> root;
-    private PriorityQueue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new PriorityQueue<>();
+    private PriorityQueue<Node<EightPuzzleBoard, EightPuzzleAction>> frontier = new PriorityQueue<>(new CompareFCost());
     private Map<String, Boolean> exploredMap = new HashMap<>();
     private Map<Integer, Integer> depthMap = new HashMap<>();
     
     AStarSearch(EightPuzzleProblem problem){
         this.initialState = problem.getInitialState();
         this.goalState = problem.getGoalState();
+        this.initialState.setH(this.goalState.getBoardState());
         this.root = new Node<EightPuzzleBoard, EightPuzzleAction>(this.initialState);
         frontier.add(root);
+        this.solve();
+        this.toStringSummary();
     }//end constructor
-
-    Comparator<Node<EightPuzzleBoard, EightPuzzleAction>> priorityCompare = new Comparator<Node<EightPuzzleBoard, EightPuzzleAction>>() {
-        @Override
-        public int compare(Node<EightPuzzleBoard, EightPuzzleAction> o1, Node<EightPuzzleBoard, EightPuzzleAction> o2) {
-            return 0;
-        }//end func
-    };
-
-    public int manhattan() {
-        int  manhattanDistanceSum = 0;
-        int[] goal = this.goalState.getBoardState();
-        for (int i = 0; i < goal.length; i++){
-            if(goal[i] == i ) continue;
-            manhattanDistanceSum += (Math.abs(goal[i]/ 3 - i/ 3) + Math.abs(goal[i]% 3 - i% 3));
-        }//end for
-        return manhattanDistanceSum;
-    }//end fnuc
 
     public void exploreNeighbour(EightPuzzleBoard neighbour){
         if(!this.exploredMap.containsKey(neighbour.toString())){
@@ -404,6 +395,12 @@ class AStarSearch{
             EightPuzzleBoard currentState = currentNode.getState();
             EightPuzzleAction currentAction = currentNode.getAction();
             ExploreState exploreState = new ExploreState(currentState, currentAction);
+
+            // set the manhattan h cost
+            exploreState.leftState.setH(this.goalState.getBoardState());
+            exploreState.rightState.setH(this.goalState.getBoardState());
+            exploreState.upState.setH(this.goalState.getBoardState());
+            exploreState.downState.setH(this.goalState.getBoardState());
 
             // count the number of node in each depth
             if(currentState.listOfState.size() != 0){
@@ -435,7 +432,7 @@ class AStarSearch{
         return false;
     }//end func
 
-        /***********************************************
+    /***********************************************
      * toString function
      ***********************************************/
 
@@ -443,7 +440,7 @@ class AStarSearch{
         String toBeReturn = "";
         toBeReturn+= Color.header("BFS: Steps for solution") + "\n";
         toBeReturn+= Color.green(this.initialState.toString()) + "\n";
-        toBeReturn+= this.solutionState.toStringBoardActions();
+        toBeReturn+= this.solutionState.toStringBoardActionsForManhattan();
         return toBeReturn;
     }//end func
 
@@ -505,20 +502,33 @@ class ExploreState{
         leftState.move(leftAction);
         rightState.move(rightAction);
     }//end func
-
-    ExploreState(EightPuzzleBoard boardToExplore, EightPuzzleAction actionTaken, int h){
-        // set the different state
-        upState = new EightPuzzleBoard(boardToExplore, actionTaken, h);
-        downState = new EightPuzzleBoard(boardToExplore, actionTaken, h);
-        leftState = new EightPuzzleBoard(boardToExplore, actionTaken, h);
-        rightState = new EightPuzzleBoard(boardToExplore, actionTaken, h);
-        // set moves
-        upState.move(upAction);
-        downState.move(downAction);
-        leftState.move(leftAction);
-        rightState.move(rightAction);
-    }//end func
 }//end func
+
+class CompareFCost implements Comparator<Node<EightPuzzleBoard, EightPuzzleAction>>{
+    @Override
+    public int compare(Node<EightPuzzleBoard, EightPuzzleAction> o1, Node<EightPuzzleBoard, EightPuzzleAction> o2) {
+        return o1.getState().getF() - o2.getState().getF();
+    }//end func
+}//end class
+
+class ArrayConvertor {
+    static public int[] d2Tod1(int[][] array){
+        int[] newArray = new int[array.length*array[0].length];
+        for (int i = 0; i < array.length; ++i) 
+        for (int j = 0; j < array[i].length; ++j) {
+            newArray[i*array[0].length+j] = array[i][j];
+        }//end func
+        return newArray;
+    }//end func
+
+    static public int[][] d1Tod2(int[] array, int width){
+        int[][] newArray = new int[array.length/width][width];
+        for (int i = 0; i < array.length; ++i) {
+           newArray[i/width][i%width] = array[i];
+        }//end func
+        return newArray;
+    }//end func
+}//end class
 
 class Color{
     public static final String RESET = "\033[0m";  

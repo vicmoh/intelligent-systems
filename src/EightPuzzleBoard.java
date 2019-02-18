@@ -10,7 +10,6 @@ import java.util.List;
 public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPuzzleAction>{
     // the instance vars
     private int h = 0;
-    private int pathCost = 0;
     private int[] boardState;
     private EightPuzzleAction left;
     private EightPuzzleAction right;
@@ -43,17 +42,6 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         findHole();
     }//end constructor
 
-    public EightPuzzleBoard(EightPuzzleBoard parent, EightPuzzleAction actionTaken, int h){
-        if(parent == null) System.out.println("WARNING: EightPuzzleBoard(): parent = null");
-        this.listOfState = new ArrayList<>(parent.listOfState);
-        this.listOfActions = new ArrayList<>(parent.listOfActions);
-        this.boardState = parent.getBoardState();
-        this.actionTaken = actionTaken;
-        this.h = h;
-        initAction();
-        findHole();
-    }//end constructor
-
     private void initAction(){
         this.left = new EightPuzzleAction(EightPuzzleAction.actions[0]);
         this.right = new EightPuzzleAction(EightPuzzleAction.actions[1]);
@@ -62,18 +50,59 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
     }//end func
 
     public int getH(){
-        this.pathCost = this.listOfState.size() + this.h;
         return this.h;
     }//end func
     
     public int getG(){
-        this.pathCost = this.listOfState.size() + this.h;
         return this.listOfState.size();
+    }//end func
+
+    public int getF(){
+        return this.getG() + this.getH();
+    }//end func
+
+    public void setH(int[] goalState){
+        this.h = manhattan(goalState);
+    }//end func
+
+    int manhattan(int[] goalState) {
+        int tempManhattan = 0;
+        for (int x=0; x < this.boardState.length; x++) {
+            for(int y=0; y < goalState.length; y++){
+                if(this.boardState[x] != goalState[y]) continue;
+                int prevRow = (int)(x/3);
+                int prevCol = x%3;
+                int goalRow = (int)(y/3);
+                int goalCol = y%3;
+                tempManhattan += Math.abs(prevRow-goalRow) + Math.abs(prevCol - goalCol);
+            }//end for
+        }//end for
+        return  tempManhattan;
     }//end func
 
     /***********************************************
      * custom functions
      ***********************************************/
+
+    public String toStringBoardActionsForManhattan(){
+        String toBeReturn = "";
+        EightPuzzleBoard lastBoard = this;
+        int f = lastBoard.listOfActions.size();
+        for(int x=0; x<this.listOfState.size(); x++){
+            EightPuzzleBoard curBoard = this.listOfState.get(x);
+            EightPuzzleAction curAction = this.listOfActions.get(x);          
+            toBeReturn+= Color.CYAN + "Action: " + Color.RESET;
+            toBeReturn+= Color.RED + curAction.getAction() + "\n" + Color.RESET;  
+            toBeReturn+= Color.CYAN + "g = " + Color.RED + Integer.toString(curBoard.getG()) + Color.RESET + ", ";
+            toBeReturn+= Color.CYAN + "h = " + Color.RED + Integer.toString(f-curBoard.getG()) + Color.RESET + ", ";
+            toBeReturn+= Color.CYAN + "f = " + Color.RED + Integer.toString(f) + Color.RESET + "\n";
+            toBeReturn+= Color.GREEN + curBoard.toString() + "\n" + Color.RESET;
+        }//end for
+        toBeReturn+= Color.CYAN + "g = " + Color.RED + Integer.toString(lastBoard.getG()) + Color.RESET + ", ";
+        toBeReturn+= Color.CYAN + "h = " + Color.RED + Integer.toString(lastBoard.getH()) + Color.RESET + ", ";
+        toBeReturn+= Color.CYAN + "f = " + Color.RED + Integer.toString(lastBoard.getF()) + Color.RESET + "\n";
+        return toBeReturn;
+    }//end func
 
     public String toStringBoardActions(){
         String toBeReturn = "";
