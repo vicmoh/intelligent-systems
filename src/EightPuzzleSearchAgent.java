@@ -54,7 +54,11 @@ public class EightPuzzleSearchAgent {
         // show the solution for the problem from the file
         EightPuzzleSearchAgent puzzAgentFromFile = new EightPuzzleSearchAgent(problemFromFile);
         Color.yellow("\nSolving...");
-        puzzAgentFromFile.showSolution();
+        try{
+            puzzAgentFromFile.showSolution();
+        }catch(Exception e){
+            System.out.println(Color.red("There are no solution for this board!"));
+        }//end try
     }//end func
 
     public EightPuzzleSearchAgent(EightPuzzleProblem aProblem) {
