@@ -38,6 +38,7 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
         this.listOfActions = new ArrayList<>(parent.listOfActions);
         this.boardState = parent.getBoardState();
         this.actionTaken = actionTaken;
+        this.h = parent.h;
         initAction();
         findHole();
     }//end constructor
