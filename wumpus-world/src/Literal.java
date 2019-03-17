@@ -33,15 +33,15 @@ public class Literal {
         this.sign = (this.symbolSign.equals("+")) ? true : false;
     }//end constructor
    
-    Symbol getSymbol(){
+    public Symbol getSymbol(){
         return this.symbol;
     }//end func
 
-    String getSymbolSign(){
+    public String getSymbolSign(){
         return this.symbolSign;
     }//end func
 
-    boolean getSign(){
+    public boolean getSign(){
         return this.sign;
     }//end func
 

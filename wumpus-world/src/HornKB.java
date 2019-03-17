@@ -14,6 +14,10 @@ public class HornKB {
     this.knowledgeBase = kb;
   }//end consrtuctor
 
+  public ArrayList<HornClause> getKB(){
+    return this.knowledgeBase;
+  }//end func
+
   /**
    * plFcEntail method - It is an implementation of Forward chaining algorithm
    * function PL-FC-ENTAILS?(KB, q) returns true or false inputs: KB, the

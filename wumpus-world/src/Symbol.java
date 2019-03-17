@@ -11,7 +11,7 @@ public class Symbol {
         this.symbol = proposition;    
     }//end constructor
     
-    String getSymbol(){
+    public String getSymbol(){
         return this.symbol;
     }//end func
 

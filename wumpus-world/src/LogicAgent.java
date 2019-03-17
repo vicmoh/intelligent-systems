@@ -82,12 +82,15 @@ public class LogicAgent {
             try{
                 line = br.readLine();
                 if(line == null) break;
+                HornClause hc = new HornClause(line);
+                
                 this.hornKBFile.add(line);
                 Helper.debug(line);
             }catch(Exception err){
                 closeFile(br);
             }//end try
         }while(line != null);
+        closeFile(br);
     }// end func
 
     public void closeFile(BufferedReader br){

@@ -16,6 +16,38 @@ public class HornClause {
         head = new Literal();
     }// end constructor
 
+    public HornClause(String line){
+        String strBuff = "";
+        boolean foundStart = false;
+        for(int x=0; x<line.length; x++){
+            char charBuff = line.charAt(x);
+            
+            // get the first part
+            if(charBuff == '+' || charBuff == '-'){
+                foundStart = true;
+                strBuff+= Character.toString(charBuff);
+                x++;
+                continue;
+            }//end if
+
+            // case where literal is not the last
+            if(line.charAt(x+1) != ' '){
+                strBuff+= Character.toString(charBuff);
+                continue;
+            }else{
+                Helper.debug("HornClause(): adding '"+strBuff.toString()+"'");
+                this.body.add(new Literal(strBuff));
+            }//end else
+
+            // case for the end of the line
+            if(x != line.length()-1 && Character.isDigit(charBuff)){
+                Helper.debug("HornClause(): adding '"+strBuff.toString()+"'");
+                this.body.add(new Literal(strBuff));
+                break;   
+            }//end if
+        }//end for
+    }//end func
+
     public ArrayList<Literal> getBody() {
         return body;
     }// class func
@@ -39,4 +71,14 @@ public class HornClause {
     public void setWithHead(boolean withHead) {
         this.withHead = withHead;
     }// end func
+
+    @Override
+    public String toString() {
+        String toBeReturn = "";
+        for(int x=0; x<this.body.size(); x++){
+            Literal lit = this.body.get(x);
+            toBeReturn+= (x != this.size()-1) ? lit.toString() + " " : lit.toString();
+        }//end for
+        return toBeReturn;
+    }
 }// end class
