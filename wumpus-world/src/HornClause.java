@@ -16,37 +16,40 @@ public class HornClause {
         head = new Literal();
     }// end constructor
 
-    public HornClause(String line){
+    public HornClause(String line) {
+        // init the instances
+        withHead = false; // start with false; once populate with head then set to true
+        body = new ArrayList<Literal>();
+        head = new Literal();
+
+        // parse the line
         String strBuff = "";
-        boolean foundStart = false;
-        for(int x=0; x<line.length; x++){
+        for (int x = 0; x < line.length(); x++) {
             char charBuff = line.charAt(x);
-            
+
             // get the first part
-            if(charBuff == '+' || charBuff == '-'){
-                foundStart = true;
-                strBuff+= Character.toString(charBuff);
+            if (charBuff == '+' || charBuff == '-') {
+                strBuff += Character.toString(charBuff) + " ";
                 x++;
                 continue;
-            }//end if
-
-            // case where literal is not the last
-            if(line.charAt(x+1) != ' '){
-                strBuff+= Character.toString(charBuff);
-                continue;
-            }else{
-                Helper.debug("HornClause(): adding '"+strBuff.toString()+"'");
-                this.body.add(new Literal(strBuff));
-            }//end else
+            } // end if
 
             // case for the end of the line
-            if(x != line.length()-1 && Character.isDigit(charBuff)){
-                Helper.debug("HornClause(): adding '"+strBuff.toString()+"'");
+            if (x == line.length() - 1 && Character.isDigit(charBuff)) {
+                strBuff += Character.toString(charBuff);
                 this.body.add(new Literal(strBuff));
-                break;   
-            }//end if
-        }//end for
-    }//end func
+                break;
+            } // end if
+
+            // case where literal is not the last
+            if (line.charAt(x) != ' ') {
+                strBuff += Character.toString(charBuff);
+            } else {
+                this.body.add(new Literal(strBuff));
+                strBuff = "";
+            } // end else
+        } // end for
+    }// end func
 
     public ArrayList<Literal> getBody() {
         return body;
@@ -75,10 +78,10 @@ public class HornClause {
     @Override
     public String toString() {
         String toBeReturn = "";
-        for(int x=0; x<this.body.size(); x++){
+        for (int x = 0; x < this.body.size(); x++) {
             Literal lit = this.body.get(x);
-            toBeReturn+= (x != this.size()-1) ? lit.toString() + " " : lit.toString();
-        }//end for
+            toBeReturn += (x != this.body.size() - 1) ? lit.toString() + " " : lit.toString();
+        } // end for
         return toBeReturn;
     }
 }// end class

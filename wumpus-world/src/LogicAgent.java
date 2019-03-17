@@ -17,8 +17,8 @@ public class LogicAgent {
         // assign the file name
         String hornKBFileName = args[0]; // HornKB.txt
         String queryFileName = args[1]; // Query1.txt
-        Helper.debug("main(): hornKBfile = " + hornKBFileName);
-        Helper.debug("main(): queryFileName = " + queryFileName);
+        Helper.debug("main(): ", "hornKBfile = " + hornKBFileName);
+        Helper.debug("main(): ", "queryFileName = " + queryFileName);
         
         // read the horn file
         LogicAgent agent = new LogicAgent();
@@ -77,15 +77,19 @@ public class LogicAgent {
         
         // loop and read each file
         String line = null;
-        Helper.debug("Reading file...");
+        Helper.debug("LoadKB(): ", "Reading file...");
         do{
             try{
+                // get the line
                 line = br.readLine();
                 if(line == null) break;
-                HornClause hc = new HornClause(line);
                 
+                // create a horn clause
+                HornClause hc = new HornClause(line);
+                Helper.debug("loadKB(): ", "hc = " + hc.toString());
+
+                // add line to the file
                 this.hornKBFile.add(line);
-                Helper.debug(line);
             }catch(Exception err){
                 closeFile(br);
             }//end try
@@ -123,8 +127,8 @@ class Helper{
     public static final String CYAN = "\033[0;36m";    // CYAN
     public static final String WHITE = "\033[0;37m";   // WHITE
 
-    public static void debug(String toBePrinted){
-        System.out.println(PURPLE + toBePrinted + RESET);
+    public static void debug(String func, String toBePrinted){
+        System.out.println(YELLOW + func + PURPLE + toBePrinted + RESET);
     }//end func
     
     public static void error(String toBePrinted){

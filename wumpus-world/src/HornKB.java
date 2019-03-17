@@ -10,6 +10,10 @@ public class HornKB {
 
   private ArrayList<HornClause> knowledgeBase; // Knowledge base consists of horn clauses.
 
+  HornKB(){
+    this.knowledgeBase = new ArrayList<HornClause>();
+  }//end constructor
+
   HornKB(ArrayList<HornClause> kb){
     this.knowledgeBase = kb;
   }//end consrtuctor
@@ -37,7 +41,7 @@ public class HornKB {
    * @author Vicky Mohammad
    */
   public boolean plFcEntail(Literal q) {
-    Helper.debug("plFcEntail(): q = " + q.toString());
+    Helper.debug("plFcEntail(): ", "q = " + q.toString());
     return false;
   }//end func
 }//end class

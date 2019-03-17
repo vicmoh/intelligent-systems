@@ -45,7 +45,7 @@ public class Literal {
         return this.sign;
     }//end func
 
-    @Override @Override
+    @Override
     public String toString() {
         return symbolSign + " " + this.symbol.toString();
     }//end func
