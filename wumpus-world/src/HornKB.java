@@ -10,6 +10,10 @@ public class HornKB {
 
   private ArrayList<HornClause> knowledgeBase; // Knowledge base consists of horn clauses.
 
+  HornKB(ArrayList<HornClause> kb){
+    this.knowledgeBase = kb;
+  }//end consrtuctor
+
   /**
    * plFcEntail method - It is an implementation of Forward chaining algorithm
    * function PL-FC-ENTAILS?(KB, q) returns true or false inputs: KB, the
@@ -29,6 +33,7 @@ public class HornKB {
    * @author Vicky Mohammad
    */
   public boolean plFcEntail(Literal q) {
+    Helper.debug("plFcEntail(): q = " + q.toString());
     return false;
   }//end func
 }//end class

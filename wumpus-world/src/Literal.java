@@ -23,6 +23,16 @@ public class Literal {
         this.sign = sign;
     }//end constructor
 
+    /**
+     * @param literalString of the whole literal
+     */
+    Literal(String literalString){
+        String[] strings = literalString.split(" ");
+        this.symbolSign = strings[0];
+        this.symbol = new Symbol(strings[1]);
+        this.sign = (this.symbolSign.equals("+")) ? true : false;
+    }//end constructor
+   
     Symbol getSymbol(){
         return this.symbol;
     }//end func
@@ -33,5 +43,10 @@ public class Literal {
 
     boolean getSign(){
         return this.sign;
+    }//end func
+
+    @Override @Override
+    public String toString() {
+        return symbolSign + " " + this.symbol.toString();
     }//end func
 }// end class
