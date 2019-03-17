@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 /**
  * Horn clause class.
@@ -24,6 +25,7 @@ public class HornClause {
 
         // parse the line
         String strBuff = "";
+        ArrayList<Literal> tempLit = new ArrayList<Literal>();
         for (int x = 0; x < line.length(); x++) {
             char charBuff = line.charAt(x);
 
@@ -37,7 +39,7 @@ public class HornClause {
             // case for the end of the line
             if (x == line.length() - 1 && Character.isDigit(charBuff)) {
                 strBuff += Character.toString(charBuff);
-                this.body.add(new Literal(strBuff));
+                tempLit.add(new Literal(strBuff));
                 break;
             } // end if
 
@@ -45,10 +47,19 @@ public class HornClause {
             if (line.charAt(x) != ' ') {
                 strBuff += Character.toString(charBuff);
             } else {
-                this.body.add(new Literal(strBuff));
+                tempLit.add(new Literal(strBuff));
                 strBuff = "";
             } // end else
         } // end for
+
+        // added to the instance
+        this.head = tempLit.get(tempLit.size()-1);
+        this.withHead = true;
+        if(tempLit.size() > 1){
+            for(int x=0; x<tempLit.size()-1; x++){
+                this.body.add(tempLit.get((x)));
+            }//end for
+        }//end if
     }// end func
 
     public ArrayList<Literal> getBody() {
@@ -80,8 +91,9 @@ public class HornClause {
         String toBeReturn = "";
         for (int x = 0; x < this.body.size(); x++) {
             Literal lit = this.body.get(x);
-            toBeReturn += (x != this.body.size() - 1) ? lit.toString() + " " : lit.toString();
+            toBeReturn += lit.toString() + " ";
         } // end for
+        toBeReturn += this.head.toString();
         return toBeReturn;
-    }
+    }//end func
 }// end class
