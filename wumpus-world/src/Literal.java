@@ -8,6 +8,10 @@ public class Literal {
     private String symbolSign; // a sign of proposition symbol + or -
     private boolean sign; // Every symbol must have a sign. It is a negative or positive sign.
 
+    Literal(){
+        // empty literal
+    }//end constructor
+
     /**
      * @param symbol a propositon symbol
      * @param symbolSign a sign of proposition symbol + or -
