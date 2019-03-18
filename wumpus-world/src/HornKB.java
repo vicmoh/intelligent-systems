@@ -92,10 +92,10 @@ public class HornKB {
               // get the number of premise
               Integer numOfPremise = count.get(clause);
               // check if its null and check clause exist in the map
-              if (numOfPremise != null) {
+              if (!(numOfPremise == null)) {
                 numOfPremise = numOfPremise - 1;
                 count.put(clause, numOfPremise);
-
+                /// when num of premise is 0 inferred and print
                 if (numOfPremise == 0) {
                   // added to the agenda
                   this.agenda.add(clause.getHead());
