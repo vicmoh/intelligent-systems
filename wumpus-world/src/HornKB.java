@@ -1,5 +1,7 @@
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -9,8 +11,10 @@ import java.util.Stack;
  */
 public class HornKB {
   private ArrayList<HornClause> knowledgeBase; // Knowledge base consists of horn clauses.
-  private ArrayList<HornClause> agenda = new ArrayList<HornClause>();
+  private Stack<Literal> agenda = new Stack<Literal>();
   private HashMap<String, Boolean> inferred = new HashMap<String, Boolean>();
+  private HashMap<HornClause, Integer> count = new HashMap<HornClause, Integer>();
+  private HashMap<String, ArrayList<HornClause>> premise = new HashMap<String, ArrayList<HornClause>>();
 
   HornKB() {
     this.knowledgeBase = new ArrayList<HornClause>();
@@ -48,50 +52,63 @@ public class HornKB {
    */
   public boolean plFcEntail(Literal q) {
     Helper.debug("plFcEntail(): ", "q = " + q.toString());
-    // set up the agenda to start of
-    for (int x = 0; x < this.knowledgeBase.size(); x++) {
-      if (this.knowledgeBase.get(x).getHead().equals(q)) {
-        this.agenda.add(this.knowledgeBase.get(x));
-      } // end if
-    } // end for
 
-    // search for answer
-    int next = 0;
-    Helper.debug("plFcEntail(): ", "this.agenda.size() = " + Integer.toString(this.agenda.size()));
-    while (this.agenda.size()-1 == next) {
-      HornClause cur = this.agenda.get(next);
-      System.out.println(Helper.cyan(cur.getHead().getSymbolString()));
-      Helper.debug("*** ", cur.getHead().getSymbolString());
-      if (cur.getHead().equals(q))
-        return true;
-
-      // go through the body
-      for (int x = 0; x<cur.getBody().size(); x++) {
-        Literal lit = cur.getBody().get(x);
-        if (this.inferred.containsKey(lit.getSymbolString()))
-          continue;
-        this.inferred.put(lit.toString(), true);
-        
-        // check for the answer
-        if(cur.getBody().size() == 1){
-          Helper.debug("*** ", cur.getBody().get(0).getSymbolString());
-          if(cur.getBody().get(0).equals(q)) return true;
-        }//end if
-        
-        /// add inferred
-        for(int y=0; y<this.knowledgeBase.size(); y++){
-          if(this.knowledgeBase.get(y).getHead().equals(lit)){
-            this.agenda.add(this.knowledgeBase.get(y));
-          }//end if
-        }//end for
-      } // end for
-      next++;
-    } // end while
-
-    // print
-    for(int x=0; x<this.agenda.size(); x++){
-      System.out.println(Helper.cyan( this.agenda.get(x).getHead().getSymbolString()));
+    // find all knowledge head clause that is to be true
+    for(int x=0; x<this.knowledgeBase.size(); x++){
+      HornClause hc = this.knowledgeBase.get(x);
+      // inferred the head 
+      if(hc.getBody().isEmpty()) this.agenda.push(hc.getHead());
+      this.inferred.put(hc.getHead().getSymbolString(), false);
+      // set count
+      this.count.put(hc, hc.getBody().size());
+      // set the primse
+      this.premise.put(hc.getHead().getSymbolString(), this.knowledgeBase);
+      // inferred the body
+      for(int y=0; y<hc.getBody().size(); y++){
+        this.inferred.put(hc.getBody().get(y).getSymbolString(), false);
+      }
     }
+    
+    while(!this.agenda.isEmpty()){
+      Literal lit = agenda.pop();
+
+      Helper.debug("plFcEntail(): ", "lit = " + lit.getSymbolString());
+
+      // check if it finds the clause
+      if(lit.equals(q)){
+        return true;
+      }//end if
+
+      if(!this.inferred.get(lit.getSymbolString())){
+        Helper.debug("plFcEntail(): ", "debug = " + Helper.cyan(lit.getSymbolString()));
+        // add to the infereed
+        inferred.put(lit.getSymbolString(), true);
+        // find all the premise
+        if(this.premise.get(lit.getSymbolString()) != null){
+          // go through the premise
+          this.premise.get(lit.getSymbolString()).forEach(clause -> {
+            Integer numOfPremise = count.get(clause);
+            
+            if(numOfPremise != null){
+              numOfPremise = numOfPremise - 1;
+              count.put(clause, numOfPremise);
+              
+              if(numOfPremise == 0){
+                // added to the agenda
+                this.agenda.add(clause.getHead());
+                // print inferred
+                System.out.println(
+                  Helper.yellow("Symbol: ") + 
+                  Helper.red(clause.getHead().toString()) + 
+                  Helper.yellow(" is inferred")
+                );
+              }
+            }
+          });
+        }//end if
+      }//end if
+    }//end while
+
     return false;
   }// end func
 }// end class
