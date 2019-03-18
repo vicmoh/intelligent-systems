@@ -19,10 +19,12 @@ public class LogicAgent {
         String queryFileName = args[1]; // Query1.txt
         Helper.debug("main(): ", "hornKBfile = " + hornKBFileName);
         Helper.debug("main(): ", "queryFileName = " + queryFileName);
-        
+
         // read the horn file
         LogicAgent agent = new LogicAgent();
         agent.loadKB(hornKBFileName);
+        String query = agent.getQueryClause(queryFileName);
+        Helper.debug("main(): ", "query: " + query);
     }// main function to run the program
 
     public HornKB getKnowledgeBase() {
@@ -42,11 +44,11 @@ public class LogicAgent {
     }// end func
 
     /**
-     * tell method adds the horn clause into the knowledge
+     * tell method adds the horn clause into the knowledge, add clause to KB
      */
     public void tell(HornClause clause) {
-        // add clause to KB
-    }//end func
+        this.knowledgeBase.getKB().add(clause);
+    }// end func
 
     /**
      * ask method check the entailment for the argument horn clause.
@@ -54,12 +56,24 @@ public class LogicAgent {
      * @return true or false true if it can be entailed false otherwise
      */
     public boolean ask(HornClause clause) {
+        /// solve the entailment
+
         return false;
     }// end func
 
     // Load query from file.
     public String getQueryClause(String file) {
-        return null;
+        String fileName = file;
+        BufferedReader br = null;
+        String toBeReturn = null;
+        try {
+            br = new BufferedReader(new FileReader(fileName));
+            toBeReturn = br.readLine();
+        } catch (Exception err) {
+            Helper.error("getQueryClause(): Unable to get query: " + err.toString());
+        } // end try 
+        closeFile(br);
+        return toBeReturn;
     }// end func
 
     // Load KB file to Knowledgebase.
@@ -67,47 +81,48 @@ public class LogicAgent {
         // set the file
         String fileName = file;
         BufferedReader br = null;
-        try{
+        try {
             br = new BufferedReader(new FileReader(fileName));
-        }catch(Exception err){
+        } catch (Exception err) {
             Helper.error("LoadKB(): Unable to readfile.");
             Helper.error(err.toString());
             closeFile(br);
-        }//end try
-        
+        } // end try
+
         // loop and read each file
         String line = null;
         Helper.debug("LoadKB(): ", "Reading file...");
-        do{
-            try{
+        do {
+            try {
                 // get the line
                 line = br.readLine();
-                if(line == null) break;
-                
+                if (line == null)
+                    break;
+
                 // create a horn clause
                 HornClause hc = new HornClause(line);
-                Helper.debug("loadKB(): ", "hc = " + hc.toString());
+                Helper.debug("loadKB(): ", "hc: " + hc.toString());
 
                 // add line to the file
                 this.hornKBFile.add(line);
-            }catch(Exception err){
+            } catch (Exception err) {
                 closeFile(br);
-            }//end try
-        }while(line != null);
+            } // end try
+        } while (line != null);
         closeFile(br);
     }// end func
 
-    public void closeFile(BufferedReader br){
-        try{
+    public void closeFile(BufferedReader br) {
+        try {
             br.close();
-        }catch(Exception brErr){
+        } catch (Exception brErr) {
             System.out.println("closeFile(): failed to close file: " + brErr.toString());
-        }//end catch
-    }//end func
-}//end class
+        } // end catch
+    }// end func
+}// end class
 
-class Helper{
-    public static final String RESET = "\033[0m";  
+class Helper {
+    public static final String RESET = "\033[0m";
     // background colors
     public static final String BLACK_BG = "\u001B[40m";
     public static final String RED_BG = "\u001B[41m";
@@ -118,40 +133,40 @@ class Helper{
     public static final String CYAN_BG = "\u001B[46m";
     public static final String WHITE_BG = "\u001B[47m";
     // Regular Colors
-    public static final String BLACK = "\033[0;30m";   // BLACK
-    public static final String RED = "\033[0;31m";     // RED
-    public static final String GREEN = "\033[0;32m";   // GREEN
-    public static final String YELLOW = "\033[0;33m";  // YELLOW
-    public static final String BLUE = "\033[0;34m";    // BLUE
-    public static final String PURPLE = "\033[0;35m";  // PURPLE
-    public static final String CYAN = "\033[0;36m";    // CYAN
-    public static final String WHITE = "\033[0;37m";   // WHITE
+    public static final String BLACK = "\033[0;30m"; // BLACK
+    public static final String RED = "\033[0;31m"; // RED
+    public static final String GREEN = "\033[0;32m"; // GREEN
+    public static final String YELLOW = "\033[0;33m"; // YELLOW
+    public static final String BLUE = "\033[0;34m"; // BLUE
+    public static final String PURPLE = "\033[0;35m"; // PURPLE
+    public static final String CYAN = "\033[0;36m"; // CYAN
+    public static final String WHITE = "\033[0;37m"; // WHITE
 
-    public static void debug(String func, String toBePrinted){
+    public static void debug(String func, String toBePrinted) {
         System.out.println(YELLOW + func + PURPLE + toBePrinted + RESET);
-    }//end func
-    
-    public static void error(String toBePrinted){
+    }// end func
+
+    public static void error(String toBePrinted) {
         System.out.println(RED + "Try Catch: " + PURPLE + toBePrinted + RESET);
-    }//end func
+    }// end func
 
-    public static String cyan(String string){
+    public static String cyan(String string) {
         return CYAN + string + RESET;
-    }//end func
+    }// end func
 
-    public static String yellow(String string){
+    public static String yellow(String string) {
         return YELLOW + string + RESET;
-    }//end func
-    
-    public static String green(String string){
+    }// end func
+
+    public static String green(String string) {
         return GREEN + string + RESET;
-    }//end func
+    }// end func
 
-    public static String red(String string){
+    public static String red(String string) {
         return RED + string + RESET;
-    }//end func
+    }// end func
 
-    public static String header(String string){
+    public static String header(String string) {
         return Helper.yellow("----------<<<( " + string + " )>>>----------");
-    }//end func
-}//end func
+    }// end func
+}// end func
