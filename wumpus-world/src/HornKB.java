@@ -24,9 +24,9 @@ public class HornKB {
     this.knowledgeBase = kb;
   }// end consrtuctor
 
-  public void addKnowledge(HornClause toBeAdded){
+  public void addKnowledge(HornClause toBeAdded) {
     this.knowledgeBase.add(toBeAdded);
-  }//end func
+  }// end func
 
   public ArrayList<HornClause> getKB() {
     return this.knowledgeBase;
@@ -54,60 +54,61 @@ public class HornKB {
     Helper.debug("plFcEntail(): ", "q = " + q.toString());
 
     // find all knowledge head clause that is to be true
-    for(int x=0; x<this.knowledgeBase.size(); x++){
+    for (int x = 0; x < this.knowledgeBase.size(); x++) {
       HornClause hc = this.knowledgeBase.get(x);
-      // inferred the head 
-      if(hc.getBody().isEmpty()) this.agenda.push(hc.getHead());
+      // inferred the head
+      if (hc.getBody().isEmpty())
+        this.agenda.push(hc.getHead());
       this.inferred.put(hc.getHead().getSymbolString(), false);
       // set count
       this.count.put(hc, hc.getBody().size());
       // set the primse
       this.premise.put(hc.getHead().getSymbolString(), this.knowledgeBase);
       // inferred the body
-      for(int y=0; y<hc.getBody().size(); y++){
+      for (int y = 0; y < hc.getBody().size(); y++) {
         this.inferred.put(hc.getBody().get(y).getSymbolString(), false);
-      }
-    }
-    
-    while(!this.agenda.isEmpty()){
-      Literal lit = agenda.pop();
+      }//end for
+    }//end for
 
+    while (!this.agenda.isEmpty()) {
+      Literal lit = agenda.pop();
       Helper.debug("plFcEntail(): ", "lit = " + lit.getSymbolString());
 
       // check if it finds the clause
-      if(lit.equals(q)){
+      if (lit.equals(q)) {
         return true;
-      }//end if
+      } // end if
 
-      if(!this.inferred.get(lit.getSymbolString())){
+      // search for inferred
+      if (!this.inferred.get(lit.getSymbolString())) {
         Helper.debug("plFcEntail(): ", "debug = " + Helper.cyan(lit.getSymbolString()));
         // add to the infereed
         inferred.put(lit.getSymbolString(), true);
         // find all the premise
-        if(this.premise.get(lit.getSymbolString()) != null){
+        if (this.premise.get(lit.getSymbolString()) != null) {
           // go through the premise
           this.premise.get(lit.getSymbolString()).forEach(clause -> {
-            Integer numOfPremise = count.get(clause);
-            
-            if(numOfPremise != null){
-              numOfPremise = numOfPremise - 1;
-              count.put(clause, numOfPremise);
-              
-              if(numOfPremise == 0){
-                // added to the agenda
-                this.agenda.add(clause.getHead());
-                // print inferred
-                System.out.println(
-                  Helper.yellow("Symbol: ") + 
-                  Helper.red(clause.getHead().toString()) + 
-                  Helper.yellow(" is inferred")
-                );
-              }
-            }
+            if (clause.getBody().contains(lit)) {
+              // get the number of premise
+              Integer numOfPremise = count.get(clause);
+              // check if its null and check clause exist in the map
+              if (numOfPremise != null) {
+                numOfPremise = numOfPremise - 1;
+                count.put(clause, numOfPremise);
+
+                if (numOfPremise == 0) {
+                  // added to the agenda
+                  this.agenda.add(clause.getHead());
+                  // print inferred
+                  System.out.println(Helper.yellow("Symbol: ") + Helper.red(clause.getHead().toString())
+                      + Helper.yellow(" is inferred"));
+                }//end for
+              }//end if
+            }//end if
           });
-        }//end if
-      }//end if
-    }//end while
+        } // end if
+      } // end if
+    } // end while
 
     return false;
   }// end func
