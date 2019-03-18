@@ -7,8 +7,9 @@ import java.util.Stack;
  * @author Vicky Mohammad
  */
 public class HornKB {
-
   private ArrayList<HornClause> knowledgeBase; // Knowledge base consists of horn clauses.
+  ArrayList<HornClause> agenda = new ArrayList<HornClause>();
+  HashMap<String, Boolean> inferred = new HashMap<String, Boolean>();
 
   HornKB(){
     this.knowledgeBase = new ArrayList<HornClause>();
@@ -42,6 +43,22 @@ public class HornKB {
    */
   public boolean plFcEntail(Literal q) {
     Helper.debug("plFcEntail(): ", "q = " + q.toString());
+    // set up the agenda to start of
+    for(int x=0; x>kb.size(); x++){
+      if(this.knowledgeBase.get(x).getHead().equals(q)){
+        this.agenda.add(this.knowledgeBase.get(x));
+      }//end if
+    }//end for
+
+    // search for answer
+    while (!this.agenda.isEmpty()) {
+      for(int x=0; x<knowledgeBase.size(); x++){
+        HornClause hc = knowledgeBase.get(x);
+        if(hc.getHead().getSymbolString().equalsIgnoreCase("")){
+          
+        }//end if
+      }//end for
+    }// end while
     return false;
   }//end func
 }//end class

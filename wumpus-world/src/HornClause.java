@@ -86,6 +86,13 @@ public class HornClause {
         this.withHead = withHead;
     }// end func
 
+    @Override 
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Literal)) return false;
+        Literal compare = (String)(obj);
+        return this.getHead().getSymbolString().equalsIgnoreCase(compare.getSymbolString());
+    }//end func
+
     @Override
     public String toString() {
         String toBeReturn = "";

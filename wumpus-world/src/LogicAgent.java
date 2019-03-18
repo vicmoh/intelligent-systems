@@ -12,8 +12,6 @@ public class LogicAgent {
     String query = null;
     HornKB knowledgeBase = HornKB();
     ArrayList<String> hornKBFile = new ArrayList<String>();
-    ArrayList<Literal> agenda = new ArrayList<Literal>();
-    HashMap<String, Boolean> inferred = new HashMap<String, Boolean>();
 
     public static void main(String[] args) {
         // assign the file name
@@ -59,9 +57,7 @@ public class LogicAgent {
      */
     public boolean ask(HornClause clause) {
         /// solve the entailment
-        while (!this.agenda.isEmpty()) {
-            
-        } // end while
+        
         return false;
     }// end func
 

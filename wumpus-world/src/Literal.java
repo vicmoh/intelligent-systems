@@ -33,6 +33,10 @@ public class Literal {
         this.sign = (this.symbolSign.equals("+")) ? true : false;
     }//end constructor
    
+    public String getSymbolString(){
+        return this.symbol.getSymbol();
+    }
+
     public Symbol getSymbol(){
         return this.symbol;
     }//end func
