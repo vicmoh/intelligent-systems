@@ -27,6 +27,8 @@ public class LogicAgent {
         Helper.debug("main(): ", "query: " + query);
         boolean result = agent.knowledgeBase.plFcEntail(new Literal(query));
         Helper.debug("main(): ", Boolean.toString(result));
+        System.out.println(Helper.yellow("Query = ") + Helper.green(query.split(" ")[1]));
+        System.out.println(Helper.yellow("Answer = ") + Helper.green(Boolean.toString(result)));
     }// main function to run the program
 
     public HornKB getKnowledgeBase() {
@@ -58,7 +60,7 @@ public class LogicAgent {
      * @return true or false true if it can be entailed false otherwise
      */
     public boolean ask(HornClause clause) {
-        return false;
+        return this.knowledgeBase.plFcEntail(clause.getHead());
     }// end func
 
     // Load query from file.
@@ -144,7 +146,8 @@ class Helper {
     public static final String WHITE = "\033[0;37m"; // WHITE
 
     public static void debug(String func, String toBePrinted) {
-        System.out.println(YELLOW + func + PURPLE + toBePrinted + RESET);
+        // NOTE: uncomment to show the debug
+        //System.out.println(YELLOW + func + PURPLE + toBePrinted + RESET);
     }// end func
 
     public static void error(String toBePrinted) {

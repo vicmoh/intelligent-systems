@@ -100,7 +100,7 @@ public class HornKB {
                   // added to the agenda
                   this.agenda.add(clause.getHead());
                   // print inferred
-                  System.out.println(Helper.yellow("Symbol: ") + Helper.red(clause.getHead().toString())
+                  System.out.println(Helper.yellow("Symbol: ") + Helper.red(clause.getHead().getSymbolString())
                       + Helper.yellow(" is inferred"));
                 }//end for
               }//end if
