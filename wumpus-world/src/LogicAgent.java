@@ -9,8 +9,8 @@ import java.util.Stack;
  * @author Vicky Mohammad Logic agents for the knowledge base of the AI.
  */
 public class LogicAgent {
-    HornKB knowledgeBase = null;
     String query = null;
+    HornKB knowledgeBase = HornKB();
     ArrayList<String> hornKBFile = new ArrayList<String>();
     ArrayList<Literal> agenda = new ArrayList<Literal>();
     HashMap<String, Boolean> inferred = new HashMap<String, Boolean>();
@@ -60,7 +60,7 @@ public class LogicAgent {
     public boolean ask(HornClause clause) {
         /// solve the entailment
         while (!this.agenda.isEmpty()) {
-
+            
         } // end while
         return false;
     }// end func
@@ -106,6 +106,7 @@ public class LogicAgent {
                 // create a horn clause
                 HornClause hc = new HornClause(line);
                 Helper.debug("loadKB(): ", "hc: " + hc.toString());
+                this.knowledgeBase.getKB().add(hc);
 
                 // add line to the file
                 this.hornKBFile.add(line);
