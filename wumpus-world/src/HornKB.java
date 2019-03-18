@@ -4,24 +4,29 @@ import java.util.Stack;
 
 /**
  * A class that contains horn clause knowledge base.
+ * 
  * @author Vicky Mohammad
  */
 public class HornKB {
   private ArrayList<HornClause> knowledgeBase; // Knowledge base consists of horn clauses.
-  ArrayList<HornClause> agenda = new ArrayList<HornClause>();
-  HashMap<String, Boolean> inferred = new HashMap<String, Boolean>();
+  private ArrayList<HornClause> agenda = new ArrayList<HornClause>();
+  private HashMap<String, Boolean> inferred = new HashMap<String, Boolean>();
 
-  HornKB(){
+  HornKB() {
     this.knowledgeBase = new ArrayList<HornClause>();
-  }//end constructor
+  }// end constructor
 
-  HornKB(ArrayList<HornClause> kb){
+  HornKB(ArrayList<HornClause> kb) {
     this.knowledgeBase = kb;
-  }//end consrtuctor
+  }// end consrtuctor
 
-  public ArrayList<HornClause> getKB(){
-    return this.knowledgeBase;
+  public void addKnowledge(HornClause toBeAdded){
+    this.knowledgeBase.add(toBeAdded);
   }//end func
+
+  public ArrayList<HornClause> getKB() {
+    return this.knowledgeBase;
+  }// end func
 
   /**
    * plFcEntail method - It is an implementation of Forward chaining algorithm
@@ -44,21 +49,49 @@ public class HornKB {
   public boolean plFcEntail(Literal q) {
     Helper.debug("plFcEntail(): ", "q = " + q.toString());
     // set up the agenda to start of
-    for(int x=0; x>kb.size(); x++){
-      if(this.knowledgeBase.get(x).getHead().equals(q)){
+    for (int x = 0; x < this.knowledgeBase.size(); x++) {
+      if (this.knowledgeBase.get(x).getHead().equals(q)) {
         this.agenda.add(this.knowledgeBase.get(x));
-      }//end if
-    }//end for
+      } // end if
+    } // end for
 
     // search for answer
-    while (!this.agenda.isEmpty()) {
-      for(int x=0; x<knowledgeBase.size(); x++){
-        HornClause hc = knowledgeBase.get(x);
-        if(hc.getHead().getSymbolString().equalsIgnoreCase("")){
-          
+    int next = 0;
+    Helper.debug("plFcEntail(): ", "this.agenda.size() = " + Integer.toString(this.agenda.size()));
+    while (this.agenda.size()-1 == next) {
+      HornClause cur = this.agenda.get(next);
+      System.out.println(Helper.cyan(cur.getHead().getSymbolString()));
+      Helper.debug("*** ", cur.getHead().getSymbolString());
+      if (cur.getHead().equals(q))
+        return true;
+
+      // go through the body
+      for (int x = 0; x<cur.getBody().size(); x++) {
+        Literal lit = cur.getBody().get(x);
+        if (this.inferred.containsKey(lit.getSymbolString()))
+          continue;
+        this.inferred.put(lit.toString(), true);
+        
+        // check for the answer
+        if(cur.getBody().size() == 1){
+          Helper.debug("*** ", cur.getBody().get(0).getSymbolString());
+          if(cur.getBody().get(0).equals(q)) return true;
         }//end if
-      }//end for
-    }// end while
+        
+        /// add inferred
+        for(int y=0; y<this.knowledgeBase.size(); y++){
+          if(this.knowledgeBase.get(y).getHead().equals(lit)){
+            this.agenda.add(this.knowledgeBase.get(y));
+          }//end if
+        }//end for
+      } // end for
+      next++;
+    } // end while
+
+    // print
+    for(int x=0; x<this.agenda.size(); x++){
+      System.out.println(Helper.cyan( this.agenda.get(x).getHead().getSymbolString()));
+    }
     return false;
-  }//end func
-}//end class
+  }// end func
+}// end class

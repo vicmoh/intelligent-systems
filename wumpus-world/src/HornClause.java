@@ -89,7 +89,7 @@ public class HornClause {
     @Override 
     public boolean equals(Object obj) {
         if(!(obj instanceof Literal)) return false;
-        Literal compare = (String)(obj);
+        Literal compare = (Literal)(obj);
         return this.getHead().getSymbolString().equalsIgnoreCase(compare.getSymbolString());
     }//end func
 

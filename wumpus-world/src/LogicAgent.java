@@ -10,7 +10,7 @@ import java.util.Stack;
  */
 public class LogicAgent {
     String query = null;
-    HornKB knowledgeBase = HornKB();
+    HornKB knowledgeBase = new HornKB();
     ArrayList<String> hornKBFile = new ArrayList<String>();
 
     public static void main(String[] args) {
@@ -25,6 +25,8 @@ public class LogicAgent {
         agent.loadKB(hornKBFileName);
         String query = agent.getQueryClause(queryFileName);
         Helper.debug("main(): ", "query: " + query);
+        boolean result = agent.knowledgeBase.plFcEntail(new Literal(query));
+        Helper.debug("main(): ", Boolean.toString(result));
     }// main function to run the program
 
     public HornKB getKnowledgeBase() {
@@ -47,7 +49,7 @@ public class LogicAgent {
      * tell method adds the horn clause into the knowledge, add clause to KB
      */
     public void tell(HornClause clause) {
-        this.knowledgeBase.getKB().add(clause);
+        this.knowledgeBase.addKnowledge(clause);
     }// end func
 
     /**
@@ -56,8 +58,6 @@ public class LogicAgent {
      * @return true or false true if it can be entailed false otherwise
      */
     public boolean ask(HornClause clause) {
-        /// solve the entailment
-        
         return false;
     }// end func
 
@@ -102,7 +102,7 @@ public class LogicAgent {
                 // create a horn clause
                 HornClause hc = new HornClause(line);
                 Helper.debug("loadKB(): ", "hc: " + hc.toString());
-                this.knowledgeBase.getKB().add(hc);
+                this.knowledgeBase.addKnowledge(hc);
 
                 // add line to the file
                 this.hornKBFile.add(line);

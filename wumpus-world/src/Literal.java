@@ -50,6 +50,13 @@ public class Literal {
     }//end func
 
     @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Literal)) return false;
+        Literal compare = (Literal)(obj);
+        return this.getSymbolString().equals(compare.getSymbolString());
+    }//end func
+
+    @Override
     public String toString() {
         return symbolSign + " " + this.symbol.toString();
     }//end func
