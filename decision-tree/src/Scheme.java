@@ -7,6 +7,8 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.sun.source.doctree.AttributeTree;
+
 /**
  * Scheme class provides the definition of attributes and a function related to
  * data file. It stores scheme file attributes and the function
@@ -40,18 +42,38 @@ public class Scheme {
         } // End try
 
         // Read the file
-        String line = null;
+        String firstLine = null;
         System.out.println("loadSchemeFile(): Reading file...");
-        do {
-            try {
-                line = br.readLine();
-                if (line == null)
-                    break;
-                System.out.println("loadSchemeFile(): line -> " + line);
-            } catch (Exception err) {
-                closeFile(br);
+
+        try {
+            // Get first line
+            firstLine = br.readLine();
+            if (firstLine == null || firstLine == "") {
+                System.out.println("loadSchemeFile(): Fail to parse, wrong format.");
             }
-        } while (line != null);
+
+            // Get the number of attribute
+            this.numberOfAttribute = Integer.parseInt(firstLine);
+
+            // Read each attribute
+            for (int x = 0; x < this.numberOfAttribute - 1; x++) {
+                if (br.readLine() == null)
+                    break;
+                String name = br.readLine();
+                String val = br.readLine();
+                System.out.println("val = " + val);
+                String[] list = br.readLine().split(" ");
+                ArrayList<String> vals = new ArrayList<String>();
+                for (int y = 0; y < list.length; y++)
+                    vals.add(list[y]);
+                this.attributeList.add(new Attribute(name, Integer.parseInt(val), vals));
+            }
+        } catch (Exception err) {
+            closeFile(br);
+        }
+
+        // Print the attributes
+        this.printScheme();
     }// End function
 
     /**
