@@ -38,9 +38,9 @@ public class Scheme {
     public void printScheme(){
         attributeList.forEach((k)->{ k.printAttribute();});
         System.out.println(numberOfAttribute);
-        if(function == null) 
+        if(function == null) {
             System.out.println("Function: null");
-        else{
+        }else{
             System.out.println("Function: ");
             function.printAttribute();
         }// End if
