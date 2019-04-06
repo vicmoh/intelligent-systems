@@ -1,0 +1,21 @@
+5
+
+Outlook
+3
+S O R
+
+Temperature
+3
+H M C
+
+Humidity
+2
+H N
+
+Wind
+2
+W S
+
+Play_Golf
+2
+N Y
