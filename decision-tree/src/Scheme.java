@@ -48,7 +48,6 @@ public class Scheme {
                 if (line == null)
                     break;
                 System.out.println("loadSchemeFile(): line -> " + line);
-                counter++;
             } catch (Exception err) {
                 closeFile(br);
             }
