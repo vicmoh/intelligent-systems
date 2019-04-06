@@ -2,9 +2,8 @@
 
 /**
  * A utility class to store some static commonly used methods
- * @author Le
+ * @author Vicky Mohammad
  */
 public class Util {
     
-    
-}
+}// End class

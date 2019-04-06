@@ -1,6 +1,6 @@
 /**
  *
- * @author Le
+ * @author Vicky Mohmmmad
  */
 public class Node {
     String nodeLabel = ""; //attribute Name
@@ -8,6 +8,5 @@ public class Node {
     Node parent = null;    
 
     public Node() {
-    }
-    
-}
+    }// End construtor
+}// End class
