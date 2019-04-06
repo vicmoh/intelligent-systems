@@ -43,7 +43,7 @@ public class Scheme {
 
         // Read the file
         String firstLine = null;
-        System.out.println("loadSchemeFile(): Reading file...");
+        System.out.println("\nloadSchemeFile(): Reading file...");
 
         try {
             // Get first line
@@ -70,9 +70,7 @@ public class Scheme {
         } catch (Exception err) {
             closeFile(br);
         }
-
-        // Print the attributes
-        this.printScheme();
+        System.out.println("loadSchemeFile(): Load complete...\n");
     }// End function
 
     /**
@@ -92,6 +90,7 @@ public class Scheme {
      * Print thee Scheme
      */
     public void printScheme() {
+        System.out.println("printScheme(): Printing scheme...");
         attributeList.forEach((k) -> {
             k.printAttribute();
         });
@@ -102,6 +101,7 @@ public class Scheme {
             System.out.println("Function: ");
             function.printAttribute();
         } // End if
+        System.out.println("printScheme(): Printing done.\n");
     }// End function
 
     public static void main(String[] args) {
