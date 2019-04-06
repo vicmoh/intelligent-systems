@@ -61,7 +61,6 @@ public class Scheme {
                     break;
                 String name = br.readLine();
                 String val = br.readLine();
-                System.out.println("val = " + val);
                 String[] list = br.readLine().split(" ");
                 ArrayList<String> vals = new ArrayList<String>();
                 for (int y = 0; y < list.length; y++)

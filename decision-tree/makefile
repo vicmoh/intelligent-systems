@@ -6,10 +6,6 @@ compile:
 run:
 	java -cp ./bin Scheme $(arg1) $(arg2)
 
-arg:
-	javac -Xlint:unchecked ./src/*.java -d ./bin/
-	java -cp ./bin Scheme
-
 git:
 	git add -A
 	git commit -m "[AUTO]"
