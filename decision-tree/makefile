@@ -8,7 +8,7 @@ run:
 
 arg:
 	javac -Xlint:unchecked ./src/*.java -d ./bin/
-	java -cp ./bin Scheme ./assets/HornKB.txt ./assets/Query1.txt
+	java -cp ./bin Scheme
 
 git:
 	git add -A
