@@ -13,9 +13,9 @@ import java.util.logging.Logger;
  * @author Vicky Mohammad
  */
 public class Scheme {  
-    ArrayList <Attribute> attributeList; //attribute list of scheme file
+    ArrayList <Attribute> attributeList; // attribute list of scheme file
     int numberOfAttribute = 0; // number of attributes
-    Attribute function = null;    //a function
+    Attribute function = null; // a function
     
     /**
      * Creates scheme object

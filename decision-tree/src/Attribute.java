@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 
 /**
- * Attribute class is used to store an attribute. 
- * An attribute has its name, number of values and its possible values.
+ * Attribute class is used to store an attribute. An attribute has its name,
+ * number of values and its possible values.
+ * 
  * @author Vicky Mohammad
  */
 public class Attribute {
@@ -19,9 +20,10 @@ public class Attribute {
 
     /**
      * Initilize the attribute
+     * 
      * @param attributeName an attribute name
      * @param numberOfValue number of values of an attribute
-     * @param valueList an array list of attribute values
+     * @param valueList     an array list of attribute values
      */
     public Attribute(String attributeName, int numberOfValue, ArrayList<String> valueList) {
         this.attributeName = attributeName;
@@ -35,7 +37,9 @@ public class Attribute {
     public void printAttribute() {
         System.out.println(attributeName);
         System.out.println(numberOfValue);
-        valueList.forEach((k)->{ System.out.print(k + " ");});
+        valueList.forEach((k) -> {
+            System.out.print(k + " ");
+        });
         System.out.println();
     }// End print function
 }// End class
