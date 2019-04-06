@@ -39,15 +39,15 @@ public class Scheme {
             System.out.println(err.toString());
         } // End try
 
+        // Read the file
         String line = null;
-        int counter = 0;
         System.out.println("loadSchemeFile(): Reading file...");
         do {
             try {
                 line = br.readLine();
                 if (line == null)
                     break;
-                System.out.println("loadSchemeFile(): line[" + counter + "]: " + line);
+                System.out.println("loadSchemeFile(): line -> " + line);
                 counter++;
             } catch (Exception err) {
                 closeFile(br);
