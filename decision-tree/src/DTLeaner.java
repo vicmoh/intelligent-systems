@@ -174,7 +174,7 @@ public class DTLeaner {
         // Print each nodes index at the current depth
         for (int x = 0; x < size; x++) {
             System.out.print(x + "          ");
-            nodes.get(x).IndexAtDepth = x;
+            nodes.get(x).indexAtDepth = x;
         }
         System.out.println("");
     }
