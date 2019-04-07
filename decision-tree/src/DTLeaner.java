@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.crypto.Data;
@@ -99,8 +100,83 @@ public class DTLeaner {
         return attributes;
     }
 
-    public void printTree(Node ){
+    public void printTree(Node root) {
+        System.out.println("printTree(): Printing...");
+        // Linearize into a ingle list instead of tree
+        LinkedList<Node> linearList = new LinkedList<Node>();
+        linearList = linearizeTree(root, 0, linearList);
+        // Find the max depth of the decision tree
+        int max = -1;
+        for (Node curNode : linearList)
+            if (curNode.depth > max)
+                max = curNode.depth;
 
+        // Print the root
+        System.out.println(root.nodeLabel);
+        System.out.println("0\n");
+
+        // Loop through each depth of the tree
+        for (int x = 1; x < max + 1; x++) {
+            LinkedList<Node> curDepth = new LinkedList<Node>();
+            for (Node curNode : linearList)
+                if (curNode.depth == x)
+                    curDepth.add(curNode);
+            this.printTreeAtDepth(curDepth);
+        }
+    }
+
+    private LinkedList<Node> linearizeTree(Node node, int depth, LinkedList<Node> list) {
+        node.depth = depth;
+        list.add(node);
+        depth++;
+        for (Node curNode : node.children)
+            this.linearizeTree(curNode, depth, list);
+        return list;
+    }
+
+    private void printTreeAtDepth(LinkedList<Node> nodes) {
+        int size = nodes.size();
+
+        // Print the parent node of each node
+        for (int x = 0; x < size; x++)
+            System.out.print(nodes.get(x).parent.indexAtDepth + "          ");
+        System.out.println("");
+
+        // Print the parent node of each node
+        for (int x = 0; x < size; x++)
+            System.out.print("|          ");
+        System.out.println("");
+
+        // Print a line for each node with the name of the attribute
+        // value that connect this node to its parent
+        for (int x = 0; x < size; x++) {
+            System.out.print("|" + nodes.get(x).linkLabel);
+            for (int y = nodes.get(x).linkLabel.length(); y <= 9; y++)
+                System.out.print(" ");
+        }
+        System.out.println("");
+
+        // Print a chevron for each node
+        for (int x = 0; x < size; x++) {
+            System.out.print("v          ");
+        }
+        System.out.println("");
+
+        // Print the label and output of each node
+        for (int x = 0; x < size; x++) {
+            System.out.print(nodes.get(x).nodeLabel);
+            for (int y = nodes.get(x).nodeLabel.length(); y <= 10; y++)
+                System.out.print(" ");
+
+        }
+        System.out.println("");
+
+        // Print each nodes index at the current depth
+        for (int x = 0; x < size; x++) {
+            System.out.print(x + "          ");
+            nodes.get(x).IndexAtDepth = x;
+        }
+        System.out.println("");
     }
 
 }// End class
