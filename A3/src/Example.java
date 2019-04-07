@@ -1,32 +1,59 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * Example class is used to store attribute values of a data example. It uses
+ * integer to store attribute values.
+ * 
+ * @author Vicky Mohammad
+ */
+
 class Example {
-  ArrayList<Integer> attributes;
-  int[] attributeValues;
-  int functionValue;
-  int arraySize;
+    ArrayList<Integer> attributes;
+    int[] attributeValues;
+    int functionValue;
+    int arraySize;
 
-  Example(int numAttr) {
-    this.attributeValues = new int[numAttr];
-    this.arraySize = numAttr;
-  }
+    /**
+     * create example object
+     * 
+     * @param numberAttribute
+     */
+    Example(int numberAttribute) {
+        this.attributeValues = new int[numberAttribute];
+        this.arraySize = numberAttribute;
+    }// end constructor
 
-  void setFunctionValue(int fVal) {
-    this.functionValue = fVal;
-  }
+    /**
+     * set attribute values
+     * 
+     * @param list
+     */
+    void setAttributeValues(int[] list) {
+        this.attributeValues = list;
+    }// end function
 
-  void setAttributeValues(int[] list) {
-    this.attributeValues = list;
-  }
+    /**
+     * set function value
+     */
+    void setFuncVal(int val) {
+        this.functionValue = val;
+    }// end function
 
-  int getFunctionValue() {
-    return this.attributeValues[arraySize - 1];
-  }
+    /**
+     * get function value
+     * 
+     * @return the function value
+     */
+    int getFuncVal() {
+        return this.attributeValues[arraySize - 1];
+    }// end function
 
-  // This method prints out an example's attributes
-  public void printExample() {
-    attributes.forEach(k -> System.out.print(k + " "));
-    System.out.println();
-  }
-}
+    /**
+     * print example
+     */
+    public void printExample() {
+        attributes.forEach(k -> System.out.print(k + " "));
+        System.out.println();
+    }// end function
+}// end function

@@ -1,6 +1,11 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * DTLearn class is used to perform the decision learning tree algorithm.
+ * 
+ * @author Vicky Mohammad
+ */
 class DTLearner {
     Scheme scheme;
     DataSet dataSet;

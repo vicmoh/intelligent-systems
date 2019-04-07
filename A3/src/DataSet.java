@@ -111,7 +111,7 @@ class DataSet {
         // assigned the attribtue value
         for (int x = 0; x < numberOfClass; x++)
             for (Example e : examples)
-                if (e.getFunctionValue() == x)
+                if (e.getFuncVal() == x)
                     count[x]++;
         // find the entropy value
         for (int x = 0; x < numberOfClass; x++) {
@@ -170,7 +170,7 @@ class DataSet {
         int largestIndex = 0;
         // loop through the examples
         for (Example example : this.dataSet)
-            array[example.getFunctionValue()]++;
+            array[example.getFuncVal()]++;
         // find the largest index
         for (int x = 0; x < array.length; x++) {
             if (array[x] > largest) {
@@ -187,9 +187,9 @@ class DataSet {
      * @return true if is all same class
      */
     boolean isAllSameClass() {
-        int initialValue = this.dataSet.get(0).getFunctionValue();
+        int initialValue = this.dataSet.get(0).getFuncVal();
         for (Example each : this.dataSet)
-            if (each.getFunctionValue() != initialValue)
+            if (each.getFuncVal() != initialValue)
                 return false;
         // else return true
         return true;
