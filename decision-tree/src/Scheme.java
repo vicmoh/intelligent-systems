@@ -68,7 +68,10 @@ public class Scheme {
             }
         } catch (Exception err) {
             closeFile(br);
+            System.out.println("loadSchemeFile(): Failed loading file.");
+            return;
         }
+        closeFile(br);
         System.out.println("loadSchemeFile(): Load complete...\n");
         // this.function = this.attributeList.get(this.attributeList.size() - 1);
         // attributeList.remove(this.attributeList.size() - 1);
