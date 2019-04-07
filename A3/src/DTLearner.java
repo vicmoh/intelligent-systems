@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class DTLearn {
+class DTLearner {
     public static void main(String[] args) {
         if (args.length != 2) {
             System.out.println("ERROR: please call the executable with 2 parameters:");
@@ -10,7 +10,7 @@ class DTLearn {
 
         String schemeFileName = args[0];
         String dataFileName = args[1];
-        DTLearn mlStuff = new DTLearn(schemeFileName, dataFileName);
+        DTLearner mlStuff = new DTLearner(schemeFileName, dataFileName);
         mlStuff.doDecisionTree();
     }
 
@@ -20,7 +20,7 @@ class DTLearn {
     private Node tree;
 
     // Constructors
-    public DTLearn(String schemeFileName, String dataFileName) {
+    public DTLearner(String schemeFileName, String dataFileName) {
         scheme = new Scheme(schemeFileName);
         sample = new Sample(scheme, dataFileName);
     }

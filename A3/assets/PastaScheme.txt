@@ -1,16 +1,16 @@
 4
 
 Sauce_Color
-2	
+2
 Red White
 
-Has_Meat	
+Has_Meat
 2
 True False
 
 Has_Seafood
 2
-True False	
+True False
 
 Like
 2
