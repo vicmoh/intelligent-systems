@@ -21,12 +21,10 @@ class Node<T> {
      * add child to the node
      * 
      * @param child
-     * @return child node
      */
-    Node<T> addChild(Node<T> child) {
+    void addChild(Node<T> child) {
         child.setParent(this);
         this.children.add(child);
-        return child;
     }// end function
 
     /**
