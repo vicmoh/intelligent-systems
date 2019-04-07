@@ -108,7 +108,7 @@ public class Scheme {
     //------------------------------------------------------------------
 
     public int attributeIndex(Attribute a){
-        for(int i = 0; i < attList.size(); i++){
+        for(int i = 0; i < attributeList.size(); i++){
             if(attributeList.get(i).equals(a)){
                 return i;
             }

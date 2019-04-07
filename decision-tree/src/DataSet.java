@@ -120,16 +120,16 @@ public class DataSet {
         int exampleSize = this.dataSet.size();
         int attributeSize = a.valueList.size();
         DataSet[] subSamples = this.createSubSample(a);
-        int[] subCont = new int[m];
+        int[] subCont = new int[attributeSize];
 
         // Loop and add the size
-        for (int i = 0; i < m; i++)
+        for (int i = 0; i < attributeSize; i++)
             subCont[i] = subSamples[i].dataSet.size();
 
         // Get the remainder
         double remainder = 0;
         for (int x = 0; x < attributeSize; x++) {
-            double pr = (double) subCont[x] / size;
+            double pr = (double) subCont[x] / exampleSize;
             double i = (double) subSamples[x].infoFmGp();
             if (pr > 0)
                 remainder += (double) pr * i;
@@ -151,11 +151,11 @@ public class DataSet {
         // Loop through and create a sub sample
         for (int i = 0; i < attributeSize; i++) {
             for (Example ex : this.dataSet)
-                if (i == ex.values[attIndex])
+                if (i == ex.attributes.get(attIndex))
                     tempAttList.add(ex);
 
             // Add the new data set and example
-            subSamples[i] = new DataSet(Scheme, tempAttList);
+            subSamples[i] = new DataSet(this.aScheme, tempAttList);
             tempAttList = new ArrayList<Example>();
         }
         return subSamples;
@@ -188,7 +188,7 @@ public class DataSet {
             for (Example ex : this.dataSet)
                 if (ex.functionOuput() == i)
                     count[i]++;
-        return 0;
+        return count;
     }
 
     // --------------------------------------------------------------------
@@ -207,7 +207,7 @@ public class DataSet {
         double gain = 0;
         // Loop and find the best
         for (Attribute cur : attribute) {
-            remainder = this.getRemaindker(cur);
+            remainder = this.getRemainder(cur);
             gain = i - remainder;
             if (gain > maxGain) {
                 maxGain = gain;
@@ -232,7 +232,7 @@ public class DataSet {
         return largestIndex;
     }
 
-    public int singleOuput() {
+    public int singleOutput() {
         int[] count = countOutputOfExamples();
         for (int x = 0; x < count.length; x++)
             if (count[x] == this.dataSet.size())
