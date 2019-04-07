@@ -71,6 +71,6 @@ class DTLearner {
         scheme.attributeList.remove(scheme.attributeList.size() - 1);
         Node<String> root = new DTLearner(scheme).decisionTreeLearning(dataSet, scheme.attributeList,
                 dataSet.getMajorityValue(scheme));
-        Util.printTree(root, "-");
+        Util.printTree(root, "|");
     }// end main
 }// end class
