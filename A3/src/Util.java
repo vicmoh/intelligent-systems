@@ -8,8 +8,8 @@ class Util {
 
   void printAttrList(Scheme scheme) {
     for (Attribute a : scheme.attrList) {
-      System.out.println(a.name);
-      for (String s : a.values) {
+      System.out.println(a.attributeName);
+      for (String s : a.valueList) {
         System.out.print(s + " ");
       }
       System.out.println();
@@ -28,7 +28,7 @@ class Util {
   static List<Attribute> removeAttribute(Attribute toRemove, List<Attribute> lst) {
     List<Attribute> newList = new ArrayList<Attribute>();
     for (Attribute a : lst) {
-      if (a.name.equals(toRemove.name) == false) {
+      if (a.attributeName.equals(toRemove.attributeName) == false) {
         newList.add(a);
       }
     }

@@ -10,23 +10,23 @@ class DTLearner {
 
     Node<String> learnDecisionTree(Sample s, List<Attribute> atList, int sMajor) {
         if (s.examples.size() == 0) {
-            return new Node<String>(scheme.function.values.get(sMajor));
+            return new Node<String>(scheme.function.valueList.get(sMajor));
         }
         if (s.checkIfAllSameClass() == true) {
-            return new Node<String>(scheme.function.values.get(s.getMajorityClass(scheme)));
+            return new Node<String>(scheme.function.valueList.get(s.getMajorityClass(scheme)));
         }
         if (atList.size() == 0) {
-            return new Node<String>(scheme.function.values.get(s.getMajorityClass(scheme)));
+            return new Node<String>(scheme.function.valueList.get(s.getMajorityClass(scheme)));
         }
         Attribute currentAttribute = s.getAttribute(atList, s);
         // System.out.println("Current attribute is: "+ currentAttribute.name);
-        Node<String> tr = new Node<String>(currentAttribute.name);
+        Node<String> tr = new Node<String>(currentAttribute.attributeName);
         int m = s.getMajorityClass(scheme);
 
-        for (String value : currentAttribute.values) {
+        for (String value : currentAttribute.valueList) {
             Sample subg = new Sample();
             for (Example e : s.examples) {
-                if (e.attributeValues[currentAttribute.pos] == currentAttribute.getIndexOfValues(value)) {
+                if (e.attributeValues[currentAttribute.numberOfValue] == currentAttribute.getIndexOfValues(value)) {
                     subg.examples.add(e);
                 }
             }

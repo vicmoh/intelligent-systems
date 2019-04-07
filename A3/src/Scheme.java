@@ -46,7 +46,7 @@ class Scheme {
     int getIndexOfAttribute(String toCheck) {
         int j = 0;
         for (Attribute i : this.attrList) {
-            if (i.name.equals(toCheck)) {
+            if (i.attributeName.equals(toCheck)) {
                 return j;
             }
             j++;
@@ -59,7 +59,7 @@ class Scheme {
         int remIndex = -1;
         int countIndex = 0;
         for (Attribute a : this.attrList) {
-            if (a.name.equals(toRemove.name)) {
+            if (a.attributeName.equals(toRemove.attributeName)) {
                 remIndex = countIndex;
             }
             countIndex++;

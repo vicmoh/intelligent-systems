@@ -52,7 +52,7 @@ class Sample {
     double getRemainder(Attribute b, List<Example> ex, int k) {
         // System.out.println("Attribute: " + b.name);
         int size = ex.size();
-        int m = b.values.size();
+        int m = b.valueList.size();
 
         Sample[] subg = new Sample[m];
         int[] subCnt = new int[m];
@@ -61,7 +61,7 @@ class Sample {
         }
         for (int i = 0; i < m; i++) {
             for (Example e : ex) {
-                if (e.attributeValues[b.pos] == i) {
+                if (e.attributeValues[b.numberOfValue] == i) {
                     subg[i].examples.add(e);
                 }
             }
@@ -87,27 +87,27 @@ class Sample {
     }
 
     Attribute getAttribute(List<Attribute> attributeList, Sample sam) {
-        int k = attributeList.get(attributeList.size() - 1).values.size();
+        int k = attributeList.get(attributeList.size() - 1).valueList.size();
         double info = getInfo(sam.examples, k);
         double maxGain = -1;
         Attribute bestA = null;
         for (Attribute b : attributeList) {
             double remainder = getRemainder(b, sam.examples, k);
             double gain = info - remainder;
-            System.out.println("Test " + b.name + ": gain = " + gain);
+            System.out.println("Test " + b.attributeName + ": gain = " + gain);
             if (gain > maxGain) {
                 maxGain = gain;
                 bestA = b;
             }
         }
-        System.out.println("\tSelected attribute: " + bestA.name);
+        System.out.println("\tSelected attribute: " + bestA.attributeName);
         System.out.println();
         return bestA;
     }
 
     /* Returns the the index of the value that getsf the majority classification */
     int getMajorityClass(Scheme sc) {
-        int[] arr = new int[sc.getFunctionAttribute().values.size()];
+        int[] arr = new int[sc.getFunctionAttribute().valueList.size()];
         for (Example ex : this.examples) {
             arr[ex.getFunctionValue()]++;
         }
