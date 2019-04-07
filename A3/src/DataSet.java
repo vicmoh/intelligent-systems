@@ -1,135 +1,190 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * Data set class is used to store training data set. It is also stored a scheme
+ * related to data set.
+ * 
+ * @author Vicky Mohammad
+ */
 class DataSet {
-    List<Example> examples;
+    Scheme aScheme = null;
+    List<Example> dataSet;
+    int dataSetSize = 0;
 
+    /**
+     * creates the data base object
+     */
     DataSet() {
-        this.examples = new ArrayList<Example>();
-    }
+        this.dataSet = new ArrayList<Example>();
+    }// end constructor
 
-    void loadDataSetFile(String fileName, Scheme scheme) {
+    /**
+     * creates the data base object
+     * 
+     * @param scheme
+     */
+    DataSet(Scheme scheme) {
+        this.aScheme = scheme;
+        this.dataSet = new ArrayList<Example>();
+    }// end constructor
+
+    /**
+     * load data set file
+     * 
+     * @param dataSetFile path and name
+     */
+    void loadDataSetFile(String dataSetFile) {
+        // declare and initialze
+        Scanner scanner = null;
+        // scan the data set from the file path
         try {
-            Scanner sc = new Scanner(new File(fileName));
-            sc.nextLine();
-            while (sc.hasNextLine()) {
-                Example toAddExample = new Example(scheme.attrList.size());
-                int attrIndex = 0;
-                String[] line = sc.nextLine().split("\\s+");
-                for (String s : line) {
-                    toAddExample.attributeValues[attrIndex] = scheme.attrList.get(attrIndex).getIndexOfValues(s);
-                    attrIndex++;
-                }
-                this.examples.add(toAddExample);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+            scanner = new Scanner(new File(dataSetFile));
+            scanner.nextLine();
+            // loop through and scan the next line
+            while (scanner.hasNextLine()) {
+                int attributeIndex = 0;
+                Example toAddExample = new Example(this.aScheme.attrList.size());
+                String[] line = scanner.nextLine().split(" ");
+                for (int x = 0; x < line.length; x++) {
+                    String token = line[x];
+                    toAddExample.attributeValues[attributeIndex] = this.aScheme.attrList.get(attributeIndex)
+                            .getIndexVal(token);
+                    attributeIndex = attributeIndex + 1;
+                } // end for
+                this.dataSet.add(toAddExample);
+            } // end while
+        } catch (FileNotFoundException error) {
+            error.printStackTrace();
+        } // end catch
+    }// end function
 
-    double getInfo(List<Example> ex, int numClass) {
-        int size = ex.size();
-        int[] count = new int[numClass];
-        for (int j = 0; j < numClass; j++) {
-            for (Example e : ex) {
-                if (j == e.getFunctionValue()) {
-                    count[j]++;
-                }
-            }
-        }
-        // System.out.println(Arrays.toString(count));
-        double I = 0;
-        for (int j = 0; j < numClass; j++) {
-            double pr = (double) count[j] / size;
-            if (pr > 0) {
-                I = I - (pr * (Math.log(pr) / Math.log(2)));
-            }
-        }
-        // System.out.println(I);
-        return I;
-    }
+    /**
+     * This method print out data set
+     */
+    public void printDataSet() {
+        dataSet.forEach((k) -> {
+            k.printExample();
+        });
+    }// end function
 
-    double getRemainder(Attribute b, List<Example> ex, int k) {
-        // System.out.println("Attribute: " + b.name);
-        int size = ex.size();
-        int m = b.valueList.size();
-
-        DataSet[] subg = new DataSet[m];
-        int[] subCnt = new int[m];
-        for (int i = 0; i < m; i++) {
-            subg[i] = new DataSet();
-        }
-        for (int i = 0; i < m; i++) {
-            for (Example e : ex) {
-                if (e.attributeValues[b.numberOfValue] == i) {
-                    subg[i].examples.add(e);
-                }
-            }
-        }
-        for (int i = 0; i < m; i++) {
-            subCnt[i] = subg[i].examples.size();
-        }
-        double remainder = 0;
-
-        for (int i = 0; i < m; i++) {
-            double pr = (double) subCnt[i] / size;
-            double ii = getInfo(subg[i].examples, k);
-            remainder += pr * ii;
-            // System.out.println(pr+" "+ii+" "+remainder);
-        }
-        /*
-         * for(int i =0;i<m;i++){ for(int j = 0; j<subg[i].examples.size(); j++){
-         * for(Example e:subg[i].examples){ System.out.println(i + ": " + b.pos + ": "
-         * +Arrays.toString(e.attributeValues)); } } }
-         */
-        return remainder;
-
-    }
-
-    Attribute getAttribute(List<Attribute> attributeList, DataSet sam) {
-        int k = attributeList.get(attributeList.size() - 1).valueList.size();
-        double info = getInfo(sam.examples, k);
+    Attribute getBestAttribute(List<Attribute> attributeList, DataSet sam) {
+        // declare variables
+        int size = attributeList.get(attributeList.size() - 1).valueList.size();
+        double entropy = getEntropy(sam.dataSet, size);
         double maxGain = -1;
         Attribute bestA = null;
-        for (Attribute b : attributeList) {
-            double remainder = getRemainder(b, sam.examples, k);
-            double gain = info - remainder;
-            System.out.println("Test " + b.attributeName + ": gain = " + gain);
+        // loop through the attribute list
+        for (Attribute currentAttribute : attributeList) {
+            double remainder = getRemainder(currentAttribute, sam.dataSet, size);
+            double gain = entropy - remainder;
+            System.out.println("Test " + currentAttribute.attributeName + ": gain = " + gain);
             if (gain > maxGain) {
                 maxGain = gain;
-                bestA = b;
-            }
-        }
+                bestA = currentAttribute;
+            } // end if
+        } // end for
         System.out.println("\tSelected attribute: " + bestA.attributeName);
         System.out.println();
         return bestA;
     }
 
-    /* Returns the the index of the value that getsf the majority classification */
-    int getMajorityValue(Scheme sc) {
-        int[] arr = new int[sc.getFunctionAttribute().valueList.size()];
-        for (Example ex : this.examples) {
-            arr[ex.getFunctionValue()]++;
-        }
-        int highest = arr[0];
-        int highestIndex = 0;
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] > highest) {
-                highest = arr[i];
-                highestIndex = i;
-            }
-        }
-        return highestIndex;
-    }
+    /**
+     * get the entropy information
+     * 
+     * @param examples
+     * @param numberOfClass
+     * @return entropy
+     */
+    double getEntropy(List<Example> examples, int numberOfClass) {
+        // declare and initialize variables
+        double result = 0;
+        int size = examples.size();
+        int[] count = new int[numberOfClass];
+        // assigned the attribtue value
+        for (int x = 0; x < numberOfClass; x++)
+            for (Example e : examples)
+                if (e.getFunctionValue() == x)
+                    count[x]++;
+        // find the entropy value
+        for (int x = 0; x < numberOfClass; x++) {
+            double ratio = (double) count[x] / size;
+            if (ratio > 0)
+                result = result - (ratio * (Math.log(ratio) / Math.log(2)));
+        } // end for
+        return result;
+    }// end function
 
+    /**
+     * This method calculate the remainder
+     * 
+     * @param attribute
+     * @param examples
+     * @param numberOfClass
+     * @return a double remainder
+     */
+    double getRemainder(Attribute attribute, List<Example> examples, int numberOfClass) {
+        // declare variables
+        double remainder = 0;
+        int exampleSize = examples.size();
+        int attributeSize = attribute.valueList.size();
+        int[] subCnt = new int[attributeSize];
+        DataSet[] subg = new DataSet[attributeSize];
+        // initialize sub data set
+        for (int x = 0; x < attributeSize; x++)
+            subg[x] = new DataSet();
+        // add each example
+        for (int x = 0; x < attributeSize; x++)
+            for (Example curExample : examples)
+                if (curExample.attributeValues[attribute.numberOfValue] == x)
+                    subg[x].dataSet.add(curExample);
+        // set the data
+        for (int x = 0; x < attributeSize; x++)
+            subCnt[x] = subg[x].dataSet.size();
+        // get the remainder
+        for (int x = 0; x < attributeSize; x++) {
+            double pr = (double) subCnt[x] / exampleSize;
+            double ii = getEntropy(subg[x].dataSet, numberOfClass);
+            remainder += pr * ii;
+        } // end for
+        return remainder;
+    }// end function
+
+    /**
+     * Returns the the index of the value that getsf the majority classification
+     * 
+     * @param scheme
+     * @return largest index
+     */
+    int getMajorityValue(Scheme scheme) {
+        // declare variables
+        int[] array = new int[scheme.getFunctionAttribute().valueList.size()];
+        int largest = array[0];
+        int largestIndex = 0;
+        // loop through the examples
+        for (Example example : this.dataSet)
+            array[example.getFunctionValue()]++;
+        // find the largest index
+        for (int x = 0; x < array.length; x++) {
+            if (array[x] > largest) {
+                largest = array[x];
+                largestIndex = x;
+            } // end if
+        } // end for
+        return largestIndex;
+    }// end function
+
+    /**
+     * check if is all same class
+     * 
+     * @return true if is all same class
+     */
     boolean isAllSameClass() {
-        int initialValue = this.examples.get(0).getFunctionValue();
-        for (Example e : this.examples) {
-            if (e.getFunctionValue() != initialValue) {
+        int initialValue = this.dataSet.get(0).getFunctionValue();
+        for (Example each : this.dataSet)
+            if (each.getFunctionValue() != initialValue)
                 return false;
-            }
-        }
+        // else return true
         return true;
-    }
-
-}
+    }// end function
+}// end class

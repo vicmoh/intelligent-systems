@@ -24,7 +24,7 @@ class DTLearner {
      */
     Node<String> decisionTreeLearning(DataSet set, List<Attribute> attributeList, int sMajor) {
         // check if example siz is zero
-        if (set.examples.size() == 0)
+        if (set.dataSet.size() == 0)
             return new Node<String>(this.scheme.function.valueList.get(sMajor));
         // check if attribute size is zero
         if (attributeList.size() == 0)
@@ -33,15 +33,15 @@ class DTLearner {
         if (set.isAllSameClass())
             return new Node<String>(this.scheme.function.valueList.get(set.getMajorityValue(this.scheme)));
         // initialize the attribute the
-        Attribute currentAttribute = set.getAttribute(attributeList, set);
+        Attribute currentAttribute = set.getBestAttribute(attributeList, set);
         Node<String> tree = new Node<String>(currentAttribute.attributeName);
         int m = set.getMajorityValue(scheme);
         // for loop the attribute and sub
         for (String value : currentAttribute.valueList) {
             DataSet subg = new DataSet();
-            for (Example e : set.examples)
-                if (e.attributeValues[currentAttribute.numberOfValue] == currentAttribute.getIndexOfValues(value))
-                    subg.examples.add(e);
+            for (Example e : set.dataSet)
+                if (e.attributeValues[currentAttribute.numberOfValue] == currentAttribute.getIndexVal(value))
+                    subg.dataSet.add(e);
             // recursively remove the old attributu and add to the tree
             Node<String> subTree = decisionTreeLearning(subg, Util.removeAttribute(currentAttribute, attributeList), m);
             subTree.setData(value + ": " + subTree.getData());
@@ -50,16 +50,22 @@ class DTLearner {
         return tree;
     }// end function
 
+    /**
+     * main function to run the program
+     * 
+     * @param args takes 2 argument <schemce file> <data file>
+     */
     public static void main(String[] args) {
         // initialze and declare vaiables
         Scheme scheme = new Scheme();
-        DataSet dataSet = new DataSet();
+        DataSet dataSet = new DataSet(scheme);
         scheme.loadSchemeFile(args[0]);
-        dataSet.loadDataSetFile(args[1], scheme);
+        dataSet.loadDataSetFile(args[1]);
         // run the decision tree learning
         scheme.setFunction();
         scheme.attrList.remove(scheme.attrList.size() - 1);
-        Node<String> root = new DTLearner(scheme).decisionTreeLearning(dataSet, scheme.attrList, dataSet.getMajorityValue(scheme));
+        Node<String> root = new DTLearner(scheme).decisionTreeLearning(dataSet, scheme.attrList,
+                dataSet.getMajorityValue(scheme));
         Util.printTree(root, "-");
     }// end main
 }// end class

@@ -17,7 +17,7 @@ class Util {
   }
 
   void printSample(DataSet sample) {
-    for (Example e : sample.examples) {
+    for (Example e : sample.dataSet) {
       for (int i = 0; i < e.attributeValues.length; i++) {
         System.out.print(e.attributeValues[i] + " ");
       }

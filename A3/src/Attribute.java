@@ -27,12 +27,12 @@ class Attribute {
 
   /**
    * get the index values from the data
-   * @param toBeCheck
+   * @param from
    * @return int value of the index, return -1 if doesn't exist
    */
-  int getIndexOfValues(String toBeCheck) {
+  int getIndexVal(String from) {
     for (int x = 0; x < this.valueList.size(); x++)
-      if (toBeCheck.equals(this.valueList.get(x)))
+      if (from.equals(this.valueList.get(x)))
         return x;
     return -1;
   }// end function

@@ -2,6 +2,7 @@ import java.util.*;
 import java.io.*;
 
 class Example {
+  ArrayList<Integer> attributes;
   int[] attributeValues;
   int functionValue;
   int arraySize;
@@ -21,5 +22,11 @@ class Example {
 
   int getFunctionValue() {
     return this.attributeValues[arraySize - 1];
+  }
+
+  // This method prints out an example's attributes
+  public void printExample() {
+    attributes.forEach(k -> System.out.print(k + " "));
+    System.out.println();
   }
 }
