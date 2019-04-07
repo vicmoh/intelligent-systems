@@ -1,6 +1,12 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * Attribute class is used to store an attribute. 
+ * An attribute has its name, number of values and 
+ * its possible values.
+ * @author Vicky Mohammad
+ */
 class Attribute {
   String attributeName;
   int numberOfValue;
