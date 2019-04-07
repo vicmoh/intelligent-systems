@@ -44,11 +44,11 @@ class DataSet {
             // loop through and scan the next line
             while (scanner.hasNextLine()) {
                 int attributeIndex = 0;
-                Example toAddExample = new Example(this.aScheme.attrList.size());
+                Example toAddExample = new Example(this.aScheme.attributeList.size());
                 String[] line = scanner.nextLine().split(" ");
                 for (int x = 0; x < line.length; x++) {
                     String token = line[x];
-                    toAddExample.attributeValues[attributeIndex] = this.aScheme.attrList.get(attributeIndex)
+                    toAddExample.attributeValues[attributeIndex] = this.aScheme.attributeList.get(attributeIndex)
                             .getIndexVal(token);
                     attributeIndex = attributeIndex + 1;
                 } // end for
@@ -57,6 +57,7 @@ class DataSet {
         } catch (FileNotFoundException error) {
             error.printStackTrace();
         } // end catch
+        scanner.close();
     }// end function
 
     /**

@@ -2,53 +2,73 @@ import java.util.*;
 import java.io.*;
 
 class Scheme {
-    List<Attribute> attrList;
-    Attribute function;
+    ArrayList<Attribute> attributeList; // attribute list of scheme file
+    int numberOfAttribute = 0; // number of attributes
+    Attribute function = null; // a function
 
+    /**
+     * create scheme
+     */
     Scheme() {
-        this.attrList = new ArrayList<Attribute>();
-    }
+        this.attributeList = new ArrayList<Attribute>();
+    }// end constructor
 
+    /**
+     * load scheme file
+     * 
+     * @param fileName
+     */
     void loadSchemeFile(String fileName) {
+        Scanner scanner = null;
         try {
-            Scanner sc = new Scanner(new File(fileName));
-            int numPara = sc.nextInt();
-            /* Read the fist n-1 attrubutes */
-            sc.nextLine();
-            // System.out.println(numPara);
+            // read each line
+            scanner = new Scanner(new File(fileName));
+            int numPara = scanner.nextInt();
+            scanner.nextLine();
+            // loop through and read each attribute section
             for (int i = 0; i < numPara; i++) {
-                sc.nextLine();
-                String name = sc.nextLine();
-                sc.nextInt();
-                sc.nextLine();
-                String valsLine = sc.nextLine();
-                List<String> tempAttrList = new ArrayList<String>();
-                String[] attrArr = valsLine.split(" ");
-                for (String a : attrArr) {
-                    tempAttrList.add(a);
-                }
-                Attribute at = new Attribute(name, i, tempAttrList);
-                this.attrList.add(at);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Please enter a scheme file " + e);
-        }
-    }
+                scanner.nextLine();
+                String name = scanner.nextLine();
+                scanner.nextInt();
+                scanner.nextLine();
+                // loop through the last data and split the value attribute
+                // and added to the list
+                String lineVals = scanner.nextLine();
+                List<String> tempAttributeList = new ArrayList<String>();
+                String[] attributeArray = lineVals.split(" ");
+                for (String a : attributeArray)
+                    tempAttributeList.add(a);
+                // add to the attribute list
+                Attribute newAttribute = new Attribute(name, i, tempAttributeList);
+                this.attributeList.add(newAttribute);
+            } // end for
+        } catch (FileNotFoundException error) {
+            System.out.println("Please enter a scheme file " + error);
+        } // end catch
+        scanner.close();
+    }// end function
 
-    Attribute getFunctionAttribute() {
-        return this.attrList.get(attrList.size() - 1);
-    }
-
+    /**
+     * set function
+     */
     void setFunction() {
-        this.function = attrList.get(attrList.size() - 1);
-    }
+        this.function = attributeList.get(attributeList.size() - 1);
+    }// end function
+
+    /**
+     * get function
+     * 
+     * @return functioni attributes
+     */
+    Attribute getFunctionAttribute() {
+        return this.attributeList.get(attributeList.size() - 1);
+    }// end function
 
     int getIndexOfAttribute(String toCheck) {
         int j = 0;
-        for (Attribute i : this.attrList) {
-            if (i.attributeName.equals(toCheck)) {
+        for (Attribute i : this.attributeList) {
+            if (i.attributeName.equals(toCheck))
                 return j;
-            }
             j++;
         }
         System.out.println("Could not find attribute");
@@ -58,14 +78,14 @@ class Scheme {
     void removeAttribute(Attribute toRemove) {
         int remIndex = -1;
         int countIndex = 0;
-        for (Attribute a : this.attrList) {
+        for (Attribute a : this.attributeList) {
             if (a.attributeName.equals(toRemove.attributeName)) {
                 remIndex = countIndex;
             }
             countIndex++;
         }
         if (remIndex > -1) {
-            this.attrList.remove(remIndex);
+            this.attributeList.remove(remIndex);
         }
     }
 }

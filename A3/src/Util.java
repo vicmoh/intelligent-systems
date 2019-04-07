@@ -7,7 +7,7 @@ class Util {
   }
 
   void printAttrList(Scheme scheme) {
-    for (Attribute a : scheme.attrList) {
+    for (Attribute a : scheme.attributeList) {
       System.out.println(a.attributeName);
       for (String s : a.valueList) {
         System.out.print(s + " ");
