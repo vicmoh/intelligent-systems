@@ -1,59 +1,43 @@
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 
-class Node {
-    // Attributes
-    public String label;
-    private boolean isLeaf;
-    public String value;
-    private Attribute splitOn = null;
+class Node<T> {
+  private T data = null;
+  private List<Node<T>> children = new ArrayList<>();
+  private Node<T> parent = null;
 
-    // tree linking stuff
-    public Node parent = null;
-    public ArrayList<Node> children = null;
+  public Node(T data) {
+    this.data = data;
+  }
 
-    // Constructor
-    public Node(String label) {
-        this.label = label;
-        isLeaf = true;
-    }
+  Node<T> addChild(Node<T> child) {
+    child.setParent(this);
+    this.children.add(child);
+    return child;
+  }
 
-    public Node(Attribute splitOn) {
-        this.splitOn = splitOn;
-        isLeaf = false;
-        this.label = splitOn.name;
-        children = new ArrayList<Node>();
-    }
+  void addChildren(List<Node<T>> children) {
+    children.forEach(each -> each.setParent(this));
+    this.children.addAll(children);
+  }
 
-    // Public Methods
-    public void printTree() {
-        this.printTree(0);
-    }
+  List<Node<T>> getChildren() {
+    return children;
+  }
 
-    public void printTree(int depth) {
-        String offset = "";
-        for (int i = 0; i < depth; i++) {
-            offset += "  ";
-        }
+  T getData() {
+    return data;
+  }
 
-        if (parent == null) { // if root
-            System.out.println("\nPrinting Decision Tree:");
-            System.out.println(offset + "> root");
-            System.out.println(offset + "------> " + label + "");
-        } else if (isLeaf) { // if leaf
-            System.out.println(offset + "> " + value);
-            System.out.println(offset + "------> [" + label + "]");
-        } else { // if leaf
-            System.out.println(offset + "> " + value);
-            System.out.println(offset + "------> " + label + "");
-        }
+  void setData(T data) {
+    this.data = data;
+  }
 
-        if (children != null && children.size() > 0) {
-            for (Node n : children) {
-                n.printTree(depth + 1);
-            }
-        }
-    }
+  void setParent(Node<T> parent) {
+    this.parent = parent;
+  }
 
-    // Private Methods
-
+  Node<T> getParent() {
+    return parent;
+  }
 }

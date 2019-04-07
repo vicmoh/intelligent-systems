@@ -1,20 +1,23 @@
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 
 class Attribute {
-    // Attributes
-    public String name;
-    public ArrayList<String> values;
-    public boolean isFunc;
+  String name;
+  List<String> values;
+  int pos;
 
-    // Constructors
-    public Attribute(String name) {
-        this.name = name;
-        this.values = new ArrayList<String> ();
-    }
+  Attribute(String n, List<String> vals, int p) {
+    this.name = n;
+    this.values = vals;
+    this.pos = p;
+  }
 
-    public Attribute(String name, ArrayList<String> values, boolean isFunc) {
-        this.name = name;
-        this.values = values;
-        this.isFunc = isFunc;
+  int getIndexOfValues(String toCheck) {
+    for (int j = 0; j < this.values.size(); j++) {
+      if (toCheck.equals(this.values.get(j))) {
+        return j;
+      }
     }
+    return -1;
+  }
 }

@@ -1,115 +1,60 @@
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 
 class DTLearner {
+    Scheme scheme;
+
+    DTLearner(Scheme s) {
+        this.scheme = s;
+    }
+
+    Node<String> learnDecisionTree(Sample s, List<Attribute> atList, int sMajor) {
+        if (s.examples.size() == 0) {
+            return new Node<String>(scheme.function.values.get(sMajor));
+        }
+        if (s.checkIfAllSameClass() == true) {
+            return new Node<String>(scheme.function.values.get(s.getMajorityClass(scheme)));
+        }
+        if (atList.size() == 0) {
+            return new Node<String>(scheme.function.values.get(s.getMajorityClass(scheme)));
+        }
+        Attribute currentAttribute = s.getAttribute(atList, s);
+        // System.out.println("Current attribute is: "+ currentAttribute.name);
+        Node<String> tr = new Node<String>(currentAttribute.name);
+        int m = s.getMajorityClass(scheme);
+
+        for (String value : currentAttribute.values) {
+            Sample subg = new Sample();
+            for (Example e : s.examples) {
+                if (e.attributeValues[currentAttribute.pos] == currentAttribute.getIndexOfValues(value)) {
+                    subg.examples.add(e);
+                }
+            }
+            atList = Util.removeAttribute(currentAttribute, atList);
+            Node<String> subTree = learnDecisionTree(subg, atList, m);
+
+            subTree.setData(value + ": " + subTree.getData());
+            tr.addChild(subTree);
+        }
+        return tr;
+    }
+
     public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println("ERROR: please call the executable with 2 parameters:");
-            System.out.println("    java DTLearn <SchemeFile> <DataFile>");
-            return;
-        }
 
-        String schemeFileName = args[0];
-        String dataFileName = args[1];
-        DTLearner mlStuff = new DTLearner(schemeFileName, dataFileName);
-        mlStuff.doDecisionTree();
+        Scheme sc = new Scheme();
+        Sample sample = new Sample();
+        sc.loadSchemeFile(args[0]);
+        sample.loadExamples(args[1], sc);
+        DTLearner dtlearn = new DTLearner(sc);
+        Util util = new Util();
+        Node<String> root;
+        // util.printAttrList(scheme);
+        // util.printSample(sample);
+        sc.setFunction();
+        sc.attrList.remove(sc.attrList.size() - 1);
+        root = dtlearn.learnDecisionTree(sample, sc.attrList, sample.getMajorityClass(sc));
+        util.printTree(root, "-");
+
     }
 
-    // Attributes
-    private Scheme scheme;
-    private Sample sample;
-    private Node tree;
-
-    // Constructors
-    public DTLearner(String schemeFileName, String dataFileName) {
-        scheme = new Scheme(schemeFileName);
-        sample = new Sample(scheme, dataFileName);
-    }
-
-    // Public Methods
-    public void doDecisionTree() {
-        System.out.println("Learning Starts:");
-        tree = learnDecisionTree(sample.trainingSet, scheme.attributes, "");
-        tree.printTree();
-    }
-
-    // Private Methods
-    private Node learnDecisionTree(ArrayList<Example> examples, ArrayList<Attribute> attribs, String majorityLabel) {
-        // 3 base cases
-        // case 1.
-        if (examples == null || examples.size() == 0) {
-            Node n = new Node(majorityLabel);
-            return n;
-        }
-
-        // case 2.
-        String item = null;
-        boolean allSame = true;
-        for (Example e: examples) {
-            String classifier = scheme.function.values.get(e.funcIndex);
-            if (item == null) {
-                item = classifier;
-            } else if (!item.equals(classifier)) {
-                allSame = false;
-            }
-        }
-        if (allSame) {
-            Node n = new Node(item);
-            return n;
-        }
-
-        // case 3.
-        if (attribs == null || attribs.size() == 0) {
-            Node n = new Node(this.getMajorityLabel(examples));
-            return n;
-        }
-
-        Attribute best = sample.getAttribute(attribs, examples);
-        Node treeRoot = new Node(best);
-        String majority = getMajorityLabel(examples);
-        int valuesCount = best.values.size();
-        int attribIndex = scheme.attributes.indexOf(best);
-
-        // split into subgroups
-        ArrayList<Example>[] subGroups = new ArrayList[valuesCount];
-        for (int i = 0; i < valuesCount; i++) {
-            subGroups[i] = new ArrayList<Example>();
-        }
-        for (Example e : examples) {
-            int i = e.attribIndices.get(attribIndex);
-            subGroups[i].add(e);
-        }
-        // create and link subtrees
-        ArrayList<Attribute> subAttribs = (ArrayList<Attribute>)attribs.clone();
-        subAttribs.remove(best);
-        for (int i = 0; i < valuesCount; i++) {
-            Node subTree = learnDecisionTree(subGroups[i], subAttribs, majority);
-            treeRoot.children.add(subTree);
-            subTree.parent = treeRoot;
-            subTree.value = best.values.get(i);
-        }
-
-        return treeRoot;
-    }
-
-    private String getMajorityLabel(ArrayList<Example> examples) {
-        int labelCount = scheme.function.values.size();
-        int[] counter = new int[labelCount];
-        for (int i = 0; i < labelCount; i++) {
-            counter[i] = 0;
-        }
-        for (Example e: examples) {
-            counter[e.funcIndex] += 1;
-        }
-
-        int maxIndex = -1;
-        int max = -1;
-        for (int i = 0; i < labelCount; i++) {
-            if (counter[i] > max) {
-                max = counter[i];
-                maxIndex = i;
-            }
-        }
-
-        return scheme.function.values.get(maxIndex);
-    }
 }

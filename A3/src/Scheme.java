@@ -1,67 +1,71 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 
 class Scheme {
-    // Attributes
-    public ArrayList<Attribute> attributes;
-    public Attribute function;
+    List<Attribute> attrList;
+    Attribute function;
 
-    // Constructors
-    public Scheme(String filename) {
-        loadSchemeFile(filename);
+    Scheme() {
+        this.attrList = new ArrayList<Attribute>();
     }
 
-    public Scheme(ArrayList<Attribute> attributes) {
-        this.attributes = attributes;
-    }
-
-    // Private Methods
-    private void loadSchemeFile(String schemeFilename) {
-        try (BufferedReader br = new BufferedReader(new FileReader(schemeFilename))) {
-            int paragraphCount = -1;
-
-            for (String line; (line = br.readLine()) != null; ) {
-                if (line.length() != 0) {
-                    line = line.trim();
-                    // Check if it's the first line
-                    if (paragraphCount == -1) {
-                        paragraphCount = Integer.parseInt(line);
-                        attributes = new ArrayList<Attribute>(paragraphCount);
-                    } else {
-                        // First set attribute name
-                        String name = line;
-                        line = br.readLine().trim();
-
-                        // Read attribute count
-                        int count = Integer.parseInt(line);
-                        ArrayList<String> values = new ArrayList<String>(count);
-                        line = br.readLine().trim();
-
-                        // Read attribute values
-                        String[] s = line.split("\\s+");
-                        for (String val : s) {
-                            values.add(val);
-                        }
-
-                        // create Attribute
-                        if (paragraphCount != 1) {
-                            attributes.add(new Attribute(name, values, false));
-                        } else {
-                            function = new Attribute(name, values, true);
-                        }
-                        
-                        paragraphCount -= 1;
-                    }
+    void loadSchemeFile(String fileName) {
+        try {
+            Scanner sc = new Scanner(new File(fileName));
+            int numPara = sc.nextInt();
+            /* Read the fist n-1 attrubutes */
+            sc.nextLine();
+            // System.out.println(numPara);
+            for (int i = 0; i < numPara; i++) {
+                sc.nextLine();
+                String name = sc.nextLine();
+                int numVals = sc.nextInt();
+                sc.nextLine();
+                String valsLine = sc.nextLine();
+                List<String> tempAttrList = new ArrayList<String>();
+                String[] attrArr = valsLine.split(" ");
+                for (String a : attrArr) {
+                    tempAttrList.add(a);
                 }
+                Attribute at = new Attribute(name, tempAttrList, i);
+                this.attrList.add(at);
             }
-            // line is not visible here.
-        } catch (IOException e) {
-            System.out.println("ERROR: something went wrong reading from file: " + schemeFilename);
-            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.out.println("Please enter a scheme file " + e);
         }
+    }
 
-        return;
-    } 
+    Attribute getFunctionAttribute() {
+        return this.attrList.get(attrList.size() - 1);
+    }
+
+    void setFunction() {
+        this.function = attrList.get(attrList.size() - 1);
+    }
+
+    int getIndexOfAttribute(String toCheck) {
+        int j = 0;
+        for (Attribute i : this.attrList) {
+            if (i.name.equals(toCheck)) {
+                return j;
+            }
+            j++;
+        }
+        System.out.println("Could not find attribute");
+        return -1;
+    }
+
+    void removeAttribute(Attribute toRemove) {
+        int remIndex = -1;
+        int countIndex = 0;
+        for (Attribute a : this.attrList) {
+            if (a.name.equals(toRemove.name)) {
+                remIndex = countIndex;
+            }
+            countIndex++;
+        }
+        if (remIndex > -1) {
+            this.attrList.remove(remIndex);
+        }
+    }
 }

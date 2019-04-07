@@ -1,13 +1,25 @@
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 
 class Example {
-    // Attributes
-    public ArrayList<Integer> attribIndices;
-    public int funcIndex;
+  int[] attributeValues;
+  int functionValue;
+  int arraySize;
 
-    // Constructors
-    public Example(ArrayList<Integer> attribIndices, int funcIndex) {
-        this.attribIndices = attribIndices;
-        this.funcIndex = funcIndex;
-    }
+  Example(int numAttr) {
+    this.attributeValues = new int[numAttr];
+    this.arraySize = numAttr;
+  }
+
+  void setFunctionValue(int fVal) {
+    this.functionValue = fVal;
+  }
+
+  void setAttributeValues(int[] list) {
+    this.attributeValues = list;
+  }
+
+  int getFunctionValue() {
+    return this.attributeValues[arraySize - 1];
+  }
 }

@@ -1,152 +1,135 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 
 class Sample {
-    // Attributes
-    public ArrayList<Example> trainingSet;
-    private Scheme scheme;
+    List<Example> examples;
 
-    // Constructors
-    public Sample(Scheme scheme, String dataFile) {
-        this.scheme = scheme;
-        trainingSet = new ArrayList<Example>();
-        if (!readDataFile(dataFile)) {
-            System.out.println("ERROR: datafile does not parallel schemafile!");
-            System.exit(1);
-        }
+    Sample() {
+        this.examples = new ArrayList<Example>();
     }
 
-    // Public Methods
-    // getAttribute(attrib, g)
-    public Attribute getAttribute(ArrayList<Attribute> attribs, ArrayList<Example> examples) {
-        int classCount = scheme.function.values.size();
-        double info = getInfoGain(examples, classCount);
-        double maxGain = -1.0;
-        Attribute bestAttrib = null;
-        for (Attribute attrib : attribs) {
-            double remainder = getRemainder(attrib, examples, classCount);
-            double gain = info - remainder;
-            System.out.println("\tTest " + attrib.name + ": gain = " + gain);
-            if (gain > maxGain) {
-                maxGain = gain;
-                bestAttrib = attrib;
+    void loadExamples(String fileName, Scheme scheme) {
+        try {
+            Scanner sc = new Scanner(new File(fileName));
+            sc.nextLine();
+            while (sc.hasNextLine()) {
+                Example toAddExample = new Example(scheme.attrList.size());
+                int attrIndex = 0;
+                String[] line = sc.nextLine().split("\\s+");
+                for (String s : line) {
+                    toAddExample.attributeValues[attrIndex] = scheme.attrList.get(attrIndex).getIndexOfValues(s);
+                    attrIndex++;
+                }
+                this.examples.add(toAddExample);
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-        System.out.println("\t\tSelect attribute " + bestAttrib.name);
-        return bestAttrib;
     }
 
-    // Private Methods
-    // infoFmGp(g, k)
-    private double getInfoGain(ArrayList<Example> examples, int classCount) {
-        int size = examples.size();
-        if (size == 0) {
-            return 0.0;
-        }
-        int[] count = new int[classCount];
-        for (Example e : examples) {
-            count[e.funcIndex] += 1;
-        }
-
-        double infoGain = 0.0;
-        for (int i = 0; i < classCount; i++) {
-            double pr = (double)count[i] / (double)size; 
-            if (pr != 0.0 && pr != -0.0) {
-                infoGain -= pr * Math.log(pr);
-            }
-        }
-
-        return infoGain;
-    }
-
-    // getRemainder(b, g,k)
-    private double getRemainder(Attribute attrib, ArrayList<Example> examples, int classCount) {
-        int size = examples.size();
-        int valuesCount = attrib.values.size();
-        int attribIndex = scheme.attributes.indexOf(attrib);
-        // split into subgroups
-        ArrayList<Example>[] subGroups = new ArrayList[valuesCount];
-        for (int i = 0; i < valuesCount; i++) {
-            subGroups[i] = new ArrayList<Example>();
-        }
-        for (Example e : examples) {
-            int i = e.attribIndices.get(attribIndex);
-            subGroups[i].add(e);
-        }
-        // get subCounts
-        int[] subCounts = new int[valuesCount];
-        for (int i = 0; i < valuesCount; i++) {
-            subCounts[i] = subGroups[i].size();
-        }
-        // calculate remainder (whatever that is)
-        double remainder = 0.0;
-        for (int i = 0; i < valuesCount; i++) {
-            double pr = (double)subCounts[i] / (double)size;
-
-            double infoGain = getInfoGain(subGroups[i], classCount);
-            remainder += pr * infoGain;
-        }
-
-        return remainder;
-    }
-
-    private boolean readDataFile(String schemeFileName) {
-        try (BufferedReader br = new BufferedReader(new FileReader(schemeFileName))) {
-            int lineNum = 1;
-
-            for (String line; (line = br.readLine()) != null; ) {
-                if (line.length() != 0) {
-                    line = line.trim();
-                    // Check if it's the first line
-                    if (lineNum == 1) {
-                        // validate dataFile against schema
-                        String[] s = line.split("\\s+");
-                        for (int i = 0; i < s.length; i += 1) {
-                            if (i+1 == s.length) { // is func?
-                                if (!s[i].equals(scheme.function.name)) {
-                                    System.out.println(s[i] + " does not equal " + scheme.function.name);
-                                    return false;
-                                }
-                            } else { // is attribute
-                                if (!s[i].equals(scheme.attributes.get(i).name)) {
-                                    System.out.println(s[i] + " does not equal " + scheme.attributes.get(i).name);
-                                    return false;
-                                }
-                            }
-                        }
-
-                        lineNum += 1;
-                    } else {
-                        ArrayList<Integer> attribIndices = new ArrayList<Integer>();
-                        String[] s = line.split("\\s+");
-                        
-                        for (int i = 0; i < s.length; i += 1) {
-                            
-                            if (i+1 == s.length) { // is func?
-                                int index = scheme.function.values.indexOf(s[i]);
-                                if (index == -1 || attribIndices.contains(-1)) { // validate data
-                                    System.out.println(s[i] + " could not be found in the scheme of this dataset");
-                                    return false;
-                                }
-                                trainingSet.add(new Example(attribIndices, index));
-                                
-                            } else { // is attribute
-                                attribIndices.add(scheme.attributes.get(i).values.indexOf(s[i]));
-                            }
-                        }
-
-                    }
+    double getInfo(List<Example> ex, int numClass) {
+        int size = ex.size();
+        int[] count = new int[numClass];
+        for (int j = 0; j < numClass; j++) {
+            for (Example e : ex) {
+                if (j == e.getFunctionValue()) {
+                    count[j]++;
                 }
             }
-            // line is not visible here.
-        } catch (IOException e) {
-            System.out.println("ERROR: something went wrong reading from file: " + schemeFileName);
-            e.printStackTrace();
-            return false;
         }
+        // System.out.println(Arrays.toString(count));
+        double I = 0;
+        for (int j = 0; j < numClass; j++) {
+            double pr = (double) count[j] / size;
+            if (pr > 0) {
+                I = I - (pr * (Math.log(pr) / Math.log(2)));
+            }
+        }
+        // System.out.println(I);
+        return I;
+    }
 
+    double getRemainder(Attribute b, List<Example> ex, int k) {
+        // System.out.println("Attribute: " + b.name);
+        int size = ex.size();
+        int m = b.values.size();
+
+        Sample[] subg = new Sample[m];
+        int[] subCnt = new int[m];
+        for (int i = 0; i < m; i++) {
+            subg[i] = new Sample();
+        }
+        for (int i = 0; i < m; i++) {
+            for (Example e : ex) {
+                if (e.attributeValues[b.pos] == i) {
+                    subg[i].examples.add(e);
+                }
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            subCnt[i] = subg[i].examples.size();
+        }
+        double remainder = 0;
+
+        for (int i = 0; i < m; i++) {
+            double pr = (double) subCnt[i] / size;
+            double ii = getInfo(subg[i].examples, k);
+            remainder += pr * ii;
+            // System.out.println(pr+" "+ii+" "+remainder);
+        }
+        /*
+         * for(int i =0;i<m;i++){ for(int j = 0; j<subg[i].examples.size(); j++){
+         * for(Example e:subg[i].examples){ System.out.println(i + ": " + b.pos + ": "
+         * +Arrays.toString(e.attributeValues)); } } }
+         */
+        return remainder;
+
+    }
+
+    Attribute getAttribute(List<Attribute> attributeList, Sample sam) {
+        int k = attributeList.get(attributeList.size() - 1).values.size();
+        double info = getInfo(sam.examples, k);
+        double maxGain = -1;
+        Attribute bestA = null;
+        for (Attribute b : attributeList) {
+            double remainder = getRemainder(b, sam.examples, k);
+            double gain = info - remainder;
+            System.out.println("Test " + b.name + ": gain = " + gain);
+            if (gain > maxGain) {
+                maxGain = gain;
+                bestA = b;
+            }
+        }
+        System.out.println("\tSelected attribute: " + bestA.name);
+        System.out.println();
+        return bestA;
+    }
+
+    /* Returns the the index of the value that getsf the majority classification */
+    int getMajorityClass(Scheme sc) {
+        int[] arr = new int[sc.getFunctionAttribute().values.size()];
+        for (Example ex : this.examples) {
+            arr[ex.getFunctionValue()]++;
+        }
+        int highest = arr[0];
+        int highestIndex = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] > highest) {
+                highest = arr[i];
+                highestIndex = i;
+            }
+        }
+        return highestIndex;
+    }
+
+    boolean checkIfAllSameClass() {
+        int initialValue = this.examples.get(0).getFunctionValue();
+        for (Example e : this.examples) {
+            if (e.getFunctionValue() != initialValue) {
+                return false;
+            }
+        }
         return true;
     }
+
 }
