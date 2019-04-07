@@ -7,6 +7,26 @@ public class Node {
     String linkLabel = ""; // atribute values of parent
     Node parent = null;
 
-    public Node() {
+    // Extra instances
+    List<Node> children;
+    int depth = 0;
+    int indexAtDepth = 0;
+
+    public Node(String nodeLabel) {
+        this.nodeLabel = nodeLabel;
+        children = new LinkedList<Node>();
     }// End construtor
+
+    // --------------------------------------------------------------------
+    // Other function
+    // --------------------------------------------------------------------
+
+    public void addChild(Node child){
+        this.children.add(child);
+    }
+
+    public void linkNode(Node parent, String linkLabel){
+        this.linkLabel = linkLabel;
+        this.parent = parent;
+    }
 }// End class
