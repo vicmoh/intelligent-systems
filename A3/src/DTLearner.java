@@ -3,56 +3,66 @@ import java.io.*;
 
 class DTLearner {
     Scheme scheme;
+    DataSet dataSet;
 
-    DTLearner(Scheme s) {
-        this.scheme = s;
-    }
+    /**
+     * create a decisive tree learner
+     * 
+     * @param scheme
+     */
+    DTLearner(Scheme scheme) {
+        this.scheme = scheme;
+    }// end constructor
 
-    Node<String> learnDecisionTree(Sample s, List<Attribute> atList, int sMajor) {
-        if (s.examples.size() == 0) {
-            return new Node<String>(scheme.function.valueList.get(sMajor));
-        }
-        if (s.checkIfAllSameClass() == true) {
-            return new Node<String>(scheme.function.valueList.get(s.getMajorityClass(scheme)));
-        }
-        if (atList.size() == 0) {
-            return new Node<String>(scheme.function.valueList.get(s.getMajorityClass(scheme)));
-        }
-        Attribute currentAttribute = s.getAttribute(atList, s);
-        // System.out.println("Current attribute is: "+ currentAttribute.name);
-        Node<String> tr = new Node<String>(currentAttribute.attributeName);
-        int m = s.getMajorityClass(scheme);
-
+    /**
+     * cecisionTreeLearning method implements decision tree learning algorithm.
+     * 
+     * @param set
+     * @param attributeList
+     * @param sMajor
+     * @return node of the tree
+     */
+    Node<String> decisionTreeLearning(DataSet set, List<Attribute> attributeList, int sMajor) {
+        // check if example siz is zero
+        if (set.examples.size() == 0)
+            return new Node<String>(this.scheme.function.valueList.get(sMajor));
+        // check if attribute size is zero
+        if (attributeList.size() == 0)
+            return new Node<String>(this.scheme.function.valueList.get(set.getMajorityValue(this.scheme)));
+        // check if all of them are in the same class
+        if (set.isAllSameClass())
+            return new Node<String>(this.scheme.function.valueList.get(set.getMajorityValue(this.scheme)));
+        // initialize the attribute the
+        Attribute currentAttribute = set.getAttribute(attributeList, set);
+        Node<String> tree = new Node<String>(currentAttribute.attributeName);
+        int m = set.getMajorityValue(scheme);
+        // for loop the attribute and sub
         for (String value : currentAttribute.valueList) {
-            Sample subg = new Sample();
-            for (Example e : s.examples) {
-                if (e.attributeValues[currentAttribute.numberOfValue] == currentAttribute.getIndexOfValues(value)) {
+            DataSet subg = new DataSet();
+            for (Example e : set.examples)
+                if (e.attributeValues[currentAttribute.numberOfValue] == currentAttribute.getIndexOfValues(value))
                     subg.examples.add(e);
-                }
-            }
-            atList = Util.removeAttribute(currentAttribute, atList);
-            Node<String> subTree = learnDecisionTree(subg, atList, m);
-
+            // recursively remove the old attributu and add to the tree
+            Node<String> subTree = decisionTreeLearning(subg, Util.removeAttribute(currentAttribute, attributeList), m);
             subTree.setData(value + ": " + subTree.getData());
-            tr.addChild(subTree);
-        }
-        return tr;
-    }
+            tree.addChild(subTree);
+        } // end for
+        return tree;
+    }// end function
 
     public static void main(String[] args) {
-
-        Scheme sc = new Scheme();
-        Sample sample = new Sample();
-        sc.loadSchemeFile(args[0]);
-        sample.loadExamples(args[1], sc);
-        DTLearner dtlearn = new DTLearner(sc);
+        // initialze and declare vaiables
+        Scheme scheme = new Scheme();
+        DataSet sample = new DataSet();
+        scheme.loadSchemeFile(args[0]);
+        sample.loadExamples(args[1], scheme);
+        DTLearner dtlearn = new DTLearner(scheme);
         Util util = new Util();
         Node<String> root;
-        // util.printAttrList(scheme);
-        // util.printSample(sample);
-        sc.setFunction();
-        sc.attrList.remove(sc.attrList.size() - 1);
-        root = dtlearn.learnDecisionTree(sample, sc.attrList, sample.getMajorityClass(sc));
+        // run the decision tree learning
+        scheme.setFunction();
+        scheme.attrList.remove(scheme.attrList.size() - 1);
+        root = dtlearn.decisionTreeLearning(sample, scheme.attrList, sample.getMajorityValue(scheme));
         util.printTree(root, "-");
 
     }

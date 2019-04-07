@@ -1,10 +1,10 @@
 import java.util.*;
 import java.io.*;
 
-class Sample {
+class DataSet {
     List<Example> examples;
 
-    Sample() {
+    DataSet() {
         this.examples = new ArrayList<Example>();
     }
 
@@ -54,10 +54,10 @@ class Sample {
         int size = ex.size();
         int m = b.valueList.size();
 
-        Sample[] subg = new Sample[m];
+        DataSet[] subg = new DataSet[m];
         int[] subCnt = new int[m];
         for (int i = 0; i < m; i++) {
-            subg[i] = new Sample();
+            subg[i] = new DataSet();
         }
         for (int i = 0; i < m; i++) {
             for (Example e : ex) {
@@ -86,7 +86,7 @@ class Sample {
 
     }
 
-    Attribute getAttribute(List<Attribute> attributeList, Sample sam) {
+    Attribute getAttribute(List<Attribute> attributeList, DataSet sam) {
         int k = attributeList.get(attributeList.size() - 1).valueList.size();
         double info = getInfo(sam.examples, k);
         double maxGain = -1;
@@ -106,7 +106,7 @@ class Sample {
     }
 
     /* Returns the the index of the value that getsf the majority classification */
-    int getMajorityClass(Scheme sc) {
+    int getMajorityValue(Scheme sc) {
         int[] arr = new int[sc.getFunctionAttribute().valueList.size()];
         for (Example ex : this.examples) {
             arr[ex.getFunctionValue()]++;
@@ -122,7 +122,7 @@ class Sample {
         return highestIndex;
     }
 
-    boolean checkIfAllSameClass() {
+    boolean isAllSameClass() {
         int initialValue = this.examples.get(0).getFunctionValue();
         for (Example e : this.examples) {
             if (e.getFunctionValue() != initialValue) {

@@ -13,7 +13,7 @@ class Attribute {
   List<String> valueList;
 
   /**
-   * Creates attributue object
+   * creates attributue object
    * 
    * @param attributeName
    * @param valueList
@@ -26,7 +26,7 @@ class Attribute {
   }// end construtor
 
   /**
-   * 
+   * get the index values from the data
    * @param toBeCheck
    * @return int value of the index, return -1 if doesn't exist
    */
