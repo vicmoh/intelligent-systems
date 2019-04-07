@@ -70,8 +70,8 @@ public class Scheme {
             closeFile(br);
         }
         System.out.println("loadSchemeFile(): Load complete...\n");
-        this.function = this.attributeList.get(this.attributeList.size() - 1);
-        attributeList.remove(this.attributeList.size() - 1);
+        // this.function = this.attributeList.get(this.attributeList.size() - 1);
+        // attributeList.remove(this.attributeList.size() - 1);
     }// End function
 
     /**
