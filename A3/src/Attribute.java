@@ -19,7 +19,7 @@ class Attribute {
    * @param valueList
    * @param numberOfValue
    */
-  Attribute(String attributeName, List<String> valueList, int numberOfValue) {
+  Attribute(String attributeName, int numberOfValue, List<String> valueList) {
     this.attributeName = attributeName;
     this.valueList = valueList;
     this.numberOfValue = numberOfValue;

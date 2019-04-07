@@ -27,7 +27,7 @@ class Scheme {
                 for (String a : attrArr) {
                     tempAttrList.add(a);
                 }
-                Attribute at = new Attribute(name, tempAttrList, i);
+                Attribute at = new Attribute(name, i, tempAttrList);
                 this.attrList.add(at);
             }
         } catch (FileNotFoundException e) {
