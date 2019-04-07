@@ -38,13 +38,12 @@ public class Scheme {
         try {
             br = new BufferedReader(new FileReader(fileName));
         } catch (Exception err) {
-            System.out.println(err.toString());
+            System.out.println("loadSchemeFile(): Can not open file: " + err.toString());
         } // End try
 
         // Read the file
         String firstLine = null;
         System.out.println("\nloadSchemeFile(): Reading file...");
-
         try {
             // Get first line
             firstLine = br.readLine();
@@ -56,7 +55,7 @@ public class Scheme {
             this.numberOfAttribute = Integer.parseInt(firstLine);
 
             // Read each attribute
-            for (int x = 0; x < this.numberOfAttribute - 1; x++) {
+            for (int x = 0; x < this.numberOfAttribute; x++) {
                 if (br.readLine() == null)
                     break;
                 String name = br.readLine();
@@ -105,8 +104,13 @@ public class Scheme {
     }// End function
 
     public static void main(String[] args) {
-        Scheme s = new Scheme();
-        s.loadSchemeFile("./assets/GolfScheme.txt");
-        s.printScheme();
+        // Load scheme
+        Scheme scheme = new Scheme();
+        scheme.loadSchemeFile("./assets/GolfScheme.txt");
+        scheme.printScheme();
+        // Load data set
+        DataSet data = new DataSet(scheme);
+        data.loadDataSetFile("./assets/Golf.txt");
+        data.printDataSet();
     }// End main
 }// End class
