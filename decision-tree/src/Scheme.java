@@ -103,6 +103,23 @@ public class Scheme {
         System.out.println("printScheme(): Printing done.\n");
     }// End function
 
+    //------------------------------------------------------------------
+    // Custom function
+    //------------------------------------------------------------------
+
+    public int attributeIndex(Attribute a){
+        for(int i = 0; i < attList.size(); i++){
+            if(attributeList.get(i).equals(a)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    //------------------------------------------------------------------
+    // Main function
+    //------------------------------------------------------------------
+
     public static void main(String[] args) {
         // Load scheme
         Scheme scheme = new Scheme();

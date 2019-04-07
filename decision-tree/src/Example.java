@@ -32,4 +32,13 @@ public class Example {
         attributes.forEach(k -> System.out.print(k + " "));
         System.out.println();
     }// End function
+
+    //------------------------------------------------------------
+    // Custom function
+    //------------------------------------------------------------
+
+    public int functionOuput(){
+        return attributes.get(this.attributes.size()-1);
+    }
+
 }// End class
