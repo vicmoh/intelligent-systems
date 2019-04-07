@@ -56,14 +56,10 @@ class DTLearner {
         DataSet dataSet = new DataSet();
         scheme.loadSchemeFile(args[0]);
         dataSet.loadDataSetFile(args[1], scheme);
-        DTLearner learner = new DTLearner(scheme);
-        Node<String> root;
         // run the decision tree learning
         scheme.setFunction();
         scheme.attrList.remove(scheme.attrList.size() - 1);
-        root = learner.decisionTreeLearning(dataSet, scheme.attrList, dataSet.getMajorityValue(scheme));
+        Node<String> root = new DTLearner(scheme).decisionTreeLearning(dataSet, scheme.attrList, dataSet.getMajorityValue(scheme));
         Util.printTree(root, "-");
-
-    }
-
-}
+    }// end main
+}// end class

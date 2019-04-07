@@ -8,7 +8,7 @@ class DataSet {
         this.examples = new ArrayList<Example>();
     }
 
-    void loadExamples(String fileName, Scheme scheme) {
+    void loadDataSetFile(String fileName, Scheme scheme) {
         try {
             Scanner sc = new Scanner(new File(fileName));
             sc.nextLine();
