@@ -98,4 +98,9 @@ public class DTLeaner {
                 attributes.remove(x);
         return attributes;
     }
+
+    public void printTree(Node ){
+
+    }
+
 }// End class
