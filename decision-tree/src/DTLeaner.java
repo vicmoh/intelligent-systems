@@ -48,9 +48,12 @@ public class DTLeaner {
         // Go through for each value of attribute
         for (int x = 0; x < attribute.valueList.size(); x++) {
             DataSet subData = new DataSet(this.aScheme);
-            for (int y = 0; y < this.dataSet.dataSet.size(); y++)
+            for (int y = 0; y < this.dataSet.dataSet.size(); y++){
+                if (this.dataSet.dataSet.get(y).attributes.size() == 0)
+                    continue;
                 if (this.dataSet.dataSet.get(y).attributes.get(attributeIndex) == x)
                     subData.addExample(this.dataSet.dataSet.get(y));
+            }
 
             // If data is empty
             if (subData.dataSet.size() == 0)

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class DataSet {
     Scheme aScheme = null;
-    ArrayList<Example> dataSet = new ArrayList<Example>();;
+    ArrayList<Example> dataSet = new ArrayList<Example>();
     int dataSetSize = 0;
 
     /**
@@ -148,12 +148,15 @@ public class DataSet {
         int attIndex = this.aScheme.attributeIndex(attribute);
         ArrayList<Example> tempAttList = new ArrayList<Example>();
         DataSet[] subSamples = new DataSet[attributeSize];
+
         // Loop through and create a sub sample
         for (int i = 0; i < attributeSize; i++) {
-            for (Example ex : this.dataSet)
+            for (Example ex : this.dataSet) {
+                if (ex.attributes.size() == 0)
+                    continue;
                 if (i == ex.attributes.get(attIndex))
                     tempAttList.add(ex);
-
+            }
             // Add the new data set and example
             subSamples[i] = new DataSet(this.aScheme, tempAttList);
             tempAttList = new ArrayList<Example>();
@@ -183,10 +186,11 @@ public class DataSet {
 
     private int[] countOutputOfExamples() {
         int outputCount = this.aScheme.function.valueList.size();
+        System.out.println("::::::::::::::::::::::: " + outputCount);
         int[] count = new int[outputCount];
-        for (int i = 0; i < outputCount; i++)
+        for (int i = 0; i < outputCount - 1; i++)
             for (Example ex : this.dataSet)
-                if (ex.functionOuput() == i)
+                if (ex.functionOutput() == i)
                     count[i]++;
         return count;
     }

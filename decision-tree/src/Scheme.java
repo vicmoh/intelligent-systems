@@ -1,3 +1,4 @@
+import java.awt.desktop.SystemSleepEvent;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -73,7 +74,7 @@ public class Scheme {
         }
         closeFile(br);
         System.out.println("loadSchemeFile(): Load complete...\n");
-        // this.function = this.attributeList.get(this.attributeList.size() - 1);
+        this.function = this.attributeList.get(this.attributeList.size() - 1);
         // attributeList.remove(this.attributeList.size() - 1);
     }// End function
 
@@ -134,5 +135,9 @@ public class Scheme {
         DataSet data = new DataSet(scheme);
         data.loadDataSetFile("./assets/Golf.txt");
         data.printDataSet();
+        // Go through the tree
+        DTLeaner dt = new DTLeaner(scheme, data);
+        Node root = dt.decisionTreeLearning(data, scheme.attributeList, "Root");
+        dt.printTree(root);
     }// End main
 }// End class

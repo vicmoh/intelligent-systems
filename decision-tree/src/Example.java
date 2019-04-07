@@ -37,7 +37,9 @@ public class Example {
     // Custom function
     //------------------------------------------------------------
 
-    public int functionOuput(){
+    public int functionOutput(){
+        if(attributes.size() == 0)
+            return 0;
         return attributes.get(this.attributes.size()-1);
     }
 
