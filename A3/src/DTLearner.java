@@ -44,9 +44,9 @@ class DTLearner {
         // for loop the attribute and sub
         for (String value : currentAttribute.valueList) {
             DataSet subg = new DataSet();
-            for (Example e : set.dataSet)
-                if (e.attributeValues[currentAttribute.numberOfValue] == currentAttribute.getIndexVal(value))
-                    subg.dataSet.add(e);
+            for (Example currentExample : set.dataSet)
+                if (currentExample.attributeValues[currentAttribute.numberOfValue] == currentAttribute.getIndexVal(value))
+                    subg.dataSet.add(currentExample);
             // recursively remove the old attributu and add to the tree
             Node<String> subTree = decisionTreeLearning(subg, Util.removeAttribute(currentAttribute, attributeList), m);
             subTree.setData(value + ": " + subTree.getData());
