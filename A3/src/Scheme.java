@@ -65,12 +65,11 @@ class Scheme {
     }// end function
 
     int getIndexOfAttribute(String toBeCheck) {
-        int j = 0;
-        for (Attribute i : this.attributeList) {
-            if (i.attributeName.equals(toBeCheck))
-                return j;
-            j++;
-        }
+        for (int x = 0; x < this.attributeList.size(); x++) {
+            Attribute curAttribute = this.attributeList.get(x);
+            if (curAttribute.attributeName.equals(toBeCheck))
+                return x;
+        } // end for
         System.out.println("Could not find attribute");
         return -1;
     }// end function
