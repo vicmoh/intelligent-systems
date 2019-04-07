@@ -62,6 +62,7 @@ class DTLearner {
      */
     public static void main(String[] args) {
         // initialze and declare vaiables
+        System.out.println("");
         Scheme scheme = new Scheme();
         DataSet dataSet = new DataSet(scheme);
         scheme.loadSchemeFile(args[0]);
@@ -71,6 +72,7 @@ class DTLearner {
         scheme.attributeList.remove(scheme.attributeList.size() - 1);
         Node<String> root = new DTLearner(scheme).decisionTreeLearning(dataSet, scheme.attributeList,
                 dataSet.getMajorityValue(scheme));
-        Util.printTree(root, "|");
+        Util.printTree(root, "-");
+        System.out.println("");
     }// end main
 }// end class

@@ -92,7 +92,7 @@ class DataSet {
                 maxGain = gain;
             } // end if
         } // end for
-        System.out.println("\tSelected attribute: " + bestAttribute.attributeName);
+        System.out.println("\tChoose attribute: " + bestAttribute.attributeName);
         System.out.println();
         return bestAttribute;
     }// end function
