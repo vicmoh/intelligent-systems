@@ -15,6 +15,9 @@ class Node<T> {
      */
     public Node(T data) {
         this.data = data;
+        this.nodeLabel = (String) data;
+        if (this.parent != null)
+            this.linkLabel = (String) this.parent.getData();
     }// end consstrutor
 
     /**
