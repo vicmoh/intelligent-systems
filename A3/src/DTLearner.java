@@ -38,17 +38,17 @@ class DTLearner {
         if (set.isAllSameClass())
             return new Node<String>(this.scheme.function.valueList.get(set.getMajorityValue(this.scheme)));
         // initialize the attribute the
-        Attribute currentAttribute = set.getBestAttribute(attributeList, set);
-        Node<String> tree = new Node<String>(currentAttribute.attributeName);
+        Attribute bestAttribute = set.getBestAttribute(attributeList, set);
+        Node<String> tree = new Node<String>(bestAttribute.attributeName);
         int m = set.getMajorityValue(scheme);
         // for loop the attribute and sub
-        for (String value : currentAttribute.valueList) {
+        for (String value : bestAttribute.valueList) {
             DataSet subg = new DataSet();
             for (Example currentExample : set.dataSet)
-                if (currentExample.attributeValues[currentAttribute.numberOfValue] == currentAttribute.getIndexVal(value))
+                if (currentExample.attributeValues[bestAttribute.numberOfValue] == bestAttribute.getIndexVal(value))
                     subg.dataSet.add(currentExample);
             // recursively remove the old attributu and add to the tree
-            Node<String> subTree = decisionTreeLearning(subg, Util.removeAttribute(currentAttribute, attributeList), m);
+            Node<String> subTree = decisionTreeLearning(subg, Util.removeAttribute(bestAttribute, attributeList), m);
             subTree.setData(value + ": " + subTree.getData());
             tree.addChild(subTree);
         } // end for
