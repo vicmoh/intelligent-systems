@@ -64,28 +64,34 @@ class Scheme {
         return this.attributeList.get(attributeList.size() - 1);
     }// end function
 
-    int getIndexOfAttribute(String toCheck) {
+    int getIndexOfAttribute(String toBeCheck) {
         int j = 0;
         for (Attribute i : this.attributeList) {
-            if (i.attributeName.equals(toCheck))
+            if (i.attributeName.equals(toBeCheck))
                 return j;
             j++;
         }
         System.out.println("Could not find attribute");
         return -1;
-    }
+    }// end function
 
-    void removeAttribute(Attribute toRemove) {
-        int remIndex = -1;
+    /**
+     * remove the attribute
+     * 
+     * @param toBeRemove
+     */
+    void removeAttribute(Attribute toBeRemove) {
+        int removeIndex = -1;
         int countIndex = 0;
-        for (Attribute a : this.attributeList) {
-            if (a.attributeName.equals(toRemove.attributeName)) {
-                remIndex = countIndex;
-            }
+        // loop through the attribute list and find the matching val to remove
+        for (Attribute curAttribute : this.attributeList) {
+            if (curAttribute.attributeName.equals(toBeRemove.attributeName))
+                removeIndex = countIndex;
             countIndex++;
-        }
-        if (remIndex > -1) {
-            this.attributeList.remove(remIndex);
-        }
-    }
-}
+        } // end for
+
+        // if remain index is greater than zero
+        if (removeIndex >= 0)
+            this.attributeList.remove(removeIndex);
+    }// end function
+}// end class
