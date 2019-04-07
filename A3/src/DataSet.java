@@ -68,26 +68,33 @@ class DataSet {
         });
     }// end function
 
-    Attribute getBestAttribute(List<Attribute> attributeList, DataSet sam) {
+    /**
+     * get the best attribute
+     * 
+     * @param attributeList
+     * @param data
+     * @return the best attribute
+     */
+    Attribute getBestAttribute(List<Attribute> attributeList, DataSet data) {
         // declare variables
         int size = attributeList.get(attributeList.size() - 1).valueList.size();
-        double entropy = getEntropy(sam.dataSet, size);
+        double entropy = getEntropy(data.dataSet, size);
         double maxGain = -1;
-        Attribute bestA = null;
+        Attribute bestAttribute = null;
         // loop through the attribute list
         for (Attribute currentAttribute : attributeList) {
-            double remainder = getRemainder(currentAttribute, sam.dataSet, size);
+            double remainder = getRemainder(currentAttribute, data.dataSet, size);
             double gain = entropy - remainder;
             System.out.println("Test " + currentAttribute.attributeName + ": gain = " + gain);
             if (gain > maxGain) {
+                bestAttribute = currentAttribute;
                 maxGain = gain;
-                bestA = currentAttribute;
             } // end if
         } // end for
-        System.out.println("\tSelected attribute: " + bestA.attributeName);
+        System.out.println("\tSelected attribute: " + bestAttribute.attributeName);
         System.out.println();
-        return bestA;
-    }
+        return bestAttribute;
+    }// end function
 
     /**
      * get the entropy information
@@ -144,8 +151,8 @@ class DataSet {
         // get the remainder
         for (int x = 0; x < attributeSize; x++) {
             double pr = (double) subCnt[x] / exampleSize;
-            double ii = getEntropy(subg[x].dataSet, numberOfClass);
-            remainder += pr * ii;
+            double entropy = getEntropy(subg[x].dataSet, numberOfClass);
+            remainder += pr * entropy;
         } // end for
         return remainder;
     }// end function
