@@ -2,42 +2,83 @@ import java.util.*;
 import java.io.*;
 
 class Node<T> {
-  private T data = null;
-  private List<Node<T>> children = new ArrayList<>();
-  private Node<T> parent = null;
+    String nodeLabel = ""; // attribute Name
+    String linkLabel = ""; // atribute values of parent
+    private T data = null;
+    private List<Node<T>> children = new ArrayList<>();
+    private Node<T> parent = null;
 
-  public Node(T data) {
-    this.data = data;
-  }
+    /**
+     * initialize the node
+     * 
+     * @param data
+     */
+    public Node(T data) {
+        this.data = data;
+    }// end consstrutor
 
-  Node<T> addChild(Node<T> child) {
-    child.setParent(this);
-    this.children.add(child);
-    return child;
-  }
+    /**
+     * add child to the node
+     * 
+     * @param child
+     * @return child node
+     */
+    Node<T> addChild(Node<T> child) {
+        child.setParent(this);
+        this.children.add(child);
+        return child;
+    }// end function
 
-  void addChildren(List<Node<T>> children) {
-    children.forEach(each -> each.setParent(this));
-    this.children.addAll(children);
-  }
+    /**
+     * add children
+     * 
+     * @param children
+     */
+    void addChildren(List<Node<T>> children) {
+        children.forEach(child -> child.setParent(this));
+        this.children.addAll(children);
+    }// end function
 
-  List<Node<T>> getChildren() {
-    return children;
-  }
+    /**
+     * Set data of the node
+     * 
+     * @param data
+     */
+    void setData(T data) {
+        this.data = data;
+    }// end function
 
-  T getData() {
-    return data;
-  }
+    /**
+     * set parent
+     * 
+     * @param parent
+     */
+    void setParent(Node<T> parent) {
+        this.parent = parent;
+    }// end function
 
-  void setData(T data) {
-    this.data = data;
-  }
+    /**
+     * get parent node
+     * 
+     * @return parent node
+     */
+    Node<T> getParent() {
+        return parent;
+    }// end function
 
-  void setParent(Node<T> parent) {
-    this.parent = parent;
-  }
+    /**
+     * get children
+     * 
+     * @return list children nodes
+     */
+    List<Node<T>> getChildren() {
+        return children;
+    }// end function
 
-  Node<T> getParent() {
-    return parent;
-  }
-}
+    /**
+     * get the data of the node
+     */
+    T getData() {
+        return data;
+    }// end function
+}// end class

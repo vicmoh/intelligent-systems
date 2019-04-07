@@ -19,7 +19,7 @@ class Scheme {
             for (int i = 0; i < numPara; i++) {
                 sc.nextLine();
                 String name = sc.nextLine();
-                int numVals = sc.nextInt();
+                sc.nextInt();
                 sc.nextLine();
                 String valsLine = sc.nextLine();
                 List<String> tempAttrList = new ArrayList<String>();
