@@ -42,13 +42,13 @@ class Util {
      * remove an attribute
      * 
      * @param toRemove
-     * @param lst
+     * @param list
      * @return list of attribute that has been removed
      */
-    static List<Attribute> removeAttribute(Attribute toRemove, List<Attribute> lst) {
+    static List<Attribute> removeAttribute(Attribute toRemove, List<Attribute> list) {
         List<Attribute> newList = new ArrayList<Attribute>();
-        for (Attribute attribute : lst) 
-            if (attribute.attributeName.equals(toRemove.attributeName) == false) 
+        for (Attribute attribute : list)
+            if (attribute.attributeName.equals(toRemove.attributeName) == false)
                 newList.add(attribute);
         // return the remove attribute list
         return newList;
@@ -62,7 +62,7 @@ class Util {
      * @param appender
      */
     static <T> void printTree(Node<T> node, String appender) {
-        System.out.println(appender + node.getData());
-        node.getChildren().forEach(each -> printTree(each, appender + appender));
+        System.out.println(appender + "> " + node.getData());
+        node.getChildren().forEach(each -> printTree(each, appender + "-"));
     }// end function
 }// end class
