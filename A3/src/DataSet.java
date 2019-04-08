@@ -86,7 +86,7 @@ class DataSet {
         for (Attribute currentAttribute : attributeList) {
             double remainder = getRemainder(currentAttribute, data.dataSet, size);
             double gain = entropy - remainder;
-            System.out.println("\t" +currentAttribute.attributeName + ": information gain = " + gain);
+            System.out.println("\t" + currentAttribute.attributeName + ": information gain = " + gain);
             if (gain > maxGain) {
                 bestAttribute = currentAttribute;
                 maxGain = gain;
