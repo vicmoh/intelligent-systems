@@ -1,36 +1,85 @@
-import java.util.Arrays;
-import java.util.List;
 import java.util.*;
+import java.io.*;
 
-/**
- *
- * @author Vicky Mohmmmad
- */
-public class Node {
+class Node<T> {
     String nodeLabel = ""; // attribute Name
     String linkLabel = ""; // atribute values of parent
-    Node parent = null;
+    private T data = null;
+    private List<Node<T>> children = new ArrayList<>();
+    private Node<T> parent = null;
 
-    // Extra instances
-    List<Node> children;
-    int depth = 0;
-    int indexAtDepth = 0;
+    /**
+     * initialize the node
+     * 
+     * @param data
+     */
+    public Node(T data) {
+        this.data = data;
+        this.nodeLabel = (String) data;
+        if (this.parent != null)
+            this.linkLabel = (String) this.parent.getData();
+    }// end consstrutor
 
-    public Node(String nodeLabel) {
-        this.nodeLabel = nodeLabel;
-        children = new LinkedList<Node>();
-    }// End construtor
-
-    // --------------------------------------------------------------------
-    // Other function
-    // --------------------------------------------------------------------
-
-    public void addChild(Node child){
+    /**
+     * add child to the node
+     * 
+     * @param child
+     */
+    void addChild(Node<T> child) {
+        child.setParent(this);
         this.children.add(child);
-    }
+    }// end function
 
-    public void linkNode(Node parent, String linkLabel){
-        this.linkLabel = linkLabel;
+    /**
+     * add children
+     * 
+     * @param children
+     */
+    void addChildren(List<Node<T>> children) {
+        children.forEach(child -> child.setParent(this));
+        this.children.addAll(children);
+    }// end function
+
+    /**
+     * Set data of the node
+     * 
+     * @param data
+     */
+    void setData(T data) {
+        this.data = data;
+    }// end function
+
+    /**
+     * set parent
+     * 
+     * @param parent
+     */
+    void setParent(Node<T> parent) {
         this.parent = parent;
-    }
-}// End class
+    }// end function
+
+    /**
+     * get parent node
+     * 
+     * @return parent node
+     */
+    Node<T> getParent() {
+        return parent;
+    }// end function
+
+    /**
+     * get children
+     * 
+     * @return list children nodes
+     */
+    List<Node<T>> getChildren() {
+        return children;
+    }// end function
+
+    /**
+     * get the data of the node
+     */
+    T getData() {
+        return data;
+    }// end function
+}// end class

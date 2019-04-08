@@ -1,143 +1,96 @@
-import java.awt.desktop.SystemSleepEvent;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
+import java.io.*;
 
-import com.sun.source.doctree.AttributeTree;
-
-/**
- * Scheme class provides the definition of attributes and a function related to
- * data file. It stores scheme file attributes and the function
- * 
- * @author Vicky Mohammad
- */
-public class Scheme {
+class Scheme {
     ArrayList<Attribute> attributeList; // attribute list of scheme file
     int numberOfAttribute = 0; // number of attributes
     Attribute function = null; // a function
 
     /**
-     * Creates scheme object
+     * create scheme
      */
-    public Scheme() {
-        attributeList = new ArrayList<Attribute>();
-    }// End constructor
+    Scheme() {
+        this.attributeList = new ArrayList<Attribute>();
+    }// end constructor
 
     /**
-     * Load the scheme file
+     * load scheme file
      * 
-     * @param schemeFile string of the path
+     * @param fileName
      */
-    public void loadSchemeFile(String schemeFile) {
-        String fileName = schemeFile;
-        BufferedReader br = null;
+    void loadSchemeFile(String fileName) {
+        Scanner scanner = null;
         try {
-            br = new BufferedReader(new FileReader(fileName));
-        } catch (Exception err) {
-            System.out.println("loadSchemeFile(): Can not open file: " + err.toString());
-        } // End try
-
-        // Read the file
-        String firstLine = null;
-        System.out.println("\nloadSchemeFile(): Reading file...");
-        try {
-            // Get first line
-            firstLine = br.readLine();
-            if (firstLine == null || firstLine == "") {
-                System.out.println("loadSchemeFile(): Fail to parse, wrong format.");
-            }
-
-            // Get the number of attribute
-            this.numberOfAttribute = Integer.parseInt(firstLine);
-
-            // Read each attribute
-            for (int x = 0; x < this.numberOfAttribute; x++) {
-                if (br.readLine() == null)
-                    break;
-                String name = br.readLine();
-                String val = br.readLine();
-                String[] list = br.readLine().split(" ");
-                ArrayList<String> vals = new ArrayList<String>();
-                for (int y = 0; y < list.length; y++)
-                    vals.add(list[y]);
-                this.attributeList.add(new Attribute(name, Integer.parseInt(val), vals));
-            }
-        } catch (Exception err) {
-            closeFile(br);
-            System.out.println("loadSchemeFile(): Failed loading file.");
-            return;
-        }
-        closeFile(br);
-        System.out.println("loadSchemeFile(): Load complete...\n");
-        this.function = this.attributeList.get(this.attributeList.size() - 1);
-        // attributeList.remove(this.attributeList.size() - 1);
-    }// End function
+            // read each line
+            scanner = new Scanner(new File(fileName));
+            int numPara = scanner.nextInt();
+            scanner.nextLine();
+            // loop through and read each attribute section
+            for (int i = 0; i < numPara; i++) {
+                scanner.nextLine();
+                String name = scanner.nextLine();
+                scanner.nextInt();
+                scanner.nextLine();
+                // loop through the last data and split the value attribute
+                // and added to the list
+                String lineVals = scanner.nextLine();
+                List<String> tempAttributeList = new ArrayList<String>();
+                String[] attributeArray = lineVals.split("\\s+");
+                for (String a : attributeArray)
+                    tempAttributeList.add(a);
+                // add to the attribute list
+                Attribute newAttribute = new Attribute(name, i, tempAttributeList);
+                this.attributeList.add(newAttribute);
+            } // end for
+        } catch (FileNotFoundException error) {
+            System.out.println("Please enter a scheme file " + error);
+        } // end catch
+        scanner.close();
+    }// end function
 
     /**
-     * Function to close the buffered reader for reading and writing files.
+     * set function
+     */
+    void setFunction() {
+        this.function = attributeList.get(attributeList.size() - 1);
+    }// end function
+
+    /**
+     * get function
      * 
-     * @param br the buffered reader object
+     * @return functioni attributes
      */
-    public void closeFile(BufferedReader br) {
-        try {
-            br.close();
-        } catch (Exception err) {
-            System.out.println("closeFile(): failed to close file: " + err.toString());
-        }
-    }
+    Attribute getFunctionAttribute() {
+        return this.attributeList.get(attributeList.size() - 1);
+    }// end function
 
-    /**
-     * Print thee Scheme
-     */
-    public void printScheme() {
-        System.out.println("printScheme(): Printing scheme...");
-        attributeList.forEach((k) -> {
-            k.printAttribute();
-        });
-        System.out.println(numberOfAttribute);
-        if (function == null) {
-            System.out.println("Function: null");
-        } else {
-            System.out.println("Function: ");
-            function.printAttribute();
-        } // End if
-        System.out.println("printScheme(): Printing done.\n");
-    }// End function
-
-    // ------------------------------------------------------------------
-    // Custom function
-    // ------------------------------------------------------------------
-
-    public int attributeIndex(Attribute a) {
-        for (int i = 0; i < attributeList.size(); i++) {
-            if (attributeList.get(i).equals(a)) {
-                return i;
-            }
-        }
+    int getIndexOfAttribute(String toBeCheck) {
+        for (int x = 0; x < this.attributeList.size(); x++) {
+            Attribute curAttribute = this.attributeList.get(x);
+            if (curAttribute.attributeName.equals(toBeCheck))
+                return x;
+        } // end for
+        System.out.println("Could not find attribute");
         return -1;
-    }
+    }// end function
 
-    // ------------------------------------------------------------------
-    // Main function
-    // ------------------------------------------------------------------
+    /**
+     * remove the attribute
+     * 
+     * @param toBeRemove
+     */
+    void removeAttribute(Attribute toBeRemove) {
+        int removeIndex = -1;
+        int countIndex = 0;
+        // loop through the attribute list and find the matching val to remove
+        for (Attribute curAttribute : this.attributeList) {
+            if (curAttribute.attributeName.equals(toBeRemove.attributeName))
+                removeIndex = countIndex;
+            countIndex++;
+        } // end for
 
-    public static void main(String[] args) {
-        // Load scheme
-        Scheme scheme = new Scheme();
-        scheme.loadSchemeFile("./assets/GolfScheme.txt");
-        scheme.printScheme();
-        // Load data set
-        DataSet data = new DataSet(scheme);
-        data.loadDataSetFile("./assets/Golf.txt");
-        data.printDataSet();
-        // Go through the tree
-        DTLeaner dt = new DTLeaner(scheme, data);
-        Node root = dt.decisionTreeLearning(data, scheme.attributeList, "Root");
-        dt.printTree(root);
-    }// End main
-}// End class
+        // if remain index is greater than zero
+        if (removeIndex >= 0)
+            this.attributeList.remove(removeIndex);
+    }// end function
+}// end class

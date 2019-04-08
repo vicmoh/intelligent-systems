@@ -1,46 +1,59 @@
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 
 /**
  * Example class is used to store attribute values of a data example. It uses
  * integer to store attribute values.
  * 
- * @author Vicky Mohammmad
+ * @author Vicky Mohammad
  */
-public class Example {
+
+class Example {
     ArrayList<Integer> attributes;
+    int[] attributeValues;
+    int functionValue;
+    int arraySize;
 
     /**
-     * Creates example object
-     */
-    public Example() {
-        attributes = new ArrayList<Integer>();
-    }// End constructor
-
-    /**
-     * This method adds values of a data example to attributes
+     * create example object
      * 
-     * @param value integer to be added to the example
+     * @param numberAttribute
      */
-    public void add(int value) {
-        attributes.add(value);
-    }// End function
+    Example(int numberAttribute) {
+        this.attributeValues = new int[numberAttribute];
+        this.arraySize = numberAttribute;
+    }// end constructor
 
     /**
-     * This method prints out an example's attributes
+     * set attribute values
+     * 
+     * @param list
+     */
+    void setAttributeValues(int[] list) {
+        this.attributeValues = list;
+    }// end function
+
+    /**
+     * set function value
+     */
+    void setFuncVal(int val) {
+        this.functionValue = val;
+    }// end function
+
+    /**
+     * get function value
+     * 
+     * @return the function value
+     */
+    int getFuncVal() {
+        return this.attributeValues[arraySize - 1];
+    }// end function
+
+    /**
+     * print example
      */
     public void printExample() {
         attributes.forEach(k -> System.out.print(k + " "));
         System.out.println();
-    }// End function
-
-    //------------------------------------------------------------
-    // Custom function
-    //------------------------------------------------------------
-
-    public int functionOutput(){
-        if(attributes.size() == 0)
-            return 0;
-        return attributes.get(this.attributes.size()-1);
-    }
-
-}// End class
+    }// end function
+}// end function

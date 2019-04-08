@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 
 /**
  * Attribute class is used to store an attribute. An attribute has its name,
@@ -6,33 +7,39 @@ import java.util.ArrayList;
  * 
  * @author Vicky Mohammad
  */
-public class Attribute {
+class Attribute {
     String attributeName;
     int numberOfValue;
-    ArrayList<String> valueList;
+    List<String> valueList;
 
     /**
-     * Initilize the attribute
-     */
-    public Attribute() {
-
-    }// End constructor
-
-    /**
-     * Initilize the attribute
+     * creates attributue object
      * 
-     * @param attributeName an attribute name
-     * @param numberOfValue number of values of an attribute
-     * @param valueList     an array list of attribute values
+     * @param attributeName
+     * @param valueList
+     * @param numberOfValue
      */
-    public Attribute(String attributeName, int numberOfValue, ArrayList<String> valueList) {
+    Attribute(String attributeName, int numberOfValue, List<String> valueList) {
         this.attributeName = attributeName;
-        this.numberOfValue = numberOfValue;
         this.valueList = valueList;
-    }// End constructor
+        this.numberOfValue = numberOfValue;
+    }// end construtor
 
     /**
-     * Print the attribute
+     * get the index values from the data
+     * 
+     * @param from
+     * @return int value of the index, return -1 if doesn't exist
+     */
+    int getIndexVal(String from) {
+        for (int x = 0; x < this.valueList.size(); x++)
+            if (from.equals(this.valueList.get(x)))
+                return x;
+        return -1;
+    }// end function
+
+    /**
+     * a function to print the attribute
      */
     public void printAttribute() {
         System.out.println(attributeName);
@@ -41,5 +48,5 @@ public class Attribute {
             System.out.print(k + " ");
         });
         System.out.println();
-    }// End print function
-}// End class
+    }// end function
+}// end class
