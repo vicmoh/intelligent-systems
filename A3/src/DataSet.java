@@ -45,7 +45,7 @@ class DataSet {
             while (scanner.hasNextLine()) {
                 int attributeIndex = 0;
                 Example toAddExample = new Example(this.aScheme.attributeList.size());
-                String[] line = scanner.nextLine().split(" ");
+                String[] line = scanner.nextLine().split("\\s+");
                 for (int x = 0; x < line.length; x++) {
                     String token = line[x];
                     toAddExample.attributeValues[attributeIndex] = this.aScheme.attributeList.get(attributeIndex)

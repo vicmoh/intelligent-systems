@@ -35,7 +35,7 @@ class Scheme {
                 // and added to the list
                 String lineVals = scanner.nextLine();
                 List<String> tempAttributeList = new ArrayList<String>();
-                String[] attributeArray = lineVals.split(" ");
+                String[] attributeArray = lineVals.split("\\s+");
                 for (String a : attributeArray)
                     tempAttributeList.add(a);
                 // add to the attribute list
