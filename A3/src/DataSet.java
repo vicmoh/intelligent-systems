@@ -86,14 +86,14 @@ class DataSet {
         for (Attribute currentAttribute : attributeList) {
             double remainder = getRemainder(currentAttribute, data.dataSet, size);
             double gain = entropy - remainder;
-            System.out.println("Test " + currentAttribute.attributeName + ": gain = " + gain);
+            System.out.println("\t" +currentAttribute.attributeName + ": information gain = " + gain);
             if (gain > maxGain) {
                 bestAttribute = currentAttribute;
                 maxGain = gain;
             } // end if
         } // end for
-        System.out.println("\tChoose attribute: " + bestAttribute.attributeName);
-        System.out.println();
+        System.out.println("\t\tChoose attribute: " + bestAttribute.attributeName);
+        // System.out.println();
         return bestAttribute;
     }// end function
 
