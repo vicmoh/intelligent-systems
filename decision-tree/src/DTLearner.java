@@ -61,6 +61,13 @@ class DTLearner {
      * @param args takes 2 argument <schemce file> <data file>
      */
     public static void main(String[] args) {
+        // error check if arguament is less than 2
+        if (args.length < 2) {
+            System.out.println("Invalid number of argument.");
+            System.out.println("Exiting program...");
+            System.exit(0);
+        } // end if
+
         // initialze and declare vaiables
         System.out.println("");
         System.out.println("Decision tree learning begins:");
@@ -68,6 +75,7 @@ class DTLearner {
         DataSet dataSet = new DataSet(scheme);
         scheme.loadSchemeFile(args[0]);
         dataSet.loadDataSetFile(args[1]);
+
         // run the decision tree learning
         scheme.setFunction();
         scheme.attributeList.remove(scheme.attributeList.size() - 1);
