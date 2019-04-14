@@ -7,7 +7,6 @@ import java.io.*;
  * 
  * @author Vicky Mohammad
  */
-
 class Example {
     ArrayList<Integer> attributes;
     int[] attributeValues;

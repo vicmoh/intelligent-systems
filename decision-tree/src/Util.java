@@ -1,8 +1,10 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * The util is the extra helper file needed for AI
+ */
 class Util {
-
     /**
      * ceatil an util for helper function
      */

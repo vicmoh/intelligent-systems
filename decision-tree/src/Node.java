@@ -1,6 +1,11 @@
 import java.util.*;
 import java.io.*;
 
+/***
+ * The node for the tree
+ * 
+ * @param <T>
+ */
 class Node<T> {
     String nodeLabel = ""; // attribute Name
     String linkLabel = ""; // atribute values of parent

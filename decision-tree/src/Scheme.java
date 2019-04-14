@@ -1,6 +1,9 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * The scheme data model of the AI
+ */
 class Scheme {
     ArrayList<Attribute> attributeList; // attribute list of scheme file
     int numberOfAttribute = 0; // number of attributes
