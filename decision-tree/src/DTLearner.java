@@ -20,7 +20,7 @@ class DTLearner {
     }// end constructor
 
     /**
-     * cecisionTreeLearning method implements decision tree learning algorithm.
+     * DecisionTreeLearning method implements decision tree learning algorithm.
      * 
      * @param set
      * @param attributeList
@@ -43,12 +43,12 @@ class DTLearner {
         int m = set.getMajorityValue(scheme);
         // for loop the attribute and sub
         for (String value : bestAttribute.valueList) {
-            DataSet subg = new DataSet();
+            DataSet subG = new DataSet();
             for (Example currentExample : set.dataSet)
                 if (currentExample.attributeValues[bestAttribute.numberOfValue] == bestAttribute.getIndexVal(value))
-                    subg.dataSet.add(currentExample);
-            // recursively remove the old attributu and add to the tree
-            Node<String> subTree = decisionTreeLearning(subg, Util.removeAttribute(bestAttribute, attributeList), m);
+                    subG.dataSet.add(currentExample);
+            // recursively remove the old attribute and add to the tree
+            Node<String> subTree = decisionTreeLearning(subG, Util.removeAttribute(bestAttribute, attributeList), m);
             subTree.setData(value + ": " + subTree.getData());
             tree.addChild(subTree);
         } // end for
@@ -58,17 +58,17 @@ class DTLearner {
     /**
      * main function to run the program
      * 
-     * @param args takes 2 argument <schemce file> <data file>
+     * @param args takes 2 argument <scheme file> <data file>
      */
     public static void main(String[] args) {
-        // error check if arguament is less than 2
+        // error check if argument is less than 2
         if (args.length < 2) {
             System.out.println("Invalid number of argument.");
             System.out.println("Exiting program...");
             System.exit(0);
         } // end if
 
-        // initialze and declare vaiables
+        // initialize and declare variables
         System.out.println("");
         System.out.println("Decision tree learning begins:");
         Scheme scheme = new Scheme();
