@@ -252,5 +252,3 @@ public class EightPuzzleBoard implements GenericState <EightPuzzleBoard, EightPu
 		return 1;
 	}//end func
 }//end func
-
-// Additional class or methods that you might need ...

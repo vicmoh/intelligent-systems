@@ -54,5 +54,3 @@ public class EightPuzzleProblem implements GenericProblem <EightPuzzleBoard, Eig
         return 1.0;
     }//end func
 }//end classes
-
-//Additional class or methods that you might need ...

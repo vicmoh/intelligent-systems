@@ -459,47 +459,53 @@ class ArrayConvertor {
 }//end class
 
 class Color{
+    public static final boolean isColorShown = false;
     public static final String RESET = "\033[0m";  
     // background colors
-    public static final String BLACK_BG = "\u001B[40m";
-    public static final String RED_BG = "\u001B[41m";
-    public static final String GREEN_BG = "\u001B[42m";
-    public static final String YELLOW_BG = "\u001B[43m";
-    public static final String BLUE_BG = "\u001B[44m";
-    public static final String PURPLE_BG = "\u001B[45m";
-    public static final String CYAN_BG = "\u001B[46m";
-    public static final String WHITE_BG = "\u001B[47m";
+    public static final String BLACK_BG = (isColorShown) ? "\u001B[40m" : "";
+    public static final String RED_BG = (isColorShown) ? "\u001B[41m" : "";
+    public static final String GREEN_BG = (isColorShown) ? "\u001B[42m" : "";
+    public static final String YELLOW_BG = (isColorShown) ? "\u001B[43m" : "";
+    public static final String BLUE_BG = (isColorShown) ? "\u001B[44m" : "";
+    public static final String PURPLE_BG = (isColorShown) ? "\u001B[45m" : "";
+    public static final String CYAN_BG = (isColorShown) ? "\u001B[46m" : "";
+    public static final String WHITE_BG = (isColorShown) ? "\u001B[47m" : "";
     // Regular Colors
-    public static final String BLACK = "\033[0;30m";   // BLACK
-    public static final String RED = "\033[0;31m";     // RED
-    public static final String GREEN = "\033[0;32m";   // GREEN
-    public static final String YELLOW = "\033[0;33m";  // YELLOW
-    public static final String BLUE = "\033[0;34m";    // BLUE
-    public static final String PURPLE = "\033[0;35m";  // PURPLE
-    public static final String CYAN = "\033[0;36m";    // CYAN
-    public static final String WHITE = "\033[0;37m";   // WHITE
+    public static final String BLACK = (isColorShown) ? "\033[0;30m" : "";
+    public static final String RED = (isColorShown) ? "\033[0;31m" : "";
+    public static final String GREEN = (isColorShown) ? "\033[0;32m" : "";
+    public static final String YELLOW = (isColorShown) ? "\033[0;33m" : "";
+    public static final String BLUE = (isColorShown) ? "\033[0;34m" : "";
+    public static final String PURPLE = (isColorShown) ? "\033[0;35m" : "";
+    public static final String CYAN = (isColorShown) ? "\033[0;36m" : "";
+    public static final String WHITE = (isColorShown) ? "\033[0;37m" : "";
 
     public static void debug(String toBePrinted){
         System.out.println(toBePrinted);
     }//end func
     
     public static String cyan(String toBePrinted){
+        if(!isColorShown) return toBePrinted;
         return CYAN + toBePrinted + RESET;
     }//end func
 
     public static String yellow(String toBePrinted){
+        if(!isColorShown) return toBePrinted;
         return YELLOW + toBePrinted + RESET;
     }//end func
     
     public static String green(String toBePrinted){
+        if(!isColorShown) return toBePrinted;
         return GREEN + toBePrinted + RESET;
     }//end func
 
     public static String red(String toBePrinted){
+        if(!isColorShown) return toBePrinted;
         return RED + toBePrinted + RESET;
     }//end func
 
     public static String header(String toBePrinted){
+        if(!isColorShown) return toBePrinted;
         return Color.yellow("----------<<<( " + toBePrinted + " )>>>----------");
     }//end func
 }//end func
