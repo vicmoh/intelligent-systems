@@ -44,9 +44,7 @@ class Attribute {
     public void printAttribute() {
         System.out.println(attributeName);
         System.out.println(numberOfValue);
-        valueList.forEach((k) -> {
-            System.out.print(k + " ");
-        });
+        valueList.forEach((k) -> System.out.print(k + " "));
         System.out.println();
     }// end function
 }// end class
