@@ -1,7 +1,3 @@
-const _populationSize = 100
-const _genes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 1234567890, .-;:_!\"#%&/()=?@${[]}"
-const _target = "I love GeeksForGeeks"
-
 /**
  * Generate random number
  * @param {Number} start
@@ -104,63 +100,78 @@ class Individual {
     }
 }
 
-/**
- * Function to run genetic algorithm
- * @param {String} genes 
- * @param {String} target 
- * @param {Number} populationSize 
- */
-function run(genes, target, populationSize) {
-    let generation = 0
-    let population = []
-    let isFound = false
+class GeneticAlgorithm {
+    /**
+     * Function to initialize genetic algorithm
+     * @param {String} genes the original gene
+     * @param {String} target the target of the gene
+     * @param {Int} populationSize the starting population size
+     */
+    constructor(genes, target, populationSize) {
+        this.genes = genes
+        this.target = target
+        this.populationSize = populationSize
+    }
 
-    // Create initial population
-    for (let i = 0; i < populationSize; i++)
-        population.push(new Individual(_createGnome(genes, target), target))
+    run() {
+        let genes = this.genes
+        let target = this.target
+        let populationSize = this.populationSize
 
-    while (!isFound) {
-        // Create generation
-        population = population.sort((ind1, ind2) => {
-            if (ind1.fitness < ind2.fitness) return -1
-            if (ind1.fitness > ind2.fitness) return 1
-            return 0;
-        })
-        // If the individual having lowest fitness score ie.
-        // 0 then we know that we have reached to the target
-        // and break the loop
-        console.log()
-        // console.log(population)
-        if (population[0].fitness <= 0) {
-            isFound = true
-            break
+        /// To run the genetic algorithm
+        let generation = 0
+        let population = []
+        let isFound = false
+
+        // Create initial population
+        for (let i = 0; i < populationSize; i++)
+            population.push(new Individual(_createGnome(genes, target), target))
+
+        while (!isFound) {
+            // Create generation
+            population = population.sort((ind1, ind2) => {
+                if (ind1.fitness < ind2.fitness) return -1
+                if (ind1.fitness > ind2.fitness) return 1
+                return 0;
+            })
+            // If the individual having lowest fitness score ie.
+            // 0 then we know that we have reached to the target
+            // and break the loop
+            console.log()
+            // console.log(population)
+            if (population[0].fitness <= 0) {
+                isFound = true
+                break
+            }
+
+            // Otherwise generate new offsprings for new generation
+            let newGen = []
+            // Perform Elitism, that mean 10% of fittest population
+            // goes to the next generation
+            let s = (10 * populationSize) / 100
+            for (let i = 0; i < s; i++) newGen.push(population[i])
+
+            // From 50% of fittest population, Individuals
+            // will mate to produce offspring
+            s = (90 * populationSize) / 100
+            for (let i = 0; i < s; i++) {
+                let ranNum = _genRanNum(0, 50)
+                let parent1 = population[ranNum]
+                ranNum = _genRanNum(0, 50)
+                let parent2 = population[ranNum]
+                let offspring = parent1.mate(parent2, genes)
+                newGen.push(offspring)
+            }
+            population = newGen
+            console.log('Generation: ' + generation)
+            console.log('String: ' + population[0].chromosome)
+            console.log('Fitness: ' + population[0].fitness)
+            generation++
         }
-
-        // Otherwise generate new offsprings for new generation
-        let newGen = []
-        // Perform Elitism, that mean 10% of fittest population
-        // goes to the next generation
-        let s = (10 * populationSize) / 100
-        for (let i = 0; i < s; i++) newGen.push(population[i])
-
-        // From 50% of fittest population, Individuals
-        // will mate to produce offspring
-        s = (90 * populationSize) / 100
-        for (let i = 0; i < s; i++) {
-            let ranNum = _genRanNum(0, 50)
-            let parent1 = population[ranNum]
-            ranNum = _genRanNum(0, 50)
-            let parent2 = population[ranNum]
-            let offspring = parent1.mate(parent2, genes)
-            newGen.push(offspring)
-        }
-        population = newGen
         console.log('Generation: ' + generation)
         console.log('String: ' + population[0].chromosome)
         console.log('Fitness: ' + population[0].fitness)
-        generation++
     }
-    console.log('Generation: ' + generation)
-    console.log('String: ' + population[0].chromosome)
-    console.log('Fitness: ' + population[0].fitness)
-} run(_genes, _target, _populationSize)
+}
+
+module.exports = GeneticAlgorithm
