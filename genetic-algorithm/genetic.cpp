@@ -50,7 +50,7 @@ class Individual {
 Individual::Individual(string chromosome) {
   this->chromosome = chromosome;
   fitness = cal_fitness();
-};
+}
 
 // Perform mating and produce new offspring
 Individual Individual::mate(Individual par2) {
@@ -80,7 +80,7 @@ Individual Individual::mate(Individual par2) {
   // create new Individual(offspring) using
   // generated chromosome for offspring
   return Individual(child_chromosome);
-};
+}
 
 // Calculate fitness score, it is the number of
 // characters in string which differ from target
@@ -92,7 +92,7 @@ int Individual::cal_fitness() {
     if (chromosome[i] != TARGET[i]) fitness++;
   }
   return fitness;
-};
+}
 
 // Overloading < operator
 bool operator<(const Individual &ind1, const Individual &ind2) {
@@ -139,7 +139,6 @@ int main() {
     // will mate to produce offspring
     s = (90 * POPULATION_SIZE) / 100;
     for (int i = 0; i < s; i++) {
-      int len = population.size();
       int r = random_num(0, 50);
       Individual parent1 = population[r];
       r = random_num(0, 50);
